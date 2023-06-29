@@ -1,1 +1,0 @@
-<h3>Module News installed!</h3>

@@ -1,1 +1,0 @@
-<h3>Module Easytext installed!</h3>

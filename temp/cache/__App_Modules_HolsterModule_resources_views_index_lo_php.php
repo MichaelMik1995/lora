@@ -1,1 +1,0 @@
-<h3>Module Holster installed!</h3>

@@ -1,1 +1,0 @@
-<h3>Module Scheduler installed!</h3>

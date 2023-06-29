@@ -1,1 +1,0 @@
-<h3>Module Models installed!</h3>
