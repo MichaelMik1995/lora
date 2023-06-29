@@ -7,3 +7,5 @@ App/Modules/*
 !DocumentationModule/
 !HomepageModule/
 !UserModule/
+
+App/Trash
