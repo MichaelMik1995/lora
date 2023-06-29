@@ -99,7 +99,6 @@ class AdminUsers extends Admin implements ModelDBInterface
         {
             return [];
         }
-
     }
 
     public function getavaliablePages(int $limit_per_page = 25)
