@@ -2,7 +2,7 @@
 /nbproject/private/
 node_modules
 
-/App/Modules/*
-!modules/AdminModule/
-!modules/DocumentationModule/
-!modules/UserModule/
+App/Modules/*
+!AdminModule/
+!DocumentationModule/
+!UserModule/
