@@ -5,4 +5,5 @@ node_modules
 App/Modules/*
 !AdminModule/
 !DocumentationModule/
+!HomepageModule/
 !UserModule/
