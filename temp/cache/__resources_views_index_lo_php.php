@@ -93,11 +93,11 @@
                     <div id="layout-second-column" class="column-3 column-6-xsm pdx-2 pdy-2-xsm">
                         <div class="content-right">
                             <span class="display-xsm display-sm display-md display-lrg display-xlrg"></span>
-                        <?php if('1' == '1') : ?>
+                        <?php if('' == '1') : ?>
                             <button redirect="user" class="button-circle width-32p height-32p button-warning">
                                 <i class="fa fa-user"></i>
                             </button>  
-                            <?php if(in_array("admin", ['admin','admin','editor','developer'])) : ?>
+                            <?php if(in_array("admin", [''])) : ?>
                                 <?php if($WEB_STATUS == "DEVELOP" || $WEB_STATUS == "DEBUG") : ?>
                                     <button redirect="admindev" class="button-circle width-32p height-32p button-warning">
                                         <i class="fa fa-terminal"></i>

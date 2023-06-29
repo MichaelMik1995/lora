@@ -11,7 +11,7 @@
     </div>
     
     <div class="column display-flex column-justify-end ali-center">
-        <span class="t-bolder">Admin</span><p class="mgx-1"></p><img class="height-40p bd-round-circle" src="<?php echo asset('img/avatar/32/111111111.png') ?>" alt="admin-header-user-111111111">
+        <span class="t-bolder"></span><p class="mgx-1"></p><img class="height-40p bd-round-circle" src="<?php echo asset('img/avatar/32/222222222.png') ?>" alt="admin-header-user-222222222">
     </div>
 </div>
 

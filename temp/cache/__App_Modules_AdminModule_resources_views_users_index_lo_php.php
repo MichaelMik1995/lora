@@ -5,7 +5,7 @@
 
         <div class="bgr-dark-2 pd-2">
             <form method="post" action="/admin/app/user-create">
-                <input hidden type="text" name="token" value="538fb255d54af89e92b41f7ba41b2f0398771d0fb563701e146f7040854f618b"> <input hidden type="text" name="SID" value="315cd74ea61c616ae1f776cf144472c1">
+                <input hidden type="text" name="token" value="e455fa974e26a78d9a31bed3363fb1dd819514436b99cb7953ebe5ffb10dab52"> <input hidden type="text" name="SID" value="5d3027be2348bed6d95335dff81d1155">
                 <input hidden type='text' name='method' value='insert'>
 
                 <div class="mgy-2">
