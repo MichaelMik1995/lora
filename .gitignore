@@ -17,3 +17,4 @@ log/*
 !do-not-erase
 
 temp/cache/*
+!do-not-erase
