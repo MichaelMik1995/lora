@@ -9,8 +9,10 @@ App/Modules/*
 !UserModule/
 
 App/Trash
+
 .storybook/
 .vscode/
+
 bck/
 
 log/*
