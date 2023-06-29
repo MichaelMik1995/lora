@@ -1,1 +1,0 @@
-<h3>Module Community installed!</h3>

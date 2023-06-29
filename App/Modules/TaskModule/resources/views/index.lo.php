@@ -1,1 +1,0 @@
-<h3>Module Task installed!</h3>

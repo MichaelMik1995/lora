@@ -1,3 +1,0 @@
-@auth developer @
-dd
-@endauth

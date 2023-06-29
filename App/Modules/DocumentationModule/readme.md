@@ -1,1 +1,0 @@
-Documentation module for LORA Framework, version 3.2
