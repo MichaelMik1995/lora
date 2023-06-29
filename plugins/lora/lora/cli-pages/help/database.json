@@ -1,0 +1,30 @@
+{
+    "title": "Database help page",
+    "page": "database",
+    "usage": "php lora migrate(:action)",
+    "description": "Sample description",
+
+    "lines": {
+
+        "line1": {
+            "cmd": "php lora migrate:create [table-name] [options: --seed]",
+            "description": "Creates file for creating new table data for migration in App/Database/Migration/",
+            "option: --seed": "with --seed option creates seed data for table [table-name] in App/Database/Seed/"
+        },
+
+        "line2": {
+            "cmd": "php lora migrate",
+            "description": "Migrates all tables to active database (if table not exists) (in localhost - for development)"
+        },
+
+        "line3": {
+            "cmd": "php lora migrate:seed",
+            "description": "Migrates seed data for all tables in App/Database/Seed/"
+        },
+
+        "line4": {
+            "cmd": "php lora migrate:clear",
+            "description": "Drops migration tables and migrate"
+        }
+    }
+}

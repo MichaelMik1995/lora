@@ -1,0 +1,1 @@
+<h1>Tato URL adresa není zaregistrována!</h1>

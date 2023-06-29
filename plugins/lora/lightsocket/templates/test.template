@@ -1,0 +1,9 @@
+<div class='pd-2 header-3'>
+    <?php if({number}>5): ?>
+        Větší
+    <?php elseif({number} == 5): ?>
+        Rovná se
+    <?php else: ?>
+        Menší
+    <?php endif; ?>
+</div>

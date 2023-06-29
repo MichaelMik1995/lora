@@ -1,0 +1,12 @@
+#!/usr/bin/php -q
+<?php
+    require ("App/Core/Autoload/Autoload.php");
+    
+    $autoload = new Autoload();
+    $autoload->loadClass();
+    
+    $loran = new {Company}\{Name}\Bin\{name}();
+    $loran->sendCommand(@htmlentities($argv[1]), @htmlentities($argv[2]), @htmlentities($argv[3]), @htmlentities($argv[4]));
+?>
+
+

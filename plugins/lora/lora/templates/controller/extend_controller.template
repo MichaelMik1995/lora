@@ -1,0 +1,73 @@
+<?php
+declare (strict_types=1);
+
+namespace App\Modules\{Model_name}Module\Controller;
+
+use App\Controller\Controller;
+//Module Model
+use App\Modules\{Model_name}Module\Model\{Model_name};    
+
+
+class {Model_name}Controller extends Controller 
+{
+    /**
+     * @var array <p>Injected classes to controller</p>
+     */
+    protected $injector;
+    
+    /**
+     * @var array <p>Data from URL address (/homepage/show/:url) -> $u['url'] = ?</p>
+     */
+    public $u;
+    
+    /**
+     * @instance of main model: {Model_name}() of this controller.
+     */
+    protected $main_model;
+
+    
+    public function __construct($injector)
+    {
+        $this->injector = $injector;
+        $this->main_model = new {Model_name}();
+    }
+    
+    
+    public function index() 
+    {
+      
+    }
+    
+    public function show()
+    {
+        
+    }
+    
+    public function create()
+    {
+        
+    }
+    
+    public function insert()
+    {
+        
+    }
+    
+    public function edit()
+    {
+        
+    }
+    
+    
+    public function update()
+    {
+        
+    }
+    
+    public function delete()
+    {
+        
+    }
+}
+
+

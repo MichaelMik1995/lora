@@ -1,0 +1,24 @@
+
+################################## LORA HELP PAGE {Page} ################################## 
+@MiroJI 2021 | dxgamepro.cz | LORA Framework
+
+                                    {title}
+                                    ################
+{c:green}[] => required arguments{c:none}
+() => optional arguments
+[controller] - parameter is lower case : [authcontroller]
+[Controller] - parameter is Upper case : [AuthController]
+[CONTROLLER] - parameter is uppercase : [AUTHCONTROLLER]
+
+Command Usage: php lora [argument](:[action]) (options)
+
+#: {description}
+___________________________________________________________________________________________
+
+Commands for {PAGE}:
+
+### => USAGE: {c:yellow}{usage}{c:none}: <= ###
+
+{lines}
+
+################ END HELP FILE

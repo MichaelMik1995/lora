@@ -1,0 +1,95 @@
+*
+{
+    box-sizing: border-box;
+    font-family: Raleway, Arial, Halvetica;
+}
+
+.lora_message, .lora_message_success, .message
+{
+    border-radius: 1px;
+}
+
+.message
+{
+    background: #62c462;
+}
+
+details > *{margin-bottom: .5em;}
+
+.stylize-dialog-info
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: auto;
+    padding-top: 10%;
+}
+
+.stylize-dialog-image
+{
+    position: absolute;
+    top: 1em;
+    left: 1em;
+    right: 1em;
+    bottom: 1em;
+    z-index: auto;
+}
+
+.stylize-dialog-panel
+{
+    box-shadow: 0 0 0 900vmax rgb(0 0 0 / 0.5);
+}
+
+.stylize-image-drop:hover
+{
+    border-style: dotted;
+    border-color: var(--basic-color1);
+}
+
+.stylize-image-drop:hover > *
+{
+    color: var(--basic-color1);
+}
+
+#dialog
+{
+    position: fixed;
+}
+
+.button-action
+{
+    background: #ff4c00;
+    color: black;
+}
+
+.button-action:hover
+{
+    background: none;
+    color: #ff4c00;
+}
+
+.test-child:first-child
+{
+    color: lime;
+}
+
+.body-background
+{
+    background-color: #F5F2F0;
+    color: #1a1a1a;
+}
+
+.nav-background
+{
+    background-color: #F8F8F8;
+}
+
+
+/* @media (prefers-color-scheme: light) {
+    html {
+      filter: invert(100%) contrast(90%) hue-rotate(180deg);
+    }
+  }
+  */

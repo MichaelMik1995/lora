@@ -1,0 +1,18 @@
+.document > ul
+{
+    list-style: square !important;
+}
+
+.document li
+{
+    padding: .1em;
+    margin-left: .3em;
+}
+
+.document h3
+{
+    padding-top: .5em;
+    padding-bottom: .5em;
+    color: orange;
+}
+

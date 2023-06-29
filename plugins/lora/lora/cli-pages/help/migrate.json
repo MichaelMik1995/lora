@@ -1,0 +1,33 @@
+{
+    "title": "Migration help page",
+    "page": "migrate",
+    "usage": "php lora migrate(:action) (argument) (options)",
+    "description": "Create migration tables, test data and more",
+
+    "lines": {
+        "line1": {
+            "cmd": "php lora migrate:create [argument = table-name] (--table, --data, --caller, --onlydata, --folder=foldername)",
+            "description": "Creates table structure creator stored in /App/Database/Migration/",
+            "option: --table": "Creates ONLY table structure for [table-name] stored in /App/Database/Migration/[Table_name]/Table",
+            "option: --data": "Creates table structure and data filler for [table-name] stored in /App/Database/Migration/[Table_name]",
+            "option: --onlydata": "Creates ONLY data filler for [table-name] stored in /App/Database/Migration/[Table_name]/Data",
+            "option: --caller": "Creates migration caller for [table-name] stored in /App/Database/Migration/[Table_name]",
+            "example": "\t php lora migrate:create my-table --data \t php lora migrate:create auth --caller \n \t\t\t php lora migrate:create news_users --data folder=news"
+        },
+        "line2": {
+            "cmd": "php lora migrate:data [argument = table-name]",
+            "description": "creates data filler for [table-name] stored in /App/Database/Seed/",
+            "example": "\t php lora migrate:createseed my-table"
+        },
+        "line3": {
+            "cmd": "php lora migrate (argument = --clear, {caller-name})",
+            "description": "Migrate defined tables (createOrUpdate)",
+            "argument: --clear": "If argument is --clear -> migrate with truncating tables first",
+            "argument: {caller-name}": "Call own migration caller {caller-name}"
+        },
+        "line4": {
+            "cmd": "php lora migrate:clear",
+            "description": "Remove old tables and create new tables from migration folder"
+        }
+    }
+}

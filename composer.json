@@ -1,0 +1,17 @@
+{
+    "name": "lora/lora",
+    "description": "Simple framework by @MiroKa Company",
+    "type": "project",
+    "license": "MiroKa",
+    "authors": [
+        {
+            "name": "Miroslav",
+            "email": "miroslav.jirgl@seznam.cz"
+        }
+    ],
+    "require": {
+        "phpmailer/phpmailer": "^6.6",
+        "spipu/html2pdf": "^5.2",
+        "php-di/php-di": "^6.4"
+    }
+}

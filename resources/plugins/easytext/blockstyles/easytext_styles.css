@@ -1,0 +1,150 @@
+
+/* BLOCKS */
+.easytext-block-style-blue
+{
+    background: linear-gradient(to top, #06092A 30%, #18275a);
+    padding: 8px;
+    border-radius: 7px;
+    font-style: italic;
+    color: #bfbfbf;
+}
+
+.easytext-block-style-orange
+{
+    background: orange;
+    color: #222521;
+    padding: 1em;
+}
+
+.easytext-block-style-green
+{
+    background: green;
+    color: #bfbfbf;
+    padding: 3px;
+    border-bottom: 2px solid #4BB239;
+}
+
+.easytext-block-style-red
+{
+    background: #cd0a0a;
+    color: #222521;
+    border-radius: 2px;
+    padding: 4px;
+    font-style: italic;
+    box-shadow: 1px 1px 5px #FE2E2E;
+}
+
+.easytext-block-style-dotted
+{
+    background: rgba(255,255,255,0.7);
+    color: #1a1a1a;
+    border: 2px dotted #1a1a1a;
+    border-radius: 4px;
+    padding: 1em;
+}
+
+
+.easytext-block-style-tableblue
+{
+    background: #003eff;
+    color: #bfbfbf;
+    padding: .3em;
+}
+
+.easytext-block-style-tablepink
+{
+   background: #ff3333;
+   color: #bfbfbf;
+   padding: .3em;
+}
+
+.easytext-block-style-designgreen
+{
+    background: radial-gradient(#42F117 15%, green);
+    color: black;
+    padding: .3em;
+}
+
+.easytext-block-style-designblack
+{
+    background: radial-gradient(circle at 100%, #333, #333 50%, #eee 75%, #333 75%);
+    color: orange;
+    padding: 3px;
+}
+
+.easytext-block-style-black
+{
+    background: #333;
+    color: #bfbfbf;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.easytext-block-style-articleheader
+{
+    color: #bfbfbf;
+    padding: 5px;
+    border: none;
+    border-left: 3px solid #18275a;
+    font-size: 1.8em;
+    padding-left: .5em;
+    margin-top: 1em;
+}
+
+.easytext-block-style-design-blue
+{
+    background-color: rgba(30,141,177, 0.2);
+    border: 2px solid #1E8DB1;
+    color: #1E8DB1;
+    border-radius: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.easytext-block-style-text-blog
+{
+    word-wrap: break-word;
+    margin-top: 1em;
+    margin-bottom: 1.25em;
+    line-height: 28px;
+    font-size: 16px;
+}
+
+/* SPANS */
+.easytext-span-style-blue
+{
+    background: linear-gradient(to top, #06092A 30%, #18275a);
+    padding: 8px;
+    margin: .5em;
+    border-radius: 7px;
+    color: #bfbfbf;
+}
+
+.easytext-span-style-orange
+{
+    background: orange;
+    color: #222521;
+    padding: 1em;
+    margin: .5em;
+}
+
+.easytext-span-style-red
+{
+    background: #cd0a0a;
+    color: #222521;
+    border-radius: 2px;
+    padding: 4px;
+    margin: .5em;
+    box-shadow: 1px 1px 5px #FE2E2E;
+}
+
+
+/* TEXTS */
+.easytext-text-style-headertext1
+{
+    text-align: center;
+    font-size: 23px;
+    color: orange;
+}

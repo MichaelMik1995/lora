@@ -1,0 +1,51 @@
+################################################################################
+                 LORAN PHP LINUX Command line interface HELP by MiroJI
+################################################################################
+
+Welcome to Light framework Lora by MiroJi @MiroJi miroslav.jirgl@seznam.cz
+
+################################################################################
+                            ### Basic commands: ###
+
+# php loran help                      >  prints this help page
+# php loran help > output.txt         >  prints this help page to file in root
+# php loran s:start                   >  starts php server on 127.0.0.1:8080
+# php loran cache:flush               >  prints this help page
+
+################################################################################
+                            ### Create Models and Controllers: ###
+
+# php loran create:model [modelname]            
+    >>> create a new basic model
+
+# php loran create:model [modelname] [args]
+    available args:
+    --crud                      Generate model with CRUD prepared methods
+    --crud --controler          Generate model with CRUD and basic controller
+    --crud --controller-extend  Generate complet MVC (controller, model, views)
+    --crud-comments             Generate complet MVC with CRUD functions for 
+                                comments
+    
+    null --controller           Generate basic model and basic controller
+    
+# php loran create:controller   Generate only basic controller
+
+################################################################################
+                            ### Create automated UI ###
+
+# php loran create:ui [args] [options]
+    available args:
+    --auth                 Generate views for login, register, recovery password
+    --contact              Generate view for contact
+    
+    --own [temp path] [view]
+                           Generate own view from teplate
+(template stored in: ./plugins/lora/lora/templates/[template folder/file] )
+(View store in: /resources/views/[folder/view])
+
+Example:    php loran create:ui auth/login user/login
+    temp from: ./plugins/lora/lora/templates/AUTH/LOGIN.template ->
+    view in: /resources/views/USER/LOGIN.lo.php
+                           
+
+################################################################################

@@ -1,0 +1,22 @@
+<div class="pd-2">
+    <form method="post" action="/{url}/insert">
+        @csrfgen
+        @request(insert)
+        
+        <div class="form-line">
+            <label for="title" class="form-label mgx-1">{{ lang("blog_title") }}</label><br>
+            <input id="title" name="title" type="text" class="input-dark pd-2 width-50 width-100-xsm" validation="required,maxchars128" placeholder="Aa...">
+            <div class="pd-1" valid-for="#title"></div>
+        </div>
+        
+        <div class="form-line">
+            <label for="content" class="form-label mgx-1">{{ lang("blog_content") }}</label><br>
+            {{ $form }}
+        </div>
+        
+        <div class="form-line">
+            <button class="button button-info bd-round-3"><i class="fa fa-plus-circle"></i> {{ lang("button_add_record") }}</button>
+        </div>
+    </form>
+</div>
+

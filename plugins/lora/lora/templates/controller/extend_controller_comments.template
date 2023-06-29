@@ -1,0 +1,258 @@
+<?php
+declare (strict_types=1);
+
+use App\Core\View\Template;
+use App\Core\Database\Database;
+use App\Middleware\Validation;
+use App\Middleware\Auth;
+use Lora\Easytext\Easytext;
+use App\Model\{Model_name};
+use App\Exception\LoraException;
+
+class {Model_name}Controller extends Controller 
+{
+    protected $injector;
+
+    public function __construct($injector)
+    {
+        $this->injector = $injector;
+    }
+    
+    public function index($url) 
+    {
+        $array_utils = $this->injector["ArrayUtils"];  
+        $injector = $array_utils->setLowerCaseVars($this->injector);
+        
+        extract($injector);
+          
+        ${model_name} = new {Model_name}($database);                      // create instance for model
+        
+        $easy_text = $easytext;                                        // Read and translate block (like wysiwyg block system)
+        $lora_exception = $loraexception;                                     // Create instance for validate fields from $_POST// For catching exceptions
+        
+        $action = @$url[1];                                                 // $action [create|update|show ..] (/controller/ACTION/route_param)
+        $route_param = @$url[2];                                            // for showing, editing, deleting row (/controller/action/ROUTE_PARAM)
+
+        $view_folder = "{model_name}/";
+            
+        switch($action)
+        {
+            case "": //default url in this controller -> showing all rows
+                $get_all = ${model_name}->getAll(); //Getting all rows from table
+                
+                $this->header["title"] = "{Model_name}";        //set dynamic web title
+                $this->data = [
+                    "get_all" => $get_all,
+                    //"admin" => $auth->isAuth(["admin"]),      //If you want set viewable block separatelly in view = (if($admin){view button for create} ...)
+                ];
+                $this->view = $view_folder."index";
+                break;
+                
+            case "show":
+            
+                $get_one = ${model_name}->get(); //Getting one row from table
+                
+                $this->data = [
+                    "get_one" => $get_one,
+                    "easy_text" => $easy_text,
+                ];
+                $this->view = $view_folder."show";
+                break;
+                
+            case "create":  //This action for view row from route
+                
+                $auth->access(["admin", "editor"], "{model_name}/show/$route_param"); //View page for users which has these roles ... else redirect to homepage
+                $form = $easy_text->form("content", "",[
+                    "textarea_placeholder" => "Zde začněte psát text ...",
+                    "max_chars" => 9999,
+                    "submit_text" => "Vytvořit",
+                ]);
+                 
+                $this->header["title"] = "Vytvořit";
+                $this->data = [
+                  "form" => $form,  
+                ];
+                $this->view = $view_folder."create";
+                break;
+                
+            case "insert":  //This action for method POST - store data to database
+                $auth->access(["admin", "editor"], "{model_name}");
+                //$title = $validation->input["title"];    //$_POST stores at $validation->input = []
+                //$new_url = $validation->input["url"]; 
+                
+                $validation->validate($title, ["required", "string"]);  //Check if this field validates (this field is required and must be string)
+                
+                if($validation->isValidated() == true) //If all fields are valid! Else not required.
+                {
+                    try
+                    {
+                        ${model_name}->insert([]);          //insert row to table ["column" => "value", "column2"=>"value" ... etc]
+                        $this->redirect("{model_name}/show/$new_url");
+                    } catch (LoraException $ex) 
+                    {
+                        $lora_exception->errorMessage($ex->getMessage());
+                    }
+                }
+                break;
+                
+            case "edit":    //This action for editing row from route
+                $auth->access(["admin", "editor"], "{model_name}/show/".$route_param);
+                
+                $get_one_to_edit = ${model_name}->get(); //Get row by route
+                
+                $form = $easy_text->form("content", $get_one_to_edit["content"],[
+                    "textarea_placeholder" => "Zde začněte psát text ...",
+                    "max_chars" => 9999,
+                    "submit_text" => "Upravit",
+                ]); //$get_one_to_edit[SAME AS FIELD IN TEXTAREA]
+                
+                $this->header["title"] = "Upravit";
+                $this->data = [
+                    "get_one" => $get_one_to_edit,
+                    "admin" => $auth->isAuth(["admin"]),
+                    "form" => $form,
+                    "auth" => $auth,
+                ];
+                
+                $this->view = $view_folder."edit";
+                break;
+                
+            case "update":    //This action for method POST - updates data to database
+                $auth->access(["admin", "editor"]);
+                
+                //$title = $validation->input["title"];
+                //$validation->validate($title, ["string", "required"]);
+
+                if($validation->isValidated() == true)
+                {
+                    try{
+                        ${model_name}->update([]);          //  like action INSERT
+                        $this->redirect("{model_name}/show/".$route_param);
+                    } catch (LoraException $ex) {
+                        $lora_exception->errorMessage($ex->getMessage());
+                    }
+                }
+                break;
+                
+            case "delete":    //This action for method POST - delete row to database
+                $access = $auth->access(["admin","editor"]);
+                if($access == true)
+                {
+                    try
+                    {
+                        ${model_name}->delete();
+                        $this->redirect("{model_name}");
+                    } catch (Exception $ex) {
+                        $lora_exception->errorMessage($ex->getMessage());
+                    }
+                }
+                else
+                {
+                    $this->redirect("{model_name}/show/".$route_param);
+                }
+                break;
+                
+            ######################## COMMENT cases #############################
+            case "comment-insert":
+                $content = $validation->input["content"];
+                $post_id = $validation->input["post_id"];
+                $is_logged = $auth->isLogged();
+                
+                $validation->validate($content, ["required"]);
+                $validation->validate($post_id, ["int", "required"]);
+                
+                if($validation->isValidated() == true)
+                {
+                    if($is_logged == true)
+                    {
+                        try{
+                            ${model_name}->insertComment([
+                                "content"=>$content,
+                                "author" => $_SESSION["LORA"]["uid"],
+                                "post_id" => $post_id,
+                                "created_at" => time(),
+                                "updated_at" => time(),
+                                    ]);
+                            $lora_exception->successMessage("Komentář byl vytvořen!");
+                        } catch (Exception $ex) {
+                            $lora_exception->errorMessage($ex->getMessage());
+                        }
+                    }
+                    else
+                    {
+                        $lora_exception->errorMessage("Nejte přihlášen/á! Nelze napsat komentář!");
+                    }
+                }
+                else 
+                {
+                    $lora_exception->errorMessage("Chyba při ověřování formuláře!");
+                }
+                $this->redirect("{model_name}/show/".$post_id);
+                break;
+            
+            case "comment-update":
+                $content = $validation->input["comment_content"];               //variables for inputs ..
+                $post_id = $validation->input["main_id"];
+                $author = $validation->input["author"];
+                
+                $validation->validate($content, ["required"]);                  //validate all inputs ...
+                $validation->validate($post_id, ["required"]);
+                $validation->validate($author, ["required", "int"]);
+                
+                if($validation->isValidated() == true)                          //if inputs are validated
+                {
+                    try{
+                        ${model_name}->updateComment([                          //update current comment
+                            "content"=>$content,
+                            "updated_at" => time(),
+                                ]);
+                        $lora_exception->successMessage("Komentář byl upraven!");
+                    } catch (Exception $ex) {
+                        $lora_exception->errorMessage($ex->getMessage());
+                    }
+                }
+                else 
+                {
+                    $lora_exception->errorMessage("Chyba při zpracování požadavku");
+                }
+                $this->redirect("{model_name}/show/".$post_id);
+                break;
+            
+            case "comment-delete":                              //Must create hidden form in view (button add attribute: onClick="$('#form_id').submit()")
+                //get form inputs:
+                $comment_id = $validation->input["comment_id"];         //id of current comment
+                $post_id = $validation->input["main_id"];               //id of post/article etc ..
+                $author = $validation->input["author"];                 //author of comment
+                
+                
+                $validation->validate($comment_id, ["required", "int"]);        //validating inputs ...
+                $validation->validate($post_id, ["required", "int"]);
+                $validation->validate($author, ["required", "int"]);
+                
+                if($validation->isValidated() == true)                          //if all inputs are validated ..
+                {
+                    if($author == $_SESSION["LORA"]["uid"] || $auth->access(["admin", "editor"]))   //if author is logged user or authenticated user
+                    {
+                        try {
+                            ${model_name}->deleteComment($comment_id);
+                            $lora_exception->successMessage("Komentář byl smazán");
+                        } catch (Exception $ex) {
+                            $lora_exception->errorMessage($ex->getMessage());
+                        }
+                    }
+                    else 
+                    {
+                        $lora_exception->errorMessage("Nemáte oprávnění smazat tento komentář!");
+                    }
+                }
+                else
+                {
+                    $lora_exception->errorMessage("Některé pole je prázdné!");
+                }
+                
+                $this->redirect("{model_name}/show/".$post_id);                 //redirect back to post/article ..
+                break;
+        }
+    }
+}
+?>

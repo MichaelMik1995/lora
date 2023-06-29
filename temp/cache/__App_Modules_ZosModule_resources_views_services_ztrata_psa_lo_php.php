@@ -1,0 +1,1 @@
+Ztratil se mi pes ! POMOC!!

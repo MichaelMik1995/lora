@@ -1,0 +1,19 @@
+<?php
+    require_once('../../../../core/model/easyText.php');
+    $easyText = $this->injector["Easytext"];
+    
+    $txt = $easyText->translateText("<script>$('#easyText_area').val();</script>", "50%");
+    
+?>
+
+<div class="easyText-Dialog_inner">
+    <div id="view" class="es_block">
+        
+    </div>
+</div>
+
+<script>
+$(document).ready(function(){
+    $("#view").text(<?= $txt ?>);
+});
+</script>

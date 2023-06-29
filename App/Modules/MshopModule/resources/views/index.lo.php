@@ -1,0 +1,1 @@
+<h3>Module Shop installed!</h3>

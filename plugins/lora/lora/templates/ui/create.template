@@ -1,0 +1,10 @@
+<div class="pd-2">
+    <form method="post" action="{action}/insert">
+        @csrfgen
+        @request(insert)
+
+        <div class="form-line">
+            <label for="first"></label>
+        </div>
+    </form>
+</div>
