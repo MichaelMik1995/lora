@@ -1,18 +1,13 @@
 <?php
-/**
- * Description of Module Model - Homepage:
- *
- * @author MiroJi
- */
 declare (strict_types=1);
 
 namespace App\Modules\HomepageModule\Model;
 
 use App\Core\Model;
-use App\Middleware\Auth;
 
 class Homepage extends Model
 {
+
     protected $table = "homepage";
     
     public function __construct(string $route_param = null) {
@@ -20,69 +15,112 @@ class Homepage extends Model
         if ($route_param != null) {
             $this->db->route_param = $route_param;
         }
-        
-        //$this->database->route_key = "url";       //Uncheck if route key is different from "url"
-        //$this->database->table = $this->table;    //Uncheck if table name is not like controller name
+
+        //$this->database->table = $this->table; //Uncheck if table name is not like controller name
     }
     
     /**
      * 
-     * @param string $order_by <p>Order tables in rows (ex.: "id ASC")</p>
-     * @return Array <p>Returns all records from table</p>
+     * @param string $order_by <p>Order tables in rows (ex.: id ASC)</p>
+     * @return object <p>Returns all rows from table homepage</p>
      */
-    public function getAll(string $order_by = "id ASC"): Array {
+    public function getAll(string $order_by = "id ASC"): Array
+    {
         $db_query = $this->db->tableAllData($order_by);
-        if (!empty($db_query)) {
+        if(!empty($db_query))
+        {
             $returnArray = [];
             $i = 0;
-            foreach ($db_query as $row) {
+            foreach($db_query as $row)
+            {
                 $id = $i++;
+                $content = $row["content"];
                 
+                $db_query[$id]["_content"] = $this->easy_text->translateText($content);
             }
-
+            
             return $db_query;
-        } else {
+        }
+        else
+        {
             return [];
         }
     }
-
+    
     /**
-     * @return Array <p>Return one row from table and store it in array, where $result["column"] = "column_value"</p>
+     * Returns rows computed by $limit_per_page variable
+     * 
+     * @param string $order_by <p>Order tables in rows (ex.: id ASC)</p>
+     * @return object <p>Returns all rows from table test</p>
      */
-    public function get(): Array {
+    public function getAllByPage(int|string $page = 1, int $limit_per_page = 25, string $order_by = "id ASC"): Array
+    {
+
+        $computed_limit = (($page - 1)*$limit_per_page. ", " .$limit_per_page);
+
+        $db_query = $this->db->tableAllData("id", $computed_limit);
+        
+        if(!empty($db_query))
+        {
+            foreach($db_query as $row)
+            {
+                $id = $i++;
+                $content = $row["content"];
+                $tags = $row["tags"];
+                
+                $db_query[$id]["_content"] = $this->easy_text->translateText($content);
+                $db_query[$id]["_tags"] = ArrayUtils::charStringToArray($tags);
+            }
+            
+            return $db_query;
+        }
+        else
+        {
+            return [];
+        }
+
+    }
+    
+    
+    /**
+     * 
+     * @return object <p>Returns one row from table depends on URL key</p>
+     * @see Database()->tableRowByRoute()
+     */
+    public function get(string $route_key="url"): Array
+    {
         $db_query = $this->db->tableRowByRoute();
-        if (!empty($db_query)) {
+        if(!empty($db_query))
+        {
             $content = $db_query["content"];
-
+            
             $db_query["_content"] = $this->easy_text->translateText($content);
-
+            
             return $db_query;
-        } else {
+        }
+        else
+        {
             return [];
         }
     }
-
-    /**
-     * @param array $values <p>Array values for insert ["col"=>"value", ...]</p>
-     * @return \PDO
-     */
-    public function insert(array $values) {
-        return $this->db->tableInsertByRoute($values);
+    
+    public function insert(array $insert_values)
+    {
+        // Insert new row
+        return $this->db->tableInsert($this->table, $insert_values);
     }
-
-    /**
-     * @param array $values <p>Array values for update ["col"=>"value", ...]</p>
-     * @return \PDO
-     */
-    public function update(array $values) {
-        return $this->db->tableUpdateByRoute($values);
+    
+    public function update(array $set, string $route_key = "url")
+    {
+        // update row
+        return $this->db->tableUpdateByRoute($set, $route_key);
     }
-
-    /**
-     * @return \PDO
-     */
-    public function delete() {
-        return $this->db->tableDeleteByRoute();
+    
+    public function delete(string $route_key = "url")
+    {
+        // delete row
+        return $this->db->tableDeleteByRoute($route_key);
     }
 }
 ?>
+
