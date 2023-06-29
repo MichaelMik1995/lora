@@ -1,3 +1,8 @@
 /vendor/
 /nbproject/private/
 node_modules
+
+/App/Modules/*
+!modules/AdminModule/
+!modules/DocumentationModule/
+!modules/UserModule/

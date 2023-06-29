@@ -27,3 +27,6 @@ Součástí LORY jsou pluginy (**ve vývoji**) usnadňující tvorbu převážn�
 
 ##Dostupnost LORY##
 LORA prozatím není OPEN-SOURCE a není ve free verzi. Do Lory je ještě potřeba dopsat dokumentaci a nápovědu.
+
+##TRELLO Lora Framework##
+<a href="https://trello.com/b/KyPUM9C4/lora-sandbox">https://trello.com/b/KyPUM9C4/lora-sandbox</a>
