@@ -10,8 +10,13 @@ App/Modules/*
 
 App/Trash
 
+
 .storybook/
 .vscode/
+
+.directory
+
+project_properties/*
 
 bck/
 
