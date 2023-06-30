@@ -46,7 +46,7 @@ class EmailSender extends Model
         require ("./vendor/phpmailer/phpmailer/src/Exception.php");
     
         $this->compiler = new Compiler();
-        $this->email_from = $this->getConfigData()["mail_from"];
+        $this->email_from = $_ENV["web_main_mail"];
         $this->mail = new \PHPMailer\PHPMailer\PHPMailer(true);
         
         
@@ -77,8 +77,8 @@ class EmailSender extends Model
             "{message}" => $compiled_message,
             "{from}" => $this->email_from,
             "{style}" => "<link rel='stylesheet' href='https:shoesby.eu/public/css/stylize.css'>",
-            "{Web_url}" => $this->config->var("WEB_ADDRESS"),
-            "{company-name}" => "GOTA Custom Boots",
+            "{Web_url}" => $_ENV["base_href"],
+            "{company-name}" => $_ENV["web_name"],
             "{style-custom}" => file_get_contents("./public/css/compiled/modules.css"),
             "{logo-src}" => "https://scontent.fprg3-1.fna.fbcdn.net/v/t1.15752-9/309393491_494906778903220_9053395409882774678_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=ae9488&_nc_ohc=PoCegcX-bhkAX9wOcM0&_nc_ht=scontent.fprg3-1.fna&oh=03_AdRf4k_qsI4Oq_wj7e-H81ZY_cAVC0JHSmSHJzCJNSsmqQ&oe=636EBEE4",
         ];
@@ -87,23 +87,6 @@ class EmailSender extends Model
         $compiled_content = $this->compiler->compile($content, $base_body_compile);
         
         return $compiled_content;
-    }
-    
-    
-    private function getConfigData(): Array
-    {
-        $open_config = parse_ini_file("config/email.ini");
-        
-        return [
-            "mail_host" => $open_config["MAIL_HOST"],  
-            "mail_user" => $open_config["MAIL_USERNAME"],
-            "mail_password" => $open_config["MAIL_PASSWORD"],
-            "mail_port" => $open_config["MAIL_PORT"],
-            "mail_encryption" => $open_config["MAIL_ENCRYPTION"],
-            "mail_mailer" => $open_config["MAIL_MAILER"],
-            "mail_from" => $open_config["MAIL_FROM"],
-            "mail_company_from" => $open_config["MAIL_COMPANY_FROM"],
-        ];
     }
     
     private function sendEmail(string $email_to, string $subject, string $template, array $template_opts = [])
@@ -119,7 +102,7 @@ class EmailSender extends Model
             //mail($email_to, $subject, $message, $headers);
             
             $this->mail->isSMTP();
-            $this->mail->Host = $this->getConfigData()["mail_host"];    //Email to
+            $this->mail->Host = "smtp.mailtrap.io";    //Email to
             $this->mail->CharSet = 'UTF-8';
             $this->mail->SMTPAuth = true;
             $this->mail->Port = 2525;
@@ -129,7 +112,7 @@ class EmailSender extends Model
 
             $this->mail->isHTML(true);
 
-            $this->mail->setFrom($this->email_from, $this->getConfigData()["mail_company_from"]);
+            $this->mail->setFrom($this->email_from, $_ENV["web_main_mail"]);
             $this->mail->addAddress($email_to);
             $this->mail->Subject = $subject;
             $this->mail->Body = $message;

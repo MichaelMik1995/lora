@@ -27,11 +27,6 @@ class UserController extends Controller implements ModuleInterface
      */
     protected $model;
     
-    /**
-     * @var string <p>Page title set</p>
-     */
-    public $title;
-    
     
     /**
      * @var object <p>Instance of splitter</p>

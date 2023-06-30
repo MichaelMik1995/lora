@@ -7,7 +7,7 @@ $classes = [
     /*Class Name => Namespace (\) */
     
     "Auth" =>           "App\Middleware",
-    "Validation" =>     "App\Middleware",
+    
     //LIB Classes
     "Config" =>         "App\Core\Application",
     "Language" =>       "App\Core\Lib",

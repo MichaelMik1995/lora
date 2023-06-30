@@ -1,28 +1,33 @@
-<div class="row">
-    <div id="login-column" class="column-3 column-10-xsm column-1-sm column-2-md"></div>
+<div class="row row-center-lrg row-center-xlrg cols-3 cols-1-xsm">
+    <div id="login-column" class="column"></div>
     
-    <div class="column-4 column-10-xsm column-8-sm column-6-md background-dark-3 pd-2 bd-round-3 content-center mgy-10">
-        <form id="login" method="POST" action="/auth/do-login">
+    <div class="column bgr-dark-3 pd-2 bd-round-3 mgy-20">
+        <div class="form-line header-2 header-3-xsm t-info t-bolder content-center">
+            Přihlásit se
+        </div>
+
+        <form id="login" method="POST" action="/auth/do-login" class="bd-dark-2 pd-1 bd-round-3">
             @csrfgen
+
             <input hidden type="text" name="method" value="update">
-            <div class="form-line header-3">
-                Přihlásit se
-            </div>
-            <div class="form-line input-labeled input-labeled-create mgy-4">  
-                <input required class="pd-2 width-100 " type="text" name="name" id="name">
-                <span>Jméno</span>
+            
+            <div class="form-line mgy-4"> 
+                <label for="name">Jméno: </label>
+                <input required class="input-dark pd-2 width-100 " type="text" name="name" id="name">
             </div>
             
-            <div class="form-line input-labeled input-labeled-create mgy-4">
-                <input required class="pd-2 width-100" type="password" name="password" id="password">
-                <span>Heslo</span>
+            <div class="form-line mgy-4">
+                <label for="password">Heslo: </label>
+                <input required class="input-dark pd-2 width-100" type="password" name="password" id="password">
+            </div>
+
+            <div class="content-center mgy-2">
+                <button onClick="$('#login').submit()" class="button-large button-info bd-round-symetric" type="button"><i class="fa fa-key"></i> Přihlásit se</button>
+                <button onClick="redirect('auth/register')" class="button-large button-bd-warning bd-round-symetric mgx-3" type="button"><i class="fa fa-user-plus"></i> Zaregistrovat se</button>
             </div>
         </form>
         
-        <div class="">
-            <button onClick="$('#login').submit()" class="button-large button-create bd-round-symetric" type="submit">Přihlásit se</button>
-            <button onClick="redirect('auth/register')" class="button-large button-bd-warning bd-round-symetric mgx-3" type="submit">Zaregistrovat se</button>
-        </div>
+        
         
     </div>
     

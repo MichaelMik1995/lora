@@ -6,7 +6,7 @@ use Route\DefaultRegister;
 
 class Route
 {
-    use Redirect;
+    
     use DefaultRegister;
 
     public array $registered_urls;

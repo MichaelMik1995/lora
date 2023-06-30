@@ -25,7 +25,7 @@ use Lora\Easytext\Easytext;
  */
 class {Splitter_name}Controller extends {Module}Controller 
 {
-    use Redirect;
+    
     use FormValidator;
     
     /**

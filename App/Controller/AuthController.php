@@ -6,253 +6,209 @@ namespace App\Controller;
 use App\Model\AuthManager;
 use App\Exception\LoraException;
 use App\Middleware\Session;
+use App\Middleware\Auth;
+use App\Core\Lib\FormValidator;
+use App\Core\Application\Redirect;
 
-class AuthController extends Controller 
+class AuthController extends Controller
 {
-    protected $auth;
-    protected $validation;
+    use FormValidator;
+
     public $injector;
-    protected $auth_manager;
-    protected $session;
-    public $title;
     
     public function __construct($injector) 
     {
-        parent::__construct($this->title, $injector);
+        parent::__construct($injector);
         $this->injector = $injector;
-        $this->auth_manager = new AuthManager($injector);
-        $this->session = new Session();
     }
     
-    public function login(){}
-    
-    public function doLogin()
+    /**
+     * Login form for login user to web application (auth/login)
+     *
+     * @param Auth $auth
+     * @param Redirect $redirect
+     * @return void
+     */
+    public function login(Auth $auth, Redirect $redirect)
     {
-        extract($this->injector);
-        
-        $exception = $loraexception;
-        
-        $validation->validate($_POST["name"], ["required","string"], "Jméno");
-        $validation->validate($_POST["password"], ["required","string"], "Heslo");
-
-        
-        if($validation->isValidated() == true)
+        if($auth->isLogged() == true)
         {
-            try
-            {
-                $this->auth_manager->login($_POST["name"], $_POST["password"]);
-                $exception->successMessage("Přihlášení proběhlo úspěšně!");
-                $this->session->generateSID(1);
-                
-                $this->redirect("");
-
-            } catch (LoraException $ex) 
-            {
-                $exception->errorMessage($ex->getMessage());
-                $this->redirect("auth/login");
-            }
+            $redirect->to("homepage");
         }
-        else
-        {
-            $this->redirect("auth/login");
-        }
+        $this->title = lang("title_login", false);
     }
     
-    public function register(){}
-    
-    public function registerRules(){}
-    
-    public function doRegister()
-    {
-        extract($this->injector);
-        
-        $exception = $loraexception;
-        
-        $validation->validate($validation->input("name"), ["required","string"], "Jméno");
-        $validation->validate($validation->input("email"), ["required", "email", "string"], "Email");
-        $validation->validate($validation->input("gender"), ["required", "string"], "Pohlaví");
-        $validation->passwordConfirm($validation->input("password1"), $validation->input("password2"));
-
-        $validation->validate($validation->input("antispam"), ["required", "antispam", "not0", "int"]);
-        $validation->validate($validation->input("confirmed"), ["required", "confirmed"], "Podmínky webu");
-
-        if($validation->isValidated() == true)
+    /**
+     * Function to validate the login form and login the user
+     *
+     * @param AuthManager $auth_manager
+     * @param Redirect $redirect
+     * @param Session $session
+     * @param LoraException $lora_exception
+     * @return void
+     */
+    public function doLogin(AuthManager $auth_manager, Redirect $redirect, Session $session, LoraException $lora_exception)
+    {        
+        $post = $this->input("name", "required,string")->input("password", "required,string")->returnFields();
+        try
         {
+            $this->validate();
+
+            $auth_manager->login($post["name"], $post["password"]);
+            $lora_exception->successMessage("Přihlášení proběhlo úspěšně!");
+            $session->generateSID(1);
+            
+            $redirect->to("");
+
+        } catch (LoraException $ex) 
+        {
+            $lora_exception->errorMessage($ex->getMessage());
+            $redirect->to("auth/login");
+        }
+
+    }
+    
+    /**
+     * Register form for registration (auth/register)
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->title = lang("title_register", false);
+    }
+    
+    /**
+     * After submiting the registration form, this method will be called and the user will be registered (if form is corectly submitted)
+     *
+     * @param AuthManager $auth_manager
+     * @param Redirect $redirect
+     * @param Session $session
+     * @param LoraException $lora_exception
+     * @return void
+     */
+    public function doRegister(AuthManager $auth_manager, Redirect $redirect, Session $session, LoraException $lora_exception)
+    {
+        
+        $post = $this->input("name", "required,string", lang("register_name_field", false))
+                ->input("email", "required,email", lang("register_email_field", false))
+                ->input("gender", "required,string", lang("register_gender_field", false))
+                ->input("password1", "required,string", lang("register_password1_field", false))
+                ->input("password2", "required,string", lang("register_password2_field", false))
+                ->input("antispam", "required,antispam,not0", lang("register_antispam_field", false))
+                ->input("confirmed", "required,confirmed", lang("register_confirm_field", false))
+                ->returnFields();
+
             try
             {
-                $this->auth_manager->register(
-                    $validation->input("name"), 
-                    $validation->input("email"), 
-                    $validation->input("gender"), 
-                    $validation->input("password1"), 
-                    $validation->input("password2"), 
-                    $validation->input("antispam")
+                $this->validate();
+                $this->passwordConfirm($post["password1"], $post["password2"]);
+
+                $auth_manager->register(
+                    $post["name"], 
+                    $post["email"], 
+                    $post["gender"], 
+                    $post["password1"], 
+                    $post["password2"], 
+                    $post["antispam"]
                 );
 
-                $exception->successMessage("Děkujeme za registraci! Na Váš EMAIL jsme poslali aktivační údaje!");
-                $this->session->generateSID(1);
-                $this->redirect("auth/login");
+                $lora_exception->successMessage(lang("succes_regsitration_message", false));
+                $session->generateSID(1);
+                $redirect->to("auth/register-success");
             } catch (LoraException $ex) 
             {
-                $exception->errorMessage($ex->getMessage());
+                $lora_exception->errorMessage($ex->getMessage());
             } 
-        }
+    }
+
+    /**
+     * If registration is successful this page will be shown
+     *
+     * @return void
+     */
+    public function registerSuccess()
+    {
+        $this->title = lang("title_register_success", false);
+    }
+
+    /**
+     * Registration rules (auth/register-rules)
+     *
+     * @return void
+     */
+    public function rules()
+    {
+        $this->data = [
+            "web_name" => env("web_name", false),
+        ];
+        
+        $this->title = lang("register_title_rules", false);
     }
     
-    public function logout()
+    /**
+     * Logout user (auth/logout)
+     *
+     * @param AuthManager $auth_manager
+     * @param Redirect $redirect
+     * @param LoraException $lora_exception
+     * @return void
+     */
+    public function logout(AuthManager $auth_manager, Redirect $redirect, LoraException $lora_exception)
     {
-        try {
-                $this->auth_manager->logout();
-                $this->injector["LoraException"]->successMessage("Odhášení proběhlo úspěšně! Nashledanou");
-                $this->previous();
-                } catch (LoraException $ex) {
-
-                }
-    }
-    
-    /*public function index($url) 
-    {
-        $this->auth = $this->class["Auth"];                       // create instance for model
-        $auth = $this->class["Auth"];                                                 // create instance for authenticate user
-        $easy_text = $this->class["Easytext"];                                        // Read and translate block (like wysiwyg block system)
-        $lora = $this->class["LoraException"];                              // For catching exceptions
-        $validation = $this->class["Validation"];                                     // Create instance for validate fields from $_POST
-        $auth_manager = new AuthManager($this->class);
-        $session = new Session();
-        
-        
-        $action = @$url[1];                                                 // $action [create|update|show ..] (/controller/ACTION/route_param)
-        $route_param = @$url[2];                                            // for showing, editing, deleting row (/controller/action/ROUTE_PARAM)
-
-        $view_folder = "auth/";
-            
-        switch($action)
+        try 
         {
-            case "register": //view register
-                $this->view = "auth/register";
-                break;
-            
-            case "do-register": //submiting register button
-                
-                $validation->validate($validation->input["name"], ["required","string"], "Jméno");
-                $validation->validate($validation->input["email"], ["required", "email", "string"], "Email");
-                $validation->validate($validation->input["gender"], ["required", "string"], "Pohlaví");
-                $validation->passwordConfirm($validation->input["password1"], $validation->input["password2"]);
-                
-                $validation->validate($validation->input["antispam"], ["required", "antispam", "not0", "int"]);
-                $validation->validate($validation->input["confirmed"], ["required", "confirmed"], "Podmínky webu");
-               
-                if($validation->isValidated() == true)
-                {
-                    try
-                    {
-                        $auth_manager->register(
-                            $validation->input["name"], 
-                            $validation->input["email"], 
-                            $validation->input["gender"], 
-                            $validation->input["password1"], 
-                            $validation->input["password2"], 
-                            $validation->input["antispam"]
-                        );
-                        
-                        $lora->successMessage("Děkujeme za registraci! Na Váš EMAIL jsme poslali aktivační údaje!");
-                        $session->generateSID(1);
-                        $this->redirect("auth/login");
-                    } catch (LoraException $ex) 
-                    {
-                        $lora->errorMessage($ex->getMessage());
-                    } 
-                }
-                
-                break;
-                
-            case "verify":
-                $verify_code = urldecode($url[2]);
-                $email = urldecode($url[3]);
-                
-                try{
-                    $auth_manager->verify($verify_code, $email);
-                    $this->redirect("auth/verify-success");
-                    
-                } catch (LoraException $ex) 
-                {
-                    $this->redirect("auth/verify-dead/$verify_code/$email");
-                }
-                break;
-                
-            case "verify-success":   
-                $this->view = "auth/verify_success";
-                break;
-            
-            case "verify-dead":   
-               $this->data = [
-                  "email" => urldecode($url[3]),
-                    "code" => urldecode($url[2])
-                ];
-                
-                $this->view = "auth/verify_dead";
-                break;
-                
-            case "verify-resend":
-                $verify_code = urldecode($url[2]);
-                $email = urldecode($url[3]);
-                break;
-            
-            case "login":    
-                $this->header["title"] = "Přihlášení uživatele";
-                $this->view = "auth/login";
-                break;
-            
-            case "do-login":               
-                
-                $validation->redirect = "/user/register";
-                $validation->validate($validation->input["name"], ["required","string"], "Jméno");
-                $validation->validate($validation->input["password"], ["required","string"], "Heslo");
-                
-                if($validation->isValidated() == true)
-                {
-                    try
-                    {
-                        $auth_manager->login($validation->input["name"], $validation->input["password"]);
-                        $lora->successMessage("Přihlášení proběhlo úspěšně!");
-                        $session->generateSID(1);
-                        $this->redirect("");
-                        
-                    } catch (LoraException $ex) 
-                    {
-                        $lora->errorMessage($ex->getMessage());
-                        $this->redirect("auth/login");
-                    }
-                }
-                else
-                {
-                    $this->redirect("auth/login");
-                }
-                
-                break;
-                
-            case "logout":
-
-                try {
-                $auth_manager->logout();
-                $lora->successMessage("Odhášení proběhlo úspěšně! Nashledanou");
-                $this->redirect("");
-                } catch (Exception $ex) {
-
-                }
-                
-                break;
-            
-            case "change-status":
-                $auth_manager->changeStatus($route_param);
-                $this->redirect("community");
-                break;
-            
-            case "rules":
-                
-                $this->view = "auth/rules";
-                break;
+            $auth_manager->logout();
+            $lora_exception->successMessage("Odhášení proběhlo úspěšně! Nashledanou");
+            $redirect->previous();
+        } catch (LoraException $ex) {
+            $lora_exception->errorMessage($ex->getMessage());
         }
-    }*/
+    }
+
+    /**
+     * This method calls after user clicked to button from email address
+     *
+     * @param AuthManager $auth_manager
+     * @param Redirect $redirect
+     * @param LoraException $lora_exception
+     * @return void
+     */
+    public function verifyUser(AuthManager $auth_manager, Redirect $redirect, LoraException $lora_exception)
+    {
+        $user_verify_code = urldecode($this->u["code"]);
+        $user_name = urldecode($this->u["name"]);
+
+        try {
+            $auth_manager->verify($user_verify_code, $user_name);
+            $redirect->to("auth/verify-success");
+        }
+        catch (LoraException $ex)
+        {
+            $lora_exception->errorMessage($ex->getMessage());
+            $redirect->to("auth/verify-error");
+        }
+    }
+
+    /**
+     * If verification code is success, this method is called
+     *
+     * @return void
+     */
+    public function verifySuccess()
+    {
+        $this->title = lang("title_verify_success", false);
+        
+    }
+
+    /**
+     * If verification code is wrong, this method is called
+     *
+     * @return void
+     */
+    public function verifyError()
+    {
+        $this->title = lang("title_verify_error", false);
+    }
 }
 ?>

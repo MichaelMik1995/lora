@@ -30,7 +30,7 @@ use Lora\Easytext\Easytext;
 class {Model_name}Controller extends Controller implements ModuleInterface
 {
     use FormValidator;
-    use Redirect;
+    
 
     /**
      * @var array <p>Injected classes to controller</p>

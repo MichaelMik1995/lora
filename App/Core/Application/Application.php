@@ -15,7 +15,7 @@ use App\Core\Application\Request;
  */
 class Application
 {   
-    use Redirect;
+    
 
     protected $injector;
     protected array $url_request;

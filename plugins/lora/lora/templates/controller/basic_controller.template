@@ -8,7 +8,7 @@ use App\Core\Application\Redirect;
 
 class {Model_name}Controller extends Controller 
 {
-    use Redirect;
+    
     
     protected $injector;
 

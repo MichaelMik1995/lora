@@ -23,8 +23,6 @@ class AdminDashboardController extends AdminController
      * @instance of main model: Shop() of this controller.
      */
     protected $model;
-    
-    public $title = "";
 
     
     public function __construct($injector, $model)
@@ -34,11 +32,13 @@ class AdminDashboardController extends AdminController
         $this->module = "admin";
         $this->injector = $injector;
         $this->model = $model;
+        
     }
     
     
     public function dashboard() 
     {
+        $this->title = "Přehled";
         return $this->view = "dashboard";
     }
 }

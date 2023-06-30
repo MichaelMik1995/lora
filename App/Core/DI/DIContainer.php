@@ -24,19 +24,6 @@ class DIContainer
             $this->inject();
         }
     }
-
-    public function register(string $name, object $service)
-    {
-        $this->services[$name] = $service;
-    }
-
-    public function resolve($name) 
-    {
-        if (isset($this->services[$name])) {
-            return $this->services[$name];
-        }
-        throw new \Exception("Service not found: " . $name);
-    }
     
     /**
      * 
@@ -51,6 +38,7 @@ class DIContainer
             //if is static and has methos instance()
             if(method_exists($requested_object, "instance"))
             {
+                
                 return "Instance exists";
             }
             else
@@ -65,6 +53,10 @@ class DIContainer
         }
         else
         {
+            //Check if class exists in ClassRegister 
+
+            //$requested_object = ex.: App\Middleware\Auth
+            
             if(method_exists($requested_object, "instance"))
             {
                 return $requested_object::instance();
@@ -86,7 +78,6 @@ class DIContainer
     {
         foreach($this->class_array as $key => $value)
         {
-            
             $class = $value.'\\'.$key;
             $load_class = new $class();
             
@@ -108,6 +99,7 @@ class DIContainer
         $this->class_array = $classes;
         return true;
     }
+
     
     
     //put your code here

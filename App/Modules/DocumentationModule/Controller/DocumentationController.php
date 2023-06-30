@@ -18,7 +18,7 @@ use App\Exception\LoraException;
 class DocumentationController extends Controller
 {
     use FormValidator;
-    use Redirect;
+    
     /**
      * @var array <p>Injected classes to controller</p>
      */

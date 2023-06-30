@@ -1,7 +1,7 @@
 <!<!doctype html>
 <html lang="cz-cs">
     <head>
-    <title>{{$page_title}} | {{$WEB_TITLE}}</title>
+    <title>{{ $page_title }} | {{ $WEB_TITLE }}</title>
         <base href="{{$WEB_ADDRESS}}/">
         <link rel="icon" type="image/png" href="{{ asset('img/favicon/favicon.png') }}">
         

@@ -14,9 +14,7 @@ use App\Core\Application\DotEnv;
  * @author michaelmik
  */
 class Auth
-{
-    use Redirect;
-    
+{    
     public $session_instance = "Lora22";
     protected $database;
     protected $exception;

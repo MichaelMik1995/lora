@@ -6,7 +6,7 @@ use App\Core\Application\Redirect;
 
 class RouteController 
 {
-    use Redirect;
+    
 
     public function getRoute(string $route, string $method, array $data = [])
     {

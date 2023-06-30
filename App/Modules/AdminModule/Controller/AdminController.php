@@ -32,7 +32,7 @@ use App\Modules\AdminModule\Model\AdminHrefs;
  */
 class AdminController extends Controller implements ModuleInterface
 {
-    use Redirect;
+    
     /**
      * @var array <p>Injected classes to controller</p>
      */
@@ -47,12 +47,6 @@ class AdminController extends Controller implements ModuleInterface
      * @instance of main model: Admin() of this controller.
      */
     protected $model;
-    
-    /**
-     * @var string <p>Page title set</p>
-     */
-    public $title = "Admin";
-
     
     public function __construct($injector)
     {
@@ -102,8 +96,8 @@ class AdminController extends Controller implements ModuleInterface
                 "picture-update-alt" => "updateAltText",
             ];
             
-            $this->splitter(AdminDashboardController::class, $dashboard_pages, "Admin Přehled");
-            $this->splitter(AdminUsersController::class, $users_pages, "Admin - Uživatelé");
+            $this->splitter(AdminDashboardController::class, $dashboard_pages, "Přehled");
+            $this->splitter(AdminUsersController::class, $users_pages, "Uživatelé");
             $this->splitter(AdminCLIController::class, $cli_pages, "PHP CLI");
             $this->splitter(AdminSettingController::class, $settings_pages);
             $this->splitter(AdminMediaController::class, $media_pages);

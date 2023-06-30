@@ -149,8 +149,8 @@ class AuthManager extends Model
             $now = time();
             $col = "`uid`, `name`, `email`, `email_verified_at`, `password`, `registration_date`, `last_login`";
             $params = "'$uid', '$name', '$email', '0', '$password_hash', '$now', '$now'";
-            $verify_code = $this->s_utils->genarateHashedString(10);
-            
+            $verify_code_raw = $this->s_utils->genarateHashedString(10);
+            $verify_code = $this->s_utils->toSlug($verify_code_raw);
             
             
             $db_insert = $this->database->insert($this->table, [
@@ -171,9 +171,10 @@ class AuthManager extends Model
             //send email for verify code
             $this->email->send($email, "Registrace nového člena", "message_register", [
                 "{new_user}" => $name,
-                "{web_url}" => $this->config->var("WEB_ADDRESS"),
+                "{web_name}" => $_ENV["web_name"],
+                "{web_url}" => $_ENV["base_href"],
                 "{verify_code}" => $verify_code,
-                "{email}" => $email, 
+                "{email}" => $name, 
             ]);
             
             return true;
@@ -184,12 +185,12 @@ class AuthManager extends Model
         }
     }
     
-    public function verify(string $code, string $email)
+    public function verify(string $code, string $name)
     {
-        $db_query = $this->database->selectRow($this->table, "verify_code=? AND email=? AND email_verified_at=? LIMIT 1", [$code, $email, 0]);
+        $db_query = $this->database->selectRow($this->table, "verify_code=? AND name=? AND email_verified_at=? LIMIT 1", [$code, $name, 0]);
         if(!empty($db_query))
         {
-            $this->database->update($this->table, ["email_verified_at"=>time()], "email=?", [$email]);
+            $this->database->update($this->table, ["email_verified_at"=>time()], "name=?", [$name]);
             return true;
         }
         else

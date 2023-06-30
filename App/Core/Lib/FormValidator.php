@@ -153,6 +153,26 @@ trait FormValidator
         }
     }
 
+    /**
+     * 
+     * @param string $password1
+     * @param string $password2
+     */
+    public function passwordConfirm(string $password1, string $password2)
+    {
+        $password1_hash = password_hash($password1, PASSWORD_DEFAULT);
+        $password2_hash = password_hash($password2, PASSWORD_DEFAULT);
+
+        if($password1 != $password2)
+        {
+            throw new LoraException("Hesla se neshodují");
+        }
+        else
+        {
+            return true;
+        }
+    }
+
     private function checkOptions(mixed $field, array|string $options, string $field_name = "")
     {
         

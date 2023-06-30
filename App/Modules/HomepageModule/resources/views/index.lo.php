@@ -1,3 +1,9 @@
+
+
+<div class="pd-1 header-2">
+    Dostupné moduly:
+</div>
+
 <div class="row cols-1-xsm cols-2-sm cols-3-md cols-5-lrg cols-8-xlrg pd-2">
     @foreach glob("./App/Modules/*") as $file @
     @php $module = str_replace("./App/Modules/","",$file) @

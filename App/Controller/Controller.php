@@ -17,12 +17,10 @@ use App\Exception\LoraException;
  */
 class Controller
 {
-    use Redirect;
-
     protected $data = [];    
     protected $view = "";
     protected $module = "";
-    protected $title = "";
+    protected string $title = "";
     protected $message = "";
     protected $message_type="";
     protected $injector;
@@ -38,7 +36,7 @@ class Controller
 
     public $_DI;
 
-    public function __construct($title="", $injector=null, $u = null, $model=null) 
+    public function __construct($injector=null, $u = null, $model=null) 
     {        
         if($u != null)
         {
@@ -54,15 +52,6 @@ class Controller
         if($injector != null)
         {
             $this->injector = $injector;
-        }
-        
-        if($title == "")
-        {
-            $this->title = "Generic";
-        }
-        else
-        {
-            $this->title = $title;
         }
             
         $this->_DI = new DIContainer(false);
@@ -110,7 +99,7 @@ class Controller
      * @
      * 
      */
-    protected function splitter(string $class_name, array $pages_array, string $title="Unknown")
+    protected function splitter(string $class_name, array $pages_array, string $title="")
     {
         //fdsf
         
@@ -121,8 +110,8 @@ class Controller
             $method = $pages_array[$page];
             $this->splitter_controll = new $class_name($this->injector, $this->model);
             $this->splitter_controll->u = $this->u;
-            $this->title = $title;
 
+            
             if(is_array($method) == true)
             {
                 $method_call = $method[0];
@@ -157,6 +146,16 @@ class Controller
                     throw new LoraException("Method: $method in class $class_name does not exist!");
                     
                 }
+            }
+
+            /** Generate Splitter Title */
+            if(!$title == "")
+            {
+                $this->title = $title;
+            }
+            else
+            {
+                $this->title = $this->splitter_controll->splitter_title;
             }
             
         }

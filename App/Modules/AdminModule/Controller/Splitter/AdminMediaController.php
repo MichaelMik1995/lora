@@ -17,7 +17,7 @@ use App\Core\Lib\FormValidator;
 
 class AdminMediaController extends AdminController 
 {
-    use Redirect;
+    
     use FormValidator;
     /**
      * @var array <p>Injected classes to controller</p>
@@ -34,10 +34,12 @@ class AdminMediaController extends AdminController
      */
     protected $model;
 
-    protected AdminMedia $media;
+    /**
+     * @var string $splitter_title <p>Override default web title with this splitter title</p>
+     */
+    protected string $splitter_title = "";
 
-    
-    public $title = "";
+    protected AdminMedia $media;
 
     
     public function __construct($injector, $model)
@@ -58,6 +60,8 @@ class AdminMediaController extends AdminController
             "user_uid" => $auth->user_uid,
             "text_parser" => $parser,
         ];
+
+        $this->splitter_title = lang("title_media_index", false);
         return $this->view = "media/index";
     }
 
@@ -76,7 +80,7 @@ class AdminMediaController extends AdminController
         return $this->view = "media/show";
     }
 
-    public function insert(Uploader $uploader, Auth $auth)
+    public function insert(Uploader $uploader, Auth $auth, Redirect $redirect)
     {
         try{
             if (count($_FILES["images"]["size"]) > 0) 
@@ -84,10 +88,10 @@ class AdminMediaController extends AdminController
                 $uploader->uploadImages("images", "./App/Modules/AdminModule/resources/img/user/".$auth->user_uid);
             }
 
-            @Redirect::redirect("admin/app/media");
+            $redirect->to("admin/app/media");
 
         }catch(LoraException $ex){
-            @Redirect::previous();
+            $redirect->previous();
         }
         
     }
@@ -137,6 +141,12 @@ class AdminMediaController extends AdminController
             @Redirect::previous();
         }
         
+    }
+
+    public function getTitle()
+    {
+        var_dump($this->splitter_title);
+        return $this->splitter_title;
     }
 }
 

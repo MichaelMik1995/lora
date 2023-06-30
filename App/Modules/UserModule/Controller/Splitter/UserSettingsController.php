@@ -11,7 +11,7 @@ use App\Core\Lib\FormValidator;
 
 class UserSettingsController extends UserController 
 {
-    use Redirect;
+    
     use FormValidator;
     
     /**

@@ -46,7 +46,7 @@ class IndexController extends Controller
         $this->data = [
             "css" => $css,
         ];
-
+        
         $this->view = "index";
     }
     

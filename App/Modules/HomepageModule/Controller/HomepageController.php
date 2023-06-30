@@ -30,7 +30,7 @@ use Lora\Easytext\Easytext;
 class HomepageController extends Controller implements ModuleInterface
 {
     use FormValidator;
-    use Redirect;
+    
 
     /**
      * @var array <p>Injected classes to controller</p>
@@ -46,11 +46,7 @@ class HomepageController extends Controller implements ModuleInterface
      * @instance of main model: Homepage() of this controller.
      */
     protected $model;
-    
-    /**
-     * @var string <p>Page title set</p>
-     */
-    public $title;
+
 
     public function __construct($injector)
     {
@@ -68,7 +64,7 @@ class HomepageController extends Controller implements ModuleInterface
      */
     public function initiliaze() 
     {
-      
+        $this->title = "Homepage";
     }
 
 /* ---------------------------------------------------------------- CRUD METHODS -------------------------------- */
@@ -82,7 +78,7 @@ class HomepageController extends Controller implements ModuleInterface
         
         return $this->data = [
             "all" => $get_all,
-        ]; */
+        ]; */  
     }
 
     /**
