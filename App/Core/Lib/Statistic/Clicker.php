@@ -16,12 +16,12 @@ class Clicker
     private $auth;
     //private $exception;
     
-    public function __construct() 
+    public function __construct(Auth $auth) 
     {
         $this->file = "./log/statistic_click_guest.log";
         $this->file_member = "./log/statistic_click_member.log";
         //$this->exception = new LoraException();
-        $this->auth = new Auth();
+        $this->auth = $auth;
     }
     
     

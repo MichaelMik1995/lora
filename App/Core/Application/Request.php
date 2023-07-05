@@ -34,7 +34,7 @@ class Request extends Controller
     public function __construct(DIContainer $container) 
     {
         $this->url_utils = UrlUtils::instance();
-        $this->template = new Template();
+        //$this->template = new Template();
 
         $this->container = $container;     
     }
@@ -165,7 +165,7 @@ class Request extends Controller
         }
         else
         {
-            $redirect->to("error/bad-function");
+            Redirect::instance()->to("error/bad-function");
             throw new LoraException("Method: $request_function in class $class_name does not exist!");
             
         }

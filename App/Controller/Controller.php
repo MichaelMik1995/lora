@@ -6,16 +6,15 @@ use App\Core\Application\Redirect;
 use App\Core\View\Template;
 use App\Core\DI\DIContainer;
 use App\Exception\LoraException;
+use App\Middleware\Auth;
+use App\Core\Lib\Utils\ArrayUtils;
+use App\Middleware\Session;
+use App\Middleware\FormToken;
 
 /**
- * 
- * @method array process(array $params) Controller process method
- * @method string loadView(string) Method for load View
- * 
- * @method string getSessionData() Returned session data
- * 
+ * Main Controller
  */
-class Controller
+abstract class Controller
 {
     protected $data = [];    
     protected $view = "";
@@ -25,7 +24,12 @@ class Controller
     protected $message_type="";
     protected $container;
 
-    public $splitter_controll;
+    /**
+     * Splitter object for templates
+     *
+     * @var object
+     */
+    public object $splitter_controll;
 
     protected $u;
     protected $model;
@@ -81,9 +85,15 @@ class Controller
             
             $this->data[] = ["WEB_TITLE"=> $this->title];
             
+            $this->container->get(Session::class);
+            $this->container->get(FormToken::class);
+
             extract($this->data, EXTR_SKIP);
             //echo $file_path . $this->view . ".lo.php";
-            $template = new Template();
+            $template = new Template(
+                $this->container->get(Auth::class), 
+                $this->container->get(ArrayUtils::class),
+            );
             $file = $template->view($file_path . $this->view . ".lo.php", $this->module);       
             
             require_once($file);

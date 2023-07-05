@@ -1,0 +1,4 @@
+original_name=KatarinaPreFINAL.png
+generated_name=f7aa02c
+extension=png
+alt=Write alternative text for this picture

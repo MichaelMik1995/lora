@@ -33,16 +33,6 @@ class UrlUtils
     {
         return self::$_instance_id;
     }
-
-    public static function getPreviousUrl(): String
-    {
-        
-    }
-    
-    public static function redirectToPreviousUrl()
-    {
-        
-    }
     
     /**
      * Summary of is_page_refreshed

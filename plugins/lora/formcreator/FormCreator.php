@@ -281,7 +281,7 @@ class FormCreator
     
     /**
      * defines usefull global atrributes for elements
-     * @return type
+     * @return array
      */
     private function defaultOptions()
     {

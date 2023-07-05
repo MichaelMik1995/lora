@@ -18,8 +18,6 @@ final class web
         $di = DIContainer::instance();
         //$di->getClassRegisterData();
         $this->container = $di;
-
-        new DotEnv(realpath(".env"));
     }
     
     public function init()

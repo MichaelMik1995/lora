@@ -2,18 +2,18 @@
 /* BLOCKS */
 .easytext-block-style-blue
 {
-    background: linear-gradient(to top, #06092A 30%, #18275a);
-    padding: 8px;
+    background: linear-gradient(to top, #299CE1 30%, #4294C5);
+    padding: .4em;
     border-radius: 7px;
     font-style: italic;
-    color: #bfbfbf;
+    color: #1a1a1a;
 }
 
 .easytext-block-style-orange
 {
     background: orange;
     color: #222521;
-    padding: 1em;
+    padding: .3em;
 }
 
 .easytext-block-style-green

@@ -1,0 +1,4 @@
+original_name=775d8fd.png
+generated_name=eb6262c
+extension=png
+alt=Plugin EasyText

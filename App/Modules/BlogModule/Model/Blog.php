@@ -5,7 +5,7 @@ namespace App\Modules\BlogModule\Model;
 
 use App\Core\DI\DIContainer;
 use Lora\Easytext\Easytext;
-use App\Core\Database\DB;
+use App\Core\Database\Database;
 
 class Blog
 {
@@ -20,7 +20,7 @@ class Blog
     public function __construct(DIContainer $container)  //Cannot add more arguments! DIContainer $container must be only one argument
     {
         $this->container = $container;
-        $this->database = $container->get(DB::class);
+        $this->database = $container->get(Database::class);
         $this->easy_text = $container->get(Easytext::class);
 
         //$this->database->table = $this->table; //Uncheck if table name is not like controller name

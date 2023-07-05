@@ -21,11 +21,11 @@ class Admin extends Model
         $this->container = $container;
         $this->init($container);
         if ($route_param != null) {
-            $this->db->route_param = $route_param;
+            $this->database->route_param = $route_param;
         }
         
-        //$this->db->route_key = "url";       //Uncheck if route key is different from "url"
-        //$this->db->table = $this->table;    //Uncheck if table name is not like controller name
+        //$this->database->route_key = "url";       //Uncheck if route key is different from "url"
+        //$this->database->table = $this->table;    //Uncheck if table name is not like controller name
     }
     
     /**
@@ -34,7 +34,7 @@ class Admin extends Model
      * @return array <p>Returns all records from table</p>
      */
     public function getAll(string $order_by = "id ASC"): Array {
-        $db_query = $this->db->tableAllData($order_by);
+        $db_query = $this->database->tableAllData($order_by);
         if (!empty($db_query)) {
             $returnArray = [];
             $i = 0;
@@ -53,8 +53,8 @@ class Admin extends Model
      * @return array <p>Return one row from table and store it in array, where $result["column"] = "column_value"</p>
      */
     public function get(string|int $uid): Array {
-        $this->db->route_param = $uid;
-        $db_query = $this->db->tableRowByRoute();
+        $this->database->route_param = $uid;
+        $db_query = $this->database->tableRowByRoute();
         if (!empty($db_query)) {
             $content = $db_query["content"];
 
@@ -71,7 +71,7 @@ class Admin extends Model
      * @return \PDO
      */
     public function insert(array $values) {
-        return $this->db->tableInsertByRoute($values);
+        return $this->database->tableInsertByRoute($values);
     }
 
     /**
@@ -79,14 +79,14 @@ class Admin extends Model
      * @return \PDO
      */
     public function update(array $values) {
-        return $this->db->tableUpdateByRoute($values);
+        return $this->database->tableUpdateByRoute($values);
     }
 
     /**
      * @return \PDO
      */
     public function delete() {
-        return $this->db->tableDeleteByRoute();
+        return $this->database->tableDeleteByRoute();
     }
 }
 ?>

@@ -20,6 +20,6 @@ class AdminHrefs extends Admin
 
     public function getHrefs()
     {
-        return $this->db->select("admin-hrefs", "id!=?", [0]);
+        return $this->database->select("admin-hrefs", "id!=?", [0]);
     }
 }

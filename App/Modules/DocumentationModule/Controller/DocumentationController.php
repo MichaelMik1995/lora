@@ -42,6 +42,7 @@ class DocumentationController extends Controller
     public function __construct(DIContainer $container)
     {
         parent::__construct($container);
+        $this->title = "Documentation";
     }
     
     /**
@@ -68,12 +69,6 @@ class DocumentationController extends Controller
         $url = $this->u["url"];
         $get_one = $documentation->get($url);
 
-
-        /* $this->data = [
-            "get" => $get_one,
-        ];
-        
-        return $this->view = $this->template_folder."show";*/
         echo json_encode([
             "content" => $get_one["_content"], 
             "title" => $get_one["title"],

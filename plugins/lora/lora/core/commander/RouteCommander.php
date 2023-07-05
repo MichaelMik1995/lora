@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Lora\Lora\Core\Commander;
 
-use App\Core\Register\Register;
 use Lora\Lora\Core\LoraOutput;
 
 trait RouteCommander
@@ -19,13 +18,13 @@ trait RouteCommander
     
     public static function SendCommand(string $command, string|null $argument = "", array $options = []): void
     {
-        $register = new Register();
+
 
         switch($command)
         {
             
             case "route:list":
-                $get_urls = $register->__return();
+                /*$get_urls = $register->__return();
                     foreach($get_urls as $registered)
                     {
                         if(@$registered["request"] == null)
@@ -50,9 +49,9 @@ trait RouteCommander
                         
                         LoraOutput::output("URL: ". $registered["url"]."\t\t\t\t ROUTE: ".$route."\t IS_MODULE: ".@$registered["module"], "success");
                         LoraOutput::output("----------------------------------------------------------------------------------------------------------------");
-                    }
+                    }*/
                     
-                    LoraOutput::output(count($get_urls)." routes registered!");
+                    //LoraOutput::output(count($get_urls)." routes registered!");
                 break;
         }
     }

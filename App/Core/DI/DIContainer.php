@@ -22,7 +22,11 @@ class DIContainer implements InstanceInterface
 
     private float $container_size;
 
+    //Object Array variable
     private array $services = [];
+
+    //Mixed values array variables
+    private array $data = [];
 
     private function __construct()
     {
@@ -68,6 +72,11 @@ class DIContainer implements InstanceInterface
         $this->services[$class_name] = $object;
     
         return $object;
+    }
+
+    public function getData(string $data_key)
+    {
+        
     }
 
     /**

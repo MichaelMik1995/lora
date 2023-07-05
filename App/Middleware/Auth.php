@@ -4,7 +4,7 @@
 namespace App\Middleware;
 
 use App\Core\Application\Redirect;
-use App\Core\Database\DB;
+use App\Core\Database\Database;
 use App\Exception\LoraException;
 use App\Core\Application\DotEnv;
 
@@ -54,9 +54,9 @@ class Auth
 
     public function __construct() 
     {
-        $this->env = new DotEnv(".env");
+        $this->env = DotEnv::instance();
 
-        $this->database = DB::instance(db_driver: $_ENV["db_driver"], db_name: $_ENV["db_name"], is_factory: true);
+        $this->database = Database::instance(db_driver: $_ENV["db_driver"], db_name: $_ENV["db_name"], is_factory: true);
 
         $this->exception = new LoraException();
 
@@ -192,7 +192,7 @@ class Auth
     /**
      * 
      * @param string $user_name
-     * @return Int
+     * @return int
      */
     public function getUserUID(string $user_name): Int
     {
@@ -342,7 +342,6 @@ class Auth
         {
             return false;
         } 
-        return true;
     }
     
     private function isMemberLogged()

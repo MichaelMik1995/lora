@@ -77,7 +77,7 @@ class AdminSecurityController extends AdminController
      * Can use for viewing one table (row) in template
      * @return string
      */
-    public function show($model)
+    public function show(AdminSecurity $model)
     {
         $url = $this->u["param"];
         $get_one = $model->get($url);
@@ -93,7 +93,7 @@ class AdminSecurityController extends AdminController
      * Can use for viewing form to create a new row
      * @return string
      */
-    public function create($model, Auth $auth, EasyText $easy_text)
+    public function create(AdminSecurity $model, Auth $auth, EasyText $easy_text)
     {
         //$tauth->access(["admin"]);
 
@@ -107,7 +107,7 @@ class AdminSecurityController extends AdminController
      * Can use for validation data from create form and save
      * @return void
      */
-    public function insert($model, Auth $auth, StringUtils $string_utils, LoraException $lora_exception, Redirect $redirect)
+    public function insert(AdminSecurity $model, Auth $auth, StringUtils $string_utils, LoraException $lora_exception, Redirect $redirect)
     {
         //$auth->access(["admin"]);
 
@@ -124,7 +124,7 @@ class AdminSecurityController extends AdminController
             //model insert method
 
             $lora_exception->successMessage("");
-            redirect->to("");
+            $redirect->to("");
         }catch(LoraException $ex)
         {
             $lora_exception->errorMessage($ex->getMessage());

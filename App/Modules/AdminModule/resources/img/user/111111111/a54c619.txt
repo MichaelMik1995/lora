@@ -1,0 +1,4 @@
+original_name=MainRedHair.png
+generated_name=a54c619
+extension=png
+alt=Write alternative text for this picture

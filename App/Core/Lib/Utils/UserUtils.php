@@ -2,29 +2,20 @@
 declare(strict_types=1);
 
 namespace App\Core\Lib\Utils;
-use App\Core\Database\DB;
+
+use App\Core\Database\Database;
+use App\Core\DI\DIContainer;
 
 class UserUtils
 {
 
     private static $_instance = null;
     private static $_instance_id;
-    private static DB $database;
+    private static Database $database;
 
-    private function __construct(){}
-
-    public static function instance(DB $database)
+    public function __construct(DIContainer $container)
     {
-        self::$database = $database;
-
-        if(self::$_instance == null)
-        {
-            self::$_instance = new self();
-            self::$_instance_id = rand(000000,999999);
-        }
-        
-        return self::$_instance;
-        
+        self::$database = $container->get(Database::class);
     }
 
     public static function getInstanceId(): Int

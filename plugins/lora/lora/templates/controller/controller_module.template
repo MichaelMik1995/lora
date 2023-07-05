@@ -42,7 +42,8 @@ class {Model_name}Controller extends Controller implements ModuleInterface
      */
     protected $model;
 
-    public function __construct(DIContainer $container)
+    //Only DIContainer can be pass as argument in __construct()!
+    public function __construct(DIContainer $container)     
     {
         parent::__construct($container, u: $this->u, model: $this->model);
     }

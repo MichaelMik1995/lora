@@ -114,7 +114,7 @@ class Easytext implements InstanceInterface
      * Translate emoji from database
      * 
      * @param string $string -> content to translate
-     * @return string -> return translated string from DB
+     * @return string -> return translated string from Database
      */
     protected function stringToEmoji($string)
     {

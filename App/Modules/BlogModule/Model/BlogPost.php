@@ -14,6 +14,7 @@ namespace App\Modules\BlogModule\Model;
 *   Using main module Model
 */
 use App\Modules\BlogModule\Model\Blog;
+use App\Core\Database\Database;
 
 //Interface
 use App\Core\Interface\ModelDBInterface;
@@ -23,12 +24,19 @@ use App\Core\DI\DIContainer;
 
 class BlogPost extends Blog implements ModelDBInterface
 {
-    protected $model_table = "BlogPost";
+    protected $model_table = "blog-posts";
     protected array|null $model_data;
 
-    public function __construct(DIContainer $container) //Can expand to multiple arguments, first must be DIContainer
+    protected $database;
+
+
+
+    public function __construct(DIContainer $container, Database $database) //Can expand to multiple arguments, first must be DIContainer
     {
         parent::__construct($container);    //Only this one argument is needed
+        $this->database = $database;
+
+        $this->database->table = $this->model_table;      //Uncheck this, if table is different from controller name
     }
 
     /**

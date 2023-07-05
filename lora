@@ -1,5 +1,7 @@
 #!/usr/bin/php -q
 <?php
+    error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+
     require ("App/Core/Autoload/Autoload.php");
     
     $autoload = new Autoload();

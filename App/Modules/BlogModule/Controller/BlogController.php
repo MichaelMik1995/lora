@@ -16,6 +16,7 @@ use App\Core\Interface\ModuleInterface;
 
 //Module Model
 use App\Modules\BlogModule\Model\Blog;
+use App\Modules\BlogModule\Model\BlogPost;
 
 //Utils
 use App\Core\Lib\Utils\StringUtils;
@@ -51,9 +52,9 @@ class BlogController extends Controller implements ModuleInterface
      *  Replaces old index() function for initiliazing module with splitters (IF MODULE IS NOT USE SPLITTERS, USE BASIC CRUD METHODS BELLOW!)
      *
      */
-    public function initiliaze() 
+    public function initiliaze(BlogPost $post) 
     {
-      
+        
     }
 
 /* ---------------------------------------------------------------- CRUD METHODS -------------------------------- */

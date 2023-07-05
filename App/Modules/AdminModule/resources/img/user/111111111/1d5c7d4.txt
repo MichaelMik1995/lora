@@ -1,0 +1,4 @@
+original_name=me.png
+generated_name=1d5c7d4
+extension=png
+alt=Write alternative text for this picture

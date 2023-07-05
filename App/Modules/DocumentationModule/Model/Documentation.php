@@ -5,7 +5,7 @@ namespace App\Modules\DocumentationModule\Model;
 
 use App\Core\Lib\Utils\StringUtils;
 use App\Core\DI\DIContainer;
-use App\Core\Database\DB;
+use App\Core\Database\Database;
 use Lora\Easytext\Easytext;
 
 class Documentation
@@ -15,12 +15,12 @@ class Documentation
     protected $table_categories = "documentation-categories";
     protected $table_versions = "documentation-versions";
 
-    protected DB $database;
+    protected Database $database;
     protected Easytext $easy_text;
     
     public function __construct(DIContainer $container) 
     {
-        $this->database = $container->get(DB::class);
+        $this->database = $container->get(Database::class);
         $this->database->table = $this->table; //Uncheck if table name is not like controller name
         $this->easy_text = $container->get(Easytext::class);
     }
@@ -59,7 +59,7 @@ class Documentation
      * @param string $order_by <p>Order tables in rows (ex.: id ASC)</p>
      * @return object <p>Returns all rows from table documentation</p>
      */
-    public function getSheetsByCategory(string $category_url, string $order_by = "id ASC"): Array
+    public function getSheetsByCategory(string $category_url, string $order_by = "title ASC"): Array
     {
         $db_query = $this->database->select($this->table, "category=? ORDER BY $order_by", [$category_url]);
         

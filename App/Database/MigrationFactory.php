@@ -2,7 +2,7 @@
 namespace App\Database;
 
 //use App\Core\Database\Database;
-use App\Core\Database\DB;
+use App\Core\Database\Database;
 use Lora\Lora\Core\LoraOutput;
 
 /**
@@ -36,7 +36,7 @@ class MigrationFactory
     public function __construct()
     {
         $parse = parse_ini_file("./config/database.ini");
-        $this->database = DB::instance(db_driver: "sqlite", db_name: $parse["DB_NAME"], is_factory: true);
+        $this->database = Database::instance(db_driver: "sqlite", db_name: $parse["DB_NAME"], is_factory: true);
     }
 
     public function __destruct() 

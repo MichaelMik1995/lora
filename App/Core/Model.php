@@ -2,8 +2,7 @@
 namespace App\Core;
 
 use App\Core\DI\DIContainer;
-use App\Core\Database\Database; //Old version od Database MYSQL -> recommended NOT use
-use App\Core\Database\DB;
+use App\Core\Database\Database;
 use App\Middleware\Auth;
 use App\Core\Lib\Utils\StringUtils;
 use App\Core\Lib\Utils\NumberUtils;
@@ -18,7 +17,7 @@ use Lora\Easytext\Easytext;
  *
  * @author michaelmik
  */
-class Model 
+abstract class Model 
 {    
     /**
      * @var Database
@@ -67,12 +66,14 @@ class Model
      */
     protected Uploader $uploader;
 
-    public $container;
+    protected $container;
 
     private function __construct(){}
 
     public function init(DIContainer $container)
     {
+        $this->container = $container;
+        
         $this->auth = $container->get(Auth::class);
         $this->easy_text = $container->get(Easytext::class);
         $this->string_utils = $container->get(StringUtils::class);
@@ -81,6 +82,6 @@ class Model
         $this->config = $container->get(Config::class);
         $this->lang = $container->get(Language::class);
         $this->uploader = $container->get(Uploader::class);
-        $this->db = $container->get(DB::class);
+        $this->database = $container->get(Database::class);
     }
 }

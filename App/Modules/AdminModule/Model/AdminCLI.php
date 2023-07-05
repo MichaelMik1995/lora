@@ -20,7 +20,7 @@ class AdminCLI extends Admin
 
     public function getLog(): Array
     {
-        $db_query = $this->db->select("admin-cli-log", "id!=?", [0]);
+        $db_query = $this->database->select("admin-cli-log", "id!=?", [0]);
         if(!empty($db_query))
         {
             $i = 0;
@@ -42,7 +42,7 @@ class AdminCLI extends Admin
     {
         $output = shell_exec($command);
 
-        $this->db->insert("admin-cli-log", [
+        $this->database->insert("admin-cli-log", [
             "cmd_execute" => $command,
             "cmd_output" => $output,
             "cmd_type" => $type,

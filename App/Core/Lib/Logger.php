@@ -2,13 +2,14 @@
 declare (strict_types=1);
 
 namespace App\Core\Lib;
+use App\Core\Interface\InstanceInterface;
 
 /**
  * Description of Logger
  *
  * @author michaelmik
  */
-class Logger
+class Logger implements InstanceInterface
 {
     /**
      * 
@@ -17,6 +18,23 @@ class Logger
     private static string $log_path = "./log/";
     
     private static string $file_content;
+
+    private static self $_instance;
+    private static int $_instance_id;
+
+    public static function instance()
+    {
+        if (!isset(self::$_instance)) {
+            self::$_instance = new self();
+            self::$_instance_id = rand(000000,999999);
+        }
+        return self::$_instance;
+    }
+
+    public function getInstanceId()
+    {
+        return self::$_instance_id;
+    }
     
     /**
      * 

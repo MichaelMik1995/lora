@@ -161,11 +161,12 @@ class Uploader
 
     public function generateImageData($path, $filename)
     {
+        $ext = pathinfo($filename, PATHINFO_EXTENSION);
 
         if(file_exists($path."/".$filename.".txt"))
         {
             $file = fopen($path."/".$filename.".txt", "w");
-            fwrite($file,"original_name=$filename\ngenerated_name=$filename\nextension=".$path_parts_thumb['extension']."\nalt=Write alternative text for this picture"
+            fwrite($file,"original_name=$filename\ngenerated_name=$filename\nextension=".$ext."\nalt=Write alternative text for this picture"
                         );
             fclose($file);
         }

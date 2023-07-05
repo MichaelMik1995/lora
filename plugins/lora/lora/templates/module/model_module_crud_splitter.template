@@ -14,6 +14,7 @@ namespace App\Modules\{Module_name}Module\Model;
 *   Using main module Model
 */
 use App\Modules\{Module_name}Module\Model\{Module_name};
+use App\Core\Database\Database;
 
 //Interface
 use App\Core\Interface\ModelDBInterface;
@@ -25,10 +26,14 @@ class {Model_name} extends {Module_name} implements ModelDBInterface
 {
     protected $model_table = "{Model_name}";
     protected array|null $model_data;
+    protected $database;
 
-    public function __construct(DIContainer $container) //Can expand to multiple arguments, first must be DIContainer
+    public function __construct(DIContainer $container, Database $database) //Can expand to multiple arguments, first must be DIContainer
     {
         parent::__construct($container);    //Only this one argument is needed
+
+        $this->database = $database;
+        //$this->database->table = $this->model_table;      //Uncheck this, if table is different from controller name
     }
 
     /**

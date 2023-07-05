@@ -3,15 +3,41 @@ declare(strict_types=1);
 
 namespace App\Core\Application;
 use ErrorException;
+use App\Core\Interface\InstanceInterface;
 
-class DotEnv {
+class DotEnv implements InstanceInterface
+{
     private $path;
     private $tmp_env;
 
+
+    private static $_instance;
+
+    private static int $_instance_id;
     /**
      * 
      */
-    function __construct($env_path = ".env"){
+
+    private function __construct()
+    {
+        $this->constructEnvData(".env");
+    }
+    public static function instance()
+    {
+        if (!isset(self::$_instance)) {
+            self::$_instance = new self();
+            self::$_instance_id = rand(000000,999999);
+        }
+        return self::$_instance;
+    }
+
+    public function getInstanceId()
+    {
+        return self::$_instance_id;
+    }
+
+    private function constructEnvData($env_path)
+    {
         // Check if .env file path has provided
         if(empty($env_path)){
             throw new ErrorException(".env file path is missing");
@@ -77,6 +103,11 @@ class DotEnv {
     public function getEnvData()
     {
         return $this->tmp_env;
+    }
+
+    public function get(string $key)
+    {
+        return $this->tmp_env[$key];
     }
 }
 ?>

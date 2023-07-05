@@ -9,17 +9,15 @@ use App\Middleware\Session;
 use App\Middleware\Auth;
 use App\Core\Lib\FormValidator;
 use App\Core\Application\Redirect;
+use App\Core\DI\DIContainer;
 
 class AuthController extends Controller
 {
     use FormValidator;
-
-    public $container;
     
-    public function __construct($container) 
+    public function __construct(DIContainer $container) 
     {
         parent::__construct($container);
-        $this->container = $container;
     }
     
     /**
@@ -48,10 +46,13 @@ class AuthController extends Controller
      * @return void
      */
     public function doLogin(AuthManager $auth_manager, Redirect $redirect, Session $session, LoraException $lora_exception)
-    {        
+    {       
+
         $post = $this->input("name", "required,string")->input("password", "required,string")->returnFields();
+        
         try
         {
+            $auth_manager->checkAttempts();
             $this->validate();
 
             $auth_manager->login($post["name"], $post["password"]);

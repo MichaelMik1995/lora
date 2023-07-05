@@ -94,7 +94,7 @@ class AdminMediaController extends AdminController
         
     }
 
-    public function pictureDelete(Auth $auth)
+    public function pictureDelete(Auth $auth, Redirect $redirect, LoraException $lora_exception)
     {
         $picture_slug = $this->u["param"];
         $picture_name = str_replace("@", ".", $picture_slug);
@@ -115,6 +115,7 @@ class AdminMediaController extends AdminController
             
         }
 
+        $lora_exception->successMessage("Obrázek byl úspěšně smazán.");
         $redirect->to("admin/app/media");
     }
 

@@ -18,13 +18,12 @@ class Template
     protected $array_utils;
     
     
-    public function __construct() 
+    public function __construct(Auth $auth, ArrayUtils $array_utils) 
     {
         $this->token = '<input hidden type="text" name="token" value="'.@$_SESSION['token'].'"> '
                 . '<input hidden type="text" name="SID" value="'.@$_SESSION['SID'].'">';
-        
-        $this->auth = new Auth();
-        $this->array_utils = ArrayUtils::instance();
+        $this->auth = $auth;
+        $this->array_utils = $array_utils;
     }
 
     public function view(string $file="", string $module = "")

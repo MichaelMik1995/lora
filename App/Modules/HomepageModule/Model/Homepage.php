@@ -13,7 +13,7 @@ class Homepage extends Model
     public function __construct(string $route_param = null) {
         $this->init();
         if ($route_param != null) {
-            $this->db->route_param = $route_param;
+            $this->database->route_param = $route_param;
         }
 
         //$this->database->table = $this->table; //Uncheck if table name is not like controller name
@@ -26,7 +26,7 @@ class Homepage extends Model
      */
     public function getAll(string $order_by = "id ASC"): Array
     {
-        $db_query = $this->db->tableAllData($order_by);
+        $db_query = $this->database->tableAllData($order_by);
         if(!empty($db_query))
         {
             $returnArray = [];
@@ -58,7 +58,7 @@ class Homepage extends Model
 
         $computed_limit = (($page - 1)*$limit_per_page. ", " .$limit_per_page);
 
-        $db_query = $this->db->tableAllData("id", $computed_limit);
+        $db_query = $this->database->tableAllData("id", $computed_limit);
         
         if(!empty($db_query))
         {
@@ -89,7 +89,7 @@ class Homepage extends Model
      */
     public function get(string $route_key="url"): Array
     {
-        $db_query = $this->db->tableRowByRoute();
+        $db_query = $this->database->tableRowByRoute();
         if(!empty($db_query))
         {
             $content = $db_query["content"];
@@ -107,19 +107,19 @@ class Homepage extends Model
     public function insert(array $insert_values)
     {
         // Insert new row
-        return $this->db->tableInsert($this->table, $insert_values);
+        return $this->database->tableInsert($this->table, $insert_values);
     }
     
     public function update(array $set, string $route_key = "url")
     {
         // update row
-        return $this->db->tableUpdateByRoute($set, $route_key);
+        return $this->database->tableUpdateByRoute($set, $route_key);
     }
     
     public function delete(string $route_key = "url")
     {
         // delete row
-        return $this->db->tableDeleteByRoute($route_key);
+        return $this->database->tableDeleteByRoute($route_key);
     }
 }
 ?>

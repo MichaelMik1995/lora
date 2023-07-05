@@ -7,7 +7,7 @@ use App\Core\Lib\Utils\StringUtils;
 use App\Core\Lib\EmailSender;
 use App\Middleware\Session;
 use App\Middleware\Auth;
-use App\Core\Database\DB;
+use App\Core\Database\Database;
 use App\Core\Application\DotEnv;
 use App\Core\Lib\Uploader;
 use App\Core\Lib\Utils\MediaUtils;
@@ -36,9 +36,9 @@ class AuthManager
         
         $this->container = $container;
 
-        $this->env = $this->container->set(DotEnv::class, [".env"]);
+        $this->env = $this->container->get(DotEnv::class);
         
-        $this->database = DB::instance($_ENV["db_driver"], db_name: $_ENV["db_name"]);
+        $this->database= $this->container->set(Database::class, [$_ENV["db_driver"], "", $_ENV["db_name"], "", "", false]);
        
         $this->s_utils = $string_utils;
     
@@ -46,9 +46,38 @@ class AuthManager
         
         $this->email = $email_sender;
         
-        $this->session = $this->env = $this->container->get(Session::class);
+        $this->session = $this->container->get(Session::class);
     }
     
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public function checkAttempts(): Bool
+    {
+        /* 
+            1. pokud není session -> vytvořit (attempts, checked time) $_SESSION['local_ip']['attempts'] = 0; $_SESSION['local_ip']['est_time'] = time()+10;
+
+            * testovat pokusy o přihlášení -> pokud je fail, tak attempt + 1
+
+            * Pokud dosáhne attemp na hodnotu 3 -> zablokovat na určitý čas
+            
+            Po určitém čase -> vynulovat attempt -> lze zadat nové pokusy o přihlášení
+        */
+
+        $local_ip = $_SERVER['REMOTE_ADDR'];
+
+        //Create attempts array if it doesn't exist
+        if(!isset($_SESSION[$local_ip]['attempts']))
+        {
+            $_SESSION[$local_ip]['attempts'] = 0;
+            $_SESSION[$local_ip]['last_attempt'] = time();
+        }
+
+        return true;
+    }
+
     public function login(string $name, string $password)
     {
         session_regenerate_id(true);
@@ -83,6 +112,8 @@ class AuthManager
                         setcookie("session_key", $session_key, time() + 3600*24*10, "/");
                         echo "<script>localStorage.setItem('user_name','".$user_name."');</script>";
                         $this->database->update($this->table, ["session_key"=>$session_key], "uid=?", [$uid]);
+
+                        //unset attempt test session
                     }
                 }
                 return true;

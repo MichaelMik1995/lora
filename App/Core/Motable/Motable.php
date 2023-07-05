@@ -4,17 +4,17 @@ declare(strict_types = 1);
 
 namespace App\Core\Motable;
 
-use App\Core\Database\DB;
+use App\Core\Database\Database;
 
 class Motable
 {
     private static $_instance = null;
     private static $_instance_id;
-    private static DB $database;
+    private static Database $database;
 
     private function __construct(){}
 
-    public static function instance(DB $database)
+    public static function instance(Database $database)
     {
         self::$database = $database;
 

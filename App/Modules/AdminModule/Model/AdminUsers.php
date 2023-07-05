@@ -36,7 +36,7 @@ class AdminUsers extends Admin implements ModelDBInterface
      */
     public function getAllUsers(string $order_by = "id ASC"): Array
     {
-        $db_query = $this->db->select($this->model_table, "id!=? ORDER BY $order_by", [0]);
+        $db_query = $this->database->select($this->model_table, "id!=? ORDER BY $order_by", [0]);
         if(!empty($db_query))
         {
             $return_array = [];
@@ -46,7 +46,7 @@ class AdminUsers extends Admin implements ModelDBInterface
             {
                 $id = $i++;
                 $uid = $row["uid"];
-                $is_admin = $this->db->selectRow("role-id", "user_uid=? AND role_slug=?", [$uid, "admin"]);
+                $is_admin = $this->database->selectRow("role-id", "user_uid=? AND role_slug=?", [$uid, "admin"]);
                 
                 if(!empty($is_admin))
                 {
@@ -80,7 +80,7 @@ class AdminUsers extends Admin implements ModelDBInterface
 
         $computed_limit = (($page - 1)*$limit_per_page. ", " .$limit_per_page);
 
-        $db_query = $this->db->tableAllData("id", $computed_limit);
+        $db_query = $this->database->tableAllData("id", $computed_limit);
         
         if(!empty($db_query))
         {
@@ -104,7 +104,7 @@ class AdminUsers extends Admin implements ModelDBInterface
     public function getavaliablePages(int $limit_per_page = 25)
     {
         //Count CEIL of avaliable pages
-        $count_rows = $this->db->countRows($this->table, "id!=?", [0]);   //100
+        $count_rows = $this->database->countRows($this->table, "id!=?", [0]);   //100
         $avaliable_pages = ceil($count_rows / $limit_per_page); //100 / 20 = 5
         return $avaliable_pages;
     }
@@ -116,10 +116,10 @@ class AdminUsers extends Admin implements ModelDBInterface
      */
     public function getUser(string|int $uid): Array
     {
-        $db_query = $this->db->selectRow($this->model_table, "uid=?", [$uid]);
+        $db_query = $this->database->selectRow($this->model_table, "uid=?", [$uid]);
         if(!empty($db_query))
         {            
-            $is_admin = $this->db->selectRow("role-id", "user_uid=? AND role_slug=?", [$uid, "admin"]);
+            $is_admin = $this->database->selectRow("role-id", "user_uid=? AND role_slug=?", [$uid, "admin"]);
                 
                 if(!empty($is_admin))
                 {
@@ -142,24 +142,24 @@ class AdminUsers extends Admin implements ModelDBInterface
     public function insertUser(array $insert_values)
     {
         // Insert new row
-        return $this->db->insert($this->model_table, $insert_values);
+        return $this->database->insert($this->model_table, $insert_values);
     }
     
     public function updateUser(array $set, string $url)
     {
         // update row
-        return $this->db->update($this->model_table, $set, "url=?", [$url]);
+        return $this->database->update($this->model_table, $set, "url=?", [$url]);
     }
     
     public function deleteUser(string $url)
     {
         // delete row
-        return $this->db->delete($this->model_table, "url=?", [$url]);
+        return $this->database->delete($this->model_table, "url=?", [$url]);
     }
 
     public function verifyUser(int|string $uid)
     {
-        return $this->db->update($this->model_table, ["email_verified_at"=>time()], "uid=?", [$uid]);
+        return $this->database->update($this->model_table, ["email_verified_at"=>time()], "uid=?", [$uid]);
     }
 
     /** MAGICAL METHODS **/
