@@ -12,6 +12,7 @@ use App\Core\View\Template;
 use App\Controller\IndexController;
 use App\Core\Lib\Logger;
 use App\Exception\LoraException;
+use App\Core\DI\DIContainer;
 
 
 /**
@@ -25,25 +26,22 @@ class Request extends Controller
     public static $route_options;
     private $url_utils;
     private $template;
-    public $inject;
+    public $container;
     public $web;
     public $controll;
     public $db;
     
-    public function __construct($inject) 
+    public function __construct(DIContainer $container) 
     {
         $this->url_utils = UrlUtils::instance();
         $this->template = new Template();
 
-        $this->inject = $inject;
-        $this->inject = ArrayUtils::instance()->setLowerCaseVars($inject);        
+        $this->container = $container;     
     }
     
     public function request($request_controller, string $request_function="index", string|null $template="", string $module ="", $classes = [], bool $is_module=true, $url_data=[])
     {        
-        $this->controll = new $request_controller($this->inject);
-        
-        extract($this->inject);
+        $this->controll = new $request_controller($this->container);
 
         if($is_module == true)
         {
@@ -86,7 +84,8 @@ class Request extends Controller
                 }
             }
 
-            $this->controll = new $request_controller($this->inject);
+
+            $this->controll = new $request_controller($this->container);
             $this->controll->u = $url_data;
             
             
@@ -101,7 +100,7 @@ class Request extends Controller
                 $this->controll->template = $template;
             }
         
-            $this->controll = new $request_controller($this->inject);
+            //$this->controll = new $request_controller($this->container);
 
 
             if($is_module == 1)
@@ -122,7 +121,6 @@ class Request extends Controller
     {       
         return $this->get($url_request, $request_controller, $request_function, $template, $classes, $is_module);
     }
-
     
     /**
      * 
@@ -135,6 +133,7 @@ class Request extends Controller
         $this->controll->view = $template;
         $this->controll->controll= $this->controll;
         $this->controll->u = $url_data;
+        $this->controll->container = $this->container;
 
 
         if(method_exists($this->controll, $request_function))
@@ -149,7 +148,7 @@ class Request extends Controller
                 foreach($parameters as $parameter)
                 {
                     $parameter_type = $parameter->getType();
-                    $params[] = $this->controll->_DI->returnObject($parameter_type->getName());
+                    $params[] = $this->container->returnObject($parameter_type->getName());
                 }
 
                 call_user_func_array(array($this->controll, $request_function), $params);
@@ -166,7 +165,7 @@ class Request extends Controller
         }
         else
         {
-            @Redirect::redirect("error/bad-function");
+            $redirect->to("error/bad-function");
             throw new LoraException("Method: $request_function in class $class_name does not exist!");
             
         }
@@ -205,7 +204,7 @@ class Request extends Controller
         //Automatic LOG system
         
 
-        $index_controller = new IndexController($this->inject);
+        $index_controller = new IndexController($this->container);
         $index_controller->index();
 
         $index_controller->module="";
@@ -214,15 +213,15 @@ class Request extends Controller
         $index_data =
         [
             "WEB_TITLE" => $this->controll->title,
-            "WEB_ADDRESS" => $this->inject["Config"]->getVar()["WEB_ADDRESS"],
-            "WEB_DESCRIPTION" => $this->inject["Config"]->getVar()["WEB_DESCRIPTION"],
+            "WEB_ADDRESS" => $this->container->get(Config::class)->getVar()["WEB_ADDRESS"],
+            "WEB_DESCRIPTION" => $this->container->get(Config::class)->getVar()["WEB_DESCRIPTION"],
             "LANGUAGE" => env("language", false),
-            "WEB_STYLE" => $this->inject["Config"]->getVar()["WEB_STYLE"],
-            "page_title" => $this->inject["Config"]->getVar()["WEB_NAME"],
-            "lora_messages" => $this->inject["LoraException"]->returnMessage(),
-            "lora_messages_true" => $this->inject["LoraException"]->returnMessageTrue(),
-            "WEB_STATUS" => $this->inject["Config"]->getVar()["WEB_DEVELOPMENT"],
-            "WEB_VERSION" => $this->inject["Config"]->getVar()["WEB_VERSION"],
+            "WEB_STYLE" => $this->container->get(Config::class)->getVar()["WEB_STYLE"],
+            "page_title" => $this->container->get(Config::class)->getVar()["WEB_NAME"],
+            "lora_messages" => $this->container->get(LoraException::class)->returnMessage(),
+            "lora_messages_true" => $this->container->get(LoraException::class)->returnMessageTrue(),
+            "WEB_STATUS" => $this->container->get(Config::class)->getVar()["WEB_DEVELOPMENT"],
+            "WEB_VERSION" => $this->container->get(Config::class)->getVar()["WEB_VERSION"],
         ];
 
         $index_controller->data = array_merge($index_data, $index_controller->data, ["controll"=> $this->controll]);

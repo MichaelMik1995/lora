@@ -4,14 +4,13 @@ declare (strict_types=1);
 namespace App\Core\Lib;
 
 use Lora\Compiler\Compiler;
-use App\Core\Model;
 use App\Exception\LoraException;
 /**
  * Description of EmailSender
  *
  * @author michaelmik
  */
-class EmailSender extends Model
+class EmailSender
 {
     /**
      * 
@@ -40,7 +39,6 @@ class EmailSender extends Model
 
     public function __construct() 
     {
-        $this->init();
         require ("./vendor/phpmailer/phpmailer/src/PHPMailer.php");
         require ("./vendor/phpmailer/phpmailer/src/SMTP.php");
         require ("./vendor/phpmailer/phpmailer/src/Exception.php");

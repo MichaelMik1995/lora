@@ -15,7 +15,7 @@ class UserController extends Controller implements ModuleInterface
     /**
      * @var array <p>Injected classes to controller</p>
      */
-    protected $injector;
+    protected $container;
     
     /**
      * @var array <p>Data from URL address (/homepage/show/:url) -> $u['url'] = ?</p>
@@ -34,11 +34,11 @@ class UserController extends Controller implements ModuleInterface
     protected $user_controll;
 
     
-    public function __construct($injector)
+    public function __construct($container)
     {
-        parent::__construct($this->title, $injector);
+        parent::__construct($this->title, $container);
         
-        $this->injector = $injector;
+        $this->container = $container;
         $this->model = [
             "user" => new User()
         ];

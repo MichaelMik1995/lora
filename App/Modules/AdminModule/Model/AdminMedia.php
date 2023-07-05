@@ -14,14 +14,23 @@ namespace App\Modules\AdminModule\Model;
 *   Using main module Model
 */
 use App\Modules\AdminModule\Model\Admin;
+use App\Core\DI\DIContainer;
 
 class AdminMedia extends Admin
 {
-    public function __construct()
+    private $_instance_id;
+
+    public function __construct(DIContainer $container)
     {
-        parent::__construct();
+        parent::__construct($container);
+        $this->_instance_id = rand(000000,99999);
     }
 
+
+    public function getInstanceId()
+    {
+        return $this->_instance_id;
+    }
 
     /**
      * Get Admin Picture Data from source

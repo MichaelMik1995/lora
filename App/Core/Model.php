@@ -11,6 +11,7 @@ use App\Exception\LoraException;
 use App\Core\Application\Config;
 use App\Core\Lib\Language;
 use App\Core\Lib\Uploader;
+use Lora\Easytext\Easytext;
 
 /**
  * Description of Model
@@ -66,19 +67,20 @@ class Model
      */
     protected Uploader $uploader;
 
-    public function init()
+    public $container;
+
+    private function __construct(){}
+
+    public function init(DIContainer $container)
     {
-        $di = new DIContainer();
-        $injector = $di->inject;
-        
-        $this->auth = $injector["Auth"];
-        $this->easy_text = $injector["Easytext"];
-        $this->string_utils = StringUtils::class;
-        $this->exception = $injector["LoraException"];
-        $this->number_utils = NumberUtils::instance();
-        $this->config = $injector["Config"];
-        $this->lang = $injector["Language"];
-        $this->uploader = new Uploader();
-        $this->db = DB::instance();
+        $this->auth = $container->get(Auth::class);
+        $this->easy_text = $container->get(Easytext::class);
+        $this->string_utils = $container->get(StringUtils::class);
+        $this->exception = $container->get(LoraException::class);
+        $this->number_utils = $container->get(NumberUtils::class);
+        $this->config = $container->get(Config::class);
+        $this->lang = $container->get(Language::class);
+        $this->uploader = $container->get(Uploader::class);
+        $this->db = $container->get(DB::class);
     }
 }

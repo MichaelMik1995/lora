@@ -123,7 +123,7 @@ class ResolverDispatcher implements DefinitionResolver
                 return $this->envVariableResolver;
             case $definition instanceof InstanceDefinition:
                 if (! $this->instanceResolver) {
-                    $this->instanceResolver = new InstanceInjector($this, $this->proxyFactory);
+                    $this->instanceResolver = new Instancecontainer($this, $this->proxyFactory);
                 }
 
                 return $this->instanceResolver;

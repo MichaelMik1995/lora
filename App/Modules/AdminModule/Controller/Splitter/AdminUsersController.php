@@ -22,7 +22,7 @@ class AdminUsersController extends AdminController
     /**
      * @var array <p>Injected classes to controller</p>
      */
-    //protected $injector;
+    //protected $container;
     
     /**
      * @var array <p>Data from URL address (/homepage/show/:url) -> $u['url'] = ?</p>
@@ -36,12 +36,12 @@ class AdminUsersController extends AdminController
     
 
     
-    public function __construct($injector, $model)
+    public function __construct($container, $model)
     {
-        parent::__construct($injector);
+        parent::__construct($container);
         
         $this->module = "admin";
-        $this->injector = $injector;
+        $this->container = $container;
         $this->model = $model;
     }
     
@@ -57,10 +57,12 @@ class AdminUsersController extends AdminController
         return $this->view = "users/index";
     }
     
-    public function show(AdminUsers $users, MediaUtils $media)
+    public function show(AdminUsers $user, MediaUtils $media)
     {
         $uid = $this->u["param"];
-        $get_user_data = $users->getUser($uid);
+        $get_user_data = $user->getUser($uid);
+
+        echo $user->is_admin;
         $this->data = [
             "user" => $get_user_data,
         ];
@@ -98,7 +100,7 @@ class AdminUsersController extends AdminController
         } catch (LoraException $ex) {
             $exception->errorMessage("Uživatel nebyl ověřěn! Zkontrolujte prosím LOG");
         }
-        @Redirect::redirect("admin/app/users");
+        $redirect->to("admin/app/users");
     }
 
     public function userUpdate(AdminUsers $users, LoraException $exception)

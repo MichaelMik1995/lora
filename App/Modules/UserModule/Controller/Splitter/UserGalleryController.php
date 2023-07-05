@@ -26,12 +26,12 @@ class UserGalleryController extends UserController
     private string $template_folder = "gallery/";
 
     
-    public function __construct($injector)
+    public function __construct($container)
     {
-        parent::__construct($injector);
+        parent::__construct($container);
         
         $this->module = "User";
-        $this->injector = $injector;
+        $this->container = $container;
     }
     
     
@@ -60,7 +60,7 @@ class UserGalleryController extends UserController
     public function create()
     {
         $this->data = [
-            "form" => $this->injector["Easytext"]->form("content", "", ["hide_submit" => 1])
+            "form" => $this->container["Easytext"]->form("content", "", ["hide_submit" => 1])
         ];
         return $this->view = $this->template_folder."create";
     }
@@ -86,7 +86,7 @@ class UserGalleryController extends UserController
 
         $this->data = [
             "get" => $get,
-            "form" => $this->injector["Easytext"]->form("content", "", ["hide_submit" => 1])
+            "form" => $this->container["Easytext"]->form("content", "", ["hide_submit" => 1])
         ];
         return $this->view = $this->template_folder."edit";
     }

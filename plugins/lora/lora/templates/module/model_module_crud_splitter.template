@@ -15,14 +15,20 @@ namespace App\Modules\{Module_name}Module\Model;
 */
 use App\Modules\{Module_name}Module\Model\{Module_name};
 
-class {Model_name} extends {Module_name}
+//Interface
+use App\Core\Interface\ModelDBInterface;
+
+//Core
+use App\Core\DI\DIContainer;
+
+class {Model_name} extends {Module_name} implements ModelDBInterface
 {
-
     protected $model_table = "{Model_name}";
+    protected array|null $model_data;
 
-    public function __construct()
+    public function __construct(DIContainer $container) //Can expand to multiple arguments, first must be DIContainer
     {
-        parent::__construct();
+        parent::__construct($container);    //Only this one argument is needed
     }
 
     /**
@@ -32,7 +38,7 @@ class {Model_name} extends {Module_name}
      */
     public function getAll{Model_name}(string $order_by = "id ASC"): Array
     {
-        $db_query = $this->db->select($this->model_table, "id!=? ORDER BY $order_by", [0]);
+        $db_query = $this->database->select($this->model_table, "id!=? ORDER BY $order_by", [0]);
         if(!empty($db_query))
         {
             $return_array = [];
@@ -69,7 +75,7 @@ class {Model_name} extends {Module_name}
 
         $computed_limit = (($page - 1)*$limit_per_page. ", " .$limit_per_page);
 
-        $db_query = $this->db->tableAllData("id", $computed_limit);
+        $db_query = $this->database->tableAllData("id", $computed_limit);
         
         if(!empty($db_query))
         {
@@ -80,7 +86,7 @@ class {Model_name} extends {Module_name}
                 $tags = $row["tags"];
                 
                 $db_query[$id]["_content"] = $this->easy_text->translateText($content);
-                $db_query[$id]["_tags"] = ArrayUtils::charStringToArray($tags);
+                //$db_query[$id]["_tags"] = ArrayUtils::charStringToArray($tags);
             }
             
             return $db_query;
@@ -95,7 +101,7 @@ class {Model_name} extends {Module_name}
     public function getavaliablePages(int $limit_per_page = 25)
     {
         //Count CEIL of avaliable pages
-        $count_rows = $this->db->countRows($this->table, "id!=?", [0]);   //100
+        $count_rows = $this->database->countRows($this->table, "id!=?", [0]);   //100
         $avaliable_pages = ceil($count_rows / $limit_per_page); //100 / 20 = 5
         return $avaliable_pages;
     }
@@ -107,7 +113,7 @@ class {Model_name} extends {Module_name}
      */
     public function get{Model_name}(string $url): Array
     {
-        $db_query = $this->db->selectRow($this->model_table, "url=?", [$url]);
+        $db_query = $this->database->selectRow($this->model_table, "url=?", [$url]);
         if(!empty($db_query))
         {
             $content = $db_query["content"];
@@ -125,21 +131,31 @@ class {Model_name} extends {Module_name}
     public function insert{Model_name}(array $insert_values)
     {
         // Insert new row
-        return $this->db->insert($this->model_table, $insert_values);
+        return $this->database->insert($this->model_table, $insert_values);
     }
     
     public function update{Model_name}(array $set, string $url)
     {
         // update row
-        return $this->db->update($this->model_table, $set, "url=?", [$url]);
+        return $this->database->update($this->model_table, $set, "url=?", [$url]);
     }
     
     public function delete{Model_name}(string $url)
     {
         // delete row
-        return $this->db->delete($this->model_table, "url=?", [$url]);
+        return $this->database->delete($this->model_table, "url=?", [$url]);
     }
 
+    /** MAGICAL METHODS **/
+    public function __set($name, $value) {
+        $this->model_data[$name] = $value;
+    }
 
+    public function __get($name) {
+        if (isset($this->model_data[$name])) {
+            return $this->model_data[$name];
+        }
+        return null;
+    }
 } 
 

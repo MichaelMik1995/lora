@@ -5,8 +5,14 @@ namespace App\Core\Application;
 use App\Core\Lib\Utils\UrlUtils;
 use App\Exception\LoraException;
 use App\Middleware\Middleware;
+use App\Middleware\Auth;
 use App\Core\Application\Route;
 use App\Core\Application\Request;
+use App\Core\Application\Redirect;
+use App\Core\Application\Config;
+use App\Core\Lib\Language;
+
+use App\Core\Model;
 
 /**
  * Description of Application
@@ -17,7 +23,7 @@ class Application
 {   
     
 
-    protected $injector;
+    protected $container;
     protected array $url_request;
     protected array $registered_routes;
     protected array $request_data;
@@ -31,17 +37,17 @@ class Application
     protected string $register_access;
     
 
-    public function constructor($injector)
+    public function constructor($container)
     {
-        $this->injector = $injector;
+        $this->container = $container;
         $this->url_request = UrlUtils::urlParse();
         $this->middleware = new Middleware($this->url_request);
 
-        /*$compressed   = gzcompress($this->injector, 9);
+        /*$compressed   = gzcompress($this->container, 9);
         $uncompressed = gzuncompress($compressed);
         echo $uncompressed;*/
 
-        //$string = $this->injector;
+        //$string = $this->container;
 
        // $encoded = strtr(base64_encode(addslashes(gzcompress(serialize($string),9))), '+/=', '-_,');
 
@@ -52,7 +58,7 @@ class Application
         //If request is empty -> redirect to WEB_HOMEPAGE defined in config/web.ini
         if(empty($this->url_request["controller"]))
         {
-            @Redirect::redirect($this->injector["Config"]->var("WEB_HOMEPAGE"));
+            Redirect::instance()->to($this->container->get(Config::class)->var("WEB_HOMEPAGE"));
             exit();
         }
 
@@ -113,21 +119,21 @@ class Application
     private function checkRequestMiddleware()
     {
         //Check if user valids access request
-        Policy::$auth = $this->injector["Auth"];
-        Policy::$language = $this->injector["Language"];
+        Policy::$auth = $this->container->get(Auth::class);
+        Policy::$language = $this->container->get(Language::class);
 
         try{
             
             if(!Policy::checkControllerAccess($this->register_access))
             {
-               @redirect::redirect("");
+               $this->container->get(Redirect::class)->to("");
                throw new LoraException("Cannot access to this page!");
             }
         }catch(LoraException $ex)
         {
             
-            $this->injector["LoraException"]->errorMessage($ex->getMessage());
-            Redirect::previous();
+            $this->container->get(LoraException::class)->errorMessage($ex->getMessage());
+            $this->container->get(Redirect::class)->previous();
             exit();
         }
         
@@ -147,15 +153,13 @@ class Application
         if(empty($requested_data))
         {
             //var_dump($requested_data);
-            //@Redirect::redirect("error/url-not-registered");
+            //$redirect->to("error/url-not-registered");
         }
     }
 
     private function execute_request()
     {
-        
-
-        $request = new Request($this->injector);
+        $request = new Request($this->container);
 
         $url = $this->request_data["url"];
         $controller_class = $this->request_data["controller"];
@@ -178,14 +182,6 @@ class Application
         {
             $module = true;
         }
-
-        if(isset($this->request_data["classes"]))
-        {
-            $classes = array_merge($this->injector, $this->request_data["classes"]);
-        }
-        else{
-            $classes = [$this->injector];
-        }
               
         //var_dump($this->request_data);
         if(!empty($_POST))
@@ -195,10 +191,11 @@ class Application
 
             if($this->register_url_request != $to_lower_case && $this->register_url_request != "mixed")
             {
-                @Redirect::redirect("error/bad-method");
+                $redirect->to("error/bad-method");
             }
         }
 
+        $classes = [];
         switch($this->register_url_request)
         {
             case "default":

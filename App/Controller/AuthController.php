@@ -14,12 +14,12 @@ class AuthController extends Controller
 {
     use FormValidator;
 
-    public $injector;
+    public $container;
     
-    public function __construct($injector) 
+    public function __construct($container) 
     {
-        parent::__construct($injector);
-        $this->injector = $injector;
+        parent::__construct($container);
+        $this->container = $container;
     }
     
     /**

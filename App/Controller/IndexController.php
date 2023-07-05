@@ -15,8 +15,8 @@ class IndexController extends Controller
     public $template;
     public $u;
     
-    public function __construct($title = "", $injector = null) {
-        parent::__construct($title, $injector);
+    public function __construct($title = "", $container = null) {
+        parent::__construct($title, $container);
     }
     
     public function index()

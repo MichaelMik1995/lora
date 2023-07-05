@@ -11,6 +11,8 @@ use App\Core\Application\Redirect;
 use App\Core\Lib\Utils\StringUtils;
 use App\Middleware\Auth;
 use App\Exception\LoraException;
+use App\Core\DI\DIContainer;
+use Lora\Easytext\Easytext;
 
 /**
  * 
@@ -18,12 +20,6 @@ use App\Exception\LoraException;
 class DocumentationController extends Controller
 {
     use FormValidator;
-    
-    /**
-     * @var array <p>Injected classes to controller</p>
-     */
-    protected $injector;
-    
     /**
      * @var array <p>Data from URL address (/homepage/show/:url) -> $u['url'] = ?</p>
      */
@@ -34,11 +30,6 @@ class DocumentationController extends Controller
      */
     protected $model;
     
-    /**
-     * @var string <p>Page title set</p>
-     */
-    public $title;
-    
     protected $template_folder = "";
     
     
@@ -48,11 +39,9 @@ class DocumentationController extends Controller
     protected $documentation_controll;
 
     
-    public function __construct($injector)
+    public function __construct(DIContainer $container)
     {
-        parent::__construct($this->title, $injector);
-        
-        $this->injector = $injector;
+        parent::__construct($container);
     }
     
     /**
@@ -76,7 +65,6 @@ class DocumentationController extends Controller
      */
     public function show(Auth $auth, Documentation $documentation)
     {
-        //header('Content-Type: application/json');
         $url = $this->u["url"];
         $get_one = $documentation->get($url);
 
@@ -100,12 +88,13 @@ class DocumentationController extends Controller
      * Can use for viewing form to create a new row
      * @return string
      */
-    public function create(Documentation $documentation)
+    public function create(Documentation $documentation, Easytext $easytext)
     {
         $get_versions = $documentation->getVersions();
         $get_categories = $documentation->getCategories();
+
         $this->data = [
-            "form" => $this->injector["Easytext"]->form("content", "", ["hide_submit" => 1, "height" => "32em"]),
+            "form" => $easytext->form("content", "", ["hide_submit" => 1, "height" => "32em"]),
             "versions" => $get_versions,
             "categories" => $get_categories,
         ];
@@ -116,7 +105,7 @@ class DocumentationController extends Controller
      * Can use for validation data from create form and save
      * @return void
      */
-    public function insert(Documentation $documentation, LoraException $lora_exception, StringUtils $string_utils)
+    public function insert(Documentation $documentation, LoraException $lora_exception, StringUtils $string_utils, Redirect $redirect)
     {
         //Fill $post variable with values of form fields
         $post = $this->input("title", "required,maxchars128", "Název")
@@ -134,11 +123,11 @@ class DocumentationController extends Controller
             $this->validate();
             $documentation->insert($post, $url, $string_utils);
             $lora_exception->successMessage("List byl úspěšně přidán");
-            @Redirect::redirect("documentation");
+            $redirect->to("documentation");
         }catch(LoraException $ex)
         {
             $lora_exception->errorMessage($ex->getMessage());
-            @Redirect::previous();
+            $redirect->previous();
         }
     }
 
@@ -148,8 +137,6 @@ class DocumentationController extends Controller
      */
     public function edit(Documentation $documentation)
     {
-        //$this->injector["Auth"]->access(["admin"]);
-
         $url = $this->u["url"];
 
         $get = $documentation->get($url);
@@ -158,7 +145,7 @@ class DocumentationController extends Controller
 
         $this->data = [
             "documentation"=> $get,
-            "form" => $this->injector["Easytext"]->form("content", $get["content"], ["hide_submit" => 1, "height" => "32em"]),
+            "form" => $this->container->get(Easytext::class)->form("content", $get["content"], ["hide_submit" => 1, "height" => "32em"]),
             "versions" => $get_versions,
             "categories" => $get_categories,
         ];
@@ -169,9 +156,9 @@ class DocumentationController extends Controller
      * Can use for validation edited data and update row
      * @return void
      */
-    public function update(Documentation $documentation, LoraException $lora_exception)
+    public function update(Documentation $documentation, LoraException $lora_exception, Redirect $redirect)
     {
-        //$this->injector["Auth"]->access(["admin"]);
+        //$this->container["Auth"]->access(["admin"]);
 
         $post = $this->input("title", "required,maxchars128", "Název")
                 ->input("version", "maxchars128", "Vybraná verze")
@@ -185,12 +172,12 @@ class DocumentationController extends Controller
             $this->validate();
             $documentation->update($post, StringUtils::instance());
             $lora_exception->successMessage("Webová stránka upravena!");
-            @Redirect::redirect("documentation");
+            $redirect->to("documentation");
             
         }catch(LoraException $ex)
         {
             $lora_exception->errorMessage($ex->getMessage());
-            @Redirect::previous();
+            $redirect->previous();
         }
     }
 
@@ -198,18 +185,18 @@ class DocumentationController extends Controller
      * Can use for deleting row
      * @return void
      */
-    public function delete(Documentation $documentation, LoraException $lora_exception)
+    public function delete(Documentation $documentation, LoraException $lora_exception, Redirect $redirect)
     {
-
+        $url = $this->u["url"];
         try {
             //delete
-            $documentation->delete();
+            $documentation->delete($url);
             $lora_exception->successMessage("Příspěvek byl smazán!");
-            @Redirect::redirect("documentation");
+            $redirect->to("documentation");
         }catch(LoraException $ex)
         {
             $lora_exception->errorMessage($ex->getMessage());
-            @Redirect::previous();
+            $redirect->previous();
         }
     }
 }

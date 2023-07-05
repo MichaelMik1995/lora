@@ -9,12 +9,13 @@ declare (strict_types=1);
 namespace App\Modules\AdminModule\Model;
 
 use App\Core\Model;
+use App\Core\DI\DIContainer;
 
 class AdminHrefs extends Admin
 {
-    public function __construct()
+    public function __construct(DIContainer $container)
     {
-        parent::__construct();
+        parent::__construct($container);
     }
 
     public function getHrefs()

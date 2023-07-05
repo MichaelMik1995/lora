@@ -22,7 +22,7 @@ class AdminMediaController extends AdminController
     /**
      * @var array <p>Injected classes to controller</p>
      */
-    protected $injector;
+    protected $container;
     
     /**
      * @var array <p>Data from URL address (/homepage/show/:url) -> $u['url'] = ?</p>
@@ -42,19 +42,17 @@ class AdminMediaController extends AdminController
     protected AdminMedia $media;
 
     
-    public function __construct($injector, $model)
+    public function __construct($container, $model)
     {
-        parent::__construct($injector);
+        parent::__construct($container);
         
         $this->module = "admin";
-        $this->injector = $injector;
+        $this->container = $container;
         $this->model = $model;
-
-        $this->media = new AdminMedia();
     }
     
     
-    public function mediaIndex(Uploader $upload, TextParser $parser, Auth $auth) 
+    public function mediaIndex(Uploader $upload, TextParser $parser, Auth $auth, AdminMedia $media) 
     {
         $this->data = [
             "user_uid" => $auth->user_uid,
@@ -65,7 +63,7 @@ class AdminMediaController extends AdminController
         return $this->view = "media/index";
     }
 
-    public function show(TextParser $parser, Auth $auth)
+    public function show(TextParser $parser, Auth $auth, AdminMedia $media)
     {
         //Get data from Picture
         $picture = $this->u["param"];
@@ -73,7 +71,7 @@ class AdminMediaController extends AdminController
         $picture = explode(".", $picture_name);
 
         $this->data = [
-            "picture" => $this->media->getPictureData($picture_name),
+            "picture" => $media->getPictureData($picture_name),
             "user_uid" => $auth->user_uid,
         ];
 
@@ -117,10 +115,10 @@ class AdminMediaController extends AdminController
             
         }
 
-        @Redirect::redirect("admin/app/media");
+        $redirect->to("admin/app/media");
     }
 
-    public function updateAltText(TextParser $text_parser, Auth $auth, LoraException $lora)
+    public function updateAltText(TextParser $text_parser, Auth $auth, LoraException $lora, Redirect $redirect)
     {
          //Fill $post variable with values of form fields
         $post = $this->input("alt_text", "required,maxchars128", "Alternativní text")
@@ -134,12 +132,12 @@ class AdminMediaController extends AdminController
             $this->validate();
             $text_parser->parse("./App/Modules/AdminModule/resources/img/user/".$auth->user_uid."/".$picture.".txt")->set("alt", $alt_text);
             $lora->successMessage("Alternativní text byl upraven");
-            @Redirect::previous();
+            
         }catch(LoraException $ex)
         {
             $lora->errorMessage($ex->getMessage());
-            @Redirect::previous();
         }
+        $redirect->previous();
         
     }
 

@@ -3,7 +3,7 @@
     "value" => "hello world"
  },
 
- "injector" : {
+ "container" : {
     "type" => "mixed",
     "value" => "$crypted$",
  }

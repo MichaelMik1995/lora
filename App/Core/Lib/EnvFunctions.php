@@ -100,3 +100,27 @@ function real_filesize(string|int $real_size, $echo = true)
     }
 
 }
+
+function is_empty(string|null $string, $empty_information = "")
+{
+    if(empty($string))
+    {
+        echo $empty_information;
+    }
+    else
+    {
+        echo $string;
+    }
+}
+
+function real_date(string|null $date = "", string $format = "d.m.Y H:i:s")
+{
+    if(!empty($date))
+    {
+        echo DATE($format, intval($date));
+    }
+    else
+    {
+        echo DATE($format, time());
+    }
+}

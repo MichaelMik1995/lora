@@ -115,7 +115,7 @@ class LoraModule
         $model_name_uc = ucfirst($model_name);
         $module_dir = "./App/Modules/".$uc_name."Module/";
 
-        $model_file = $module_dir . "/Model/" . $uc_name . $model_name_uc.".php";
+        $model_file = $module_dir . "Model/" . $uc_name . $model_name_uc.".php";
 
         if (!file_exists($model_file)) {
             //create secondary model
@@ -180,13 +180,13 @@ class LoraModule
                 [
                     "{module}" => $module,
                     "{Module}"=>$uc_module, 
-                    "{Splitter_name}"=>$splitter_name, 
+                    "{Splitter_name}"=>$uc_module.$splitter_name, 
                     "{splitter_name}"=> strtolower($splitter_name)
                 ]
         );
         
         //create splitter
-        $file_splitter = fopen($module_dir."/Controller/Splitter/".$splitter_name."Controller.php", "w+");
+        $file_splitter = fopen($module_dir."/Controller/Splitter/$uc_module".$splitter_name."Controller.php", "w+");
         fwrite($file_splitter, $compiled);
         fclose($file_splitter);
 
@@ -200,7 +200,7 @@ class LoraModule
             }
         }
         
-        LoraOutput::output("Splitter: $splitter_name successfully created in $uc_module module!", "success");
+        LoraOutput::output("Splitter: ".$uc_module."".$splitter_name."Controller successfully created in $uc_module module!", "success");
     }
 
     /**

@@ -15,7 +15,7 @@ class SocketController extends Controller
         $action = @$url[1];                                                 // $action [create|update|show ..] (/controller/ACTION/route_param)
         $route_param = @$url[2];                                            // for showing, editing, deleting row (/controller/action/ROUTE_PARAM)
         
-        $injector = $this->class["ArrayUtils"];   
+        $container = $this->class["ArrayUtils"];   
             
         switch($action)
         {

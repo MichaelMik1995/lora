@@ -11,11 +11,11 @@ use App\Modules\{Model_name}Module\Model\{Model_name};
 
 class {Model_name}Controller extends Controller 
 {
-    protected $injector;
+    protected $container;
 
-    public function __construct($injector)
+    public function __construct($container)
     {
-        $this->injector = $injector;
+        $this->container = $container;
     }
     
     public function index($url) 
@@ -27,14 +27,14 @@ class {Model_name}Controller extends Controller
         $action = @$url[1];
         $route_param = @$url[2];
         
-        $splitter = new SplitterRegistry($this->module, $url, $this->injector);
+        $splitter = new SplitterRegistry($this->module, $url, $this->container);
         $this->data = $splitter->getSplittersData();
         $this->view = $splitter->getSplittersView();
         
-        $array_utils = $this->injector["ArrayUtils"];  
-        $injector = $array_utils->setLowerCaseVars($this->injector);
+        $array_utils = $this->container["ArrayUtils"];  
+        $container = $array_utils->setLowerCaseVars($this->container);
         
-        extract($injector);
+        extract($container);
         
         switch($action)
         {

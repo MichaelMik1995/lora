@@ -9,13 +9,17 @@ declare (strict_types=1);
 namespace App\Modules\AdminModule\Model;
 
 use App\Core\Model;
+use App\Core\DI\DIContainer;
 
 class Admin extends Model
 {
     protected $table = "admin";
+
+    public $container;
     
-    public function __construct(string $route_param = null) {
-        $this->init();
+    public function __construct(DIContainer $container, string $route_param = null) {
+        $this->container = $container;
+        $this->init($container);
         if ($route_param != null) {
             $this->db->route_param = $route_param;
         }
@@ -27,7 +31,7 @@ class Admin extends Model
     /**
      * 
      * @param string $order_by <p>Order tables in rows (ex.: "id ASC")</p>
-     * @return Array <p>Returns all records from table</p>
+     * @return array <p>Returns all records from table</p>
      */
     public function getAll(string $order_by = "id ASC"): Array {
         $db_query = $this->db->tableAllData($order_by);
@@ -46,7 +50,7 @@ class Admin extends Model
     }
 
     /**
-     * @return Array <p>Return one row from table and store it in array, where $result["column"] = "column_value"</p>
+     * @return array <p>Return one row from table and store it in array, where $result["column"] = "column_value"</p>
      */
     public function get(string|int $uid): Array {
         $this->db->route_param = $uid;

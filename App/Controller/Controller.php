@@ -23,7 +23,7 @@ class Controller
     protected string $title = "";
     protected $message = "";
     protected $message_type="";
-    protected $injector;
+    protected $container;
 
     public $splitter_controll;
 
@@ -36,7 +36,14 @@ class Controller
 
     public $_DI;
 
-    public function __construct($injector=null, $u = null, $model=null) 
+    /**
+     * Base Controller constructor
+     *
+     * @param DIContainer $container
+     * @param array|null $u
+     * @param array|null|object|null $model
+     */
+    public function __construct(DIContainer $container, array $u = null, array|null|object $model=null) 
     {        
         if($u != null)
         {
@@ -49,12 +56,11 @@ class Controller
         }
 
 
-        if($injector != null)
+        if($container != null)
         {
-            $this->injector = $injector;
+            $this->container = $container;
         }
-            
-        $this->_DI = new DIContainer(false);
+
         $this->ip = $_SERVER["REMOTE_ADDR"];
     }
     
@@ -84,15 +90,6 @@ class Controller
             
         }
     }
-    
-    /**
-     * Reflections controller|splitter models and defines instance
-     * @param string|object $model
-     */
-    public function createModel(string|object $model, array|null $args = [])
-    {
-        //if args null or unmtach -> reflection
-    }
 
     /**
      * Reflections controller|splitter models and defines instance
@@ -108,7 +105,7 @@ class Controller
         if(array_key_exists($page, $pages_array))
         {
             $method = $pages_array[$page];
-            $this->splitter_controll = new $class_name($this->injector, $this->model);
+            $this->splitter_controll = new $class_name($this->container, $this->model);
             $this->splitter_controll->u = $this->u;
 
             
@@ -131,7 +128,7 @@ class Controller
                         foreach($parameters as $parameter)
                         {
                             $parameter_type = $parameter->getType();
-                            $params[] = $this->_DI->returnObject($parameter_type->getName());
+                            $params[] = $this->container->returnObject($parameter_type->getName());
                         }
                         call_user_func_array(array($this->splitter_controll, $method), $params);
                     }
@@ -142,7 +139,7 @@ class Controller
                 }
                 else
                 {
-                    @Redirect::redirect("error/bad-function");
+                    $this->container->get(Redirect::class)->to("error/bad-function");
                     throw new LoraException("Method: $method in class $class_name does not exist!");
                     
                 }

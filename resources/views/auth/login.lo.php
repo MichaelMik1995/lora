@@ -8,7 +8,7 @@
 
         <form id="login" method="POST" action="/auth/do-login" class="bd-dark-2 pd-1 bd-round-3">
             @csrfgen
-
+            @request(update)
             <input hidden type="text" name="method" value="update">
             
             <div class="form-line mgy-4"> 

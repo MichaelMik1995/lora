@@ -35,7 +35,7 @@ class HomepageController extends Controller implements ModuleInterface
     /**
      * @var array <p>Injected classes to controller</p>
      */
-    protected $injector;
+    public $container;
     
     /**
      * @var array <p>Data from URL address (/homepage/show/:url) -> $u['url'] = ?</p>
@@ -48,14 +48,11 @@ class HomepageController extends Controller implements ModuleInterface
     protected $model;
 
 
-    public function __construct($injector)
+    public function __construct($container)
     {
-        parent::__construct($injector, u: $this->u, model: $this->model);
+        parent::__construct($container, u: $this->u, model: $this->model);
         
-        $this->injector = $injector;
-        $this->model = [
-            "homepage" => new Homepage()
-        ];
+        $this->container = $container;
     }
     
     /**
@@ -128,11 +125,11 @@ class HomepageController extends Controller implements ModuleInterface
             $this->validate();
             
             $lora_exception->successMessage("");
-            @Redirect::redirect("");
+            $redirect->to("");
         }catch(LoraException $ex)
         {
             $lora_exception->errorMessage($ex->getMessage());
-            @Redirect::previous();
+            $redirect->previous();
         }
     }
 
@@ -169,12 +166,12 @@ class HomepageController extends Controller implements ModuleInterface
             $this->validate();
 
             $lora_exception->successMessage("Webová stránka přidána!");
-            @Redirect::redirect("");
+            $redirect->to("");
             
         }catch(LoraException $ex)
         {
             $lora_exception->errorMessage($ex->getMessage());
-            @Redirect::previous();
+            $redirect->previous();
         }
     }
 
@@ -193,11 +190,11 @@ class HomepageController extends Controller implements ModuleInterface
             //delete
 
             $lora_exception->successMessage("Příspěvek byl smazán!");
-            @Redirect::redirect("");
+            $redirect->to("");
         }catch(LoraException $ex)
         {
             $lora_exception->errorMessage($ex->getMessage());
-            @Redirect::previous();
+            $redirect->previous();
         }
     }
 }

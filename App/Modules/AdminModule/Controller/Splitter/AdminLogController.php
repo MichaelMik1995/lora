@@ -12,7 +12,7 @@ class AdminLogController extends AdminController
     /**
      * @var array <p>Injected classes to controller</p>
      */
-    protected $injector;
+    protected $container;
     
     /**
      * @var array <p>Data from URL address (/homepage/show/:url) -> $u['url'] = ?</p>
@@ -23,23 +23,23 @@ class AdminLogController extends AdminController
      * @instance of main model: Shop() of this controller.
      */
     protected $model;
-    
-    public $title = "";
+
+    public string $splitter_title = "";
 
     
-    public function __construct($injector, $model)
+    public function __construct($container, $model)
     {
-        parent::__construct($injector);
+        parent::__construct($container);
         
         $this->module = "admin";
-        $this->injector = $injector;
+        $this->container = $container;
         $this->model = $model;
     }
     
     
     public function index() 
     {
-      
+        $this->splitter_title = "Přehled Logů";
     }
 }
 

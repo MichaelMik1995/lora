@@ -9,10 +9,10 @@ namespace App\Middleware;
 class Session 
 {
     
-    public function __construct($generate_new_token = 0) 
+    public function __construct()
     {
-        $this->generateSID($generate_new_token);
-        $this->generateSJID($generate_new_token);
+        $this->generateSID(0);
+        $this->generateSJID(0);
     }
 
     public function return(): Bool

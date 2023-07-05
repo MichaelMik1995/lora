@@ -5,22 +5,21 @@
 
 use App\Core\Application\Application;
 use App\Core\DI\DIContainer;
+use App\Core\DI\Container;
 use App\Core\Application\DotEnv;
 
 
-class web
+final class web
 {
-    /**
-     * @var array $injector <p>Create instances of useffull classes to work around application</p>
-     */
-    private $injector;
+    private $container;
         
     public function initPreload()
     {
-        $di = new DIContainer();
-        $this->injector = $di->inject;
+        $di = DIContainer::instance();
+        //$di->getClassRegisterData();
+        $this->container = $di;
 
-        $__DotEnvironment = new DotEnv(realpath(".env"));
+        new DotEnv(realpath(".env"));
     }
     
     public function init()
@@ -48,7 +47,7 @@ class web
         include_once("App/Core/Lib/EnvFunctions.php");
 
         $application = new Application();
-        $application->constructor($this->injector);
+        $application->constructor($this->container);
     }
 }
 

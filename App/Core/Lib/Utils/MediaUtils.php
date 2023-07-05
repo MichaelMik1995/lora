@@ -161,7 +161,7 @@ class MediaUtils implements InstanceInterface
     * @param int $target_height The target height of the resized image. Default is 256 pixels.
     * @return bool Returns true on success, false on failure.
     */
-    public function resizeImage($source_image, $image_destination, $new_image_name, $target_width = 256, $target_height = 128, $percent_scale = 0): Bool
+    public function resizeImage($source_image, $image_destination, mixed $new_image_name, $target_width = 256, $target_height = 128, $percent_scale = 0): Bool
     {
         // get image extension
         $image_extension = pathinfo($source_image, PATHINFO_EXTENSION);

@@ -9,6 +9,7 @@ use App\Middleware\Auth;
 use App\Exception\LoraException;
 use App\Core\Lib\FormValidator;
 use App\Core\Application\Redirect;
+use App\Core\DI\DIContainer;
 
 //Interface
 use App\Core\Interface\ModuleInterface;
@@ -31,14 +32,8 @@ class {Model_name}Controller extends Controller implements ModuleInterface
 {
     use FormValidator;
     
-
     /**
-     * @var array <p>Injected classes to controller</p>
-     */
-    protected $injector;
-    
-    /**
-     * @var array <p>Data from URL address (/homepage/show/:url) -> $u['url'] = ?</p>
+     * @var array <p>Data from URL address ex.: (/{model_name}/show/:url) -> $u['url']</p>
      */
     public $u;
     
@@ -46,20 +41,10 @@ class {Model_name}Controller extends Controller implements ModuleInterface
      * @instance of main model: {Model_name}() of this controller.
      */
     protected $model;
-    
-    /**
-     * @var string <p>Page title set</p>
-     */
-    public $title;
 
-    public function __construct($injector)
+    public function __construct(DIContainer $container)
     {
-        parent::__construct($injector, u: $this->u, model: $this->model);
-        
-        $this->injector = $injector;
-        $this->model = [
-            "{model_name}" => new {Model_name}()
-        ];
+        parent::__construct($container, u: $this->u, model: $this->model);
     }
     
     /**
@@ -76,9 +61,9 @@ class {Model_name}Controller extends Controller implements ModuleInterface
      * Can use for viewing all tables (rows) in template
      * @return array|void
      */
-    public function index({Model_name} $model) 
+    public function index({Model_name} ${model_name}) 
     {
-        /* $get_all = $model->getAll();
+        /* $get_all = ${model_name}->getAll();
         
         return $this->data = [
             "all" => $get_all,
@@ -89,10 +74,10 @@ class {Model_name}Controller extends Controller implements ModuleInterface
      * Can use for viewing one table (row) in template
      * @return array|void
      */
-    public function show({Model_name} $model)
+    public function show({Model_name} ${model_name})
     {
         $url = $this->u["param"];
-        $get_one = $model->get($url);
+        $get_one = ${model_name}->get($url);
 
         return $this->data = [
             "get" => $get_one,
@@ -103,7 +88,7 @@ class {Model_name}Controller extends Controller implements ModuleInterface
      * Can use for viewing form to create a new row
      * @return array|void
      */
-    public function create(Auth $auth, {Model_name} $model, Easytext $easy_text)
+    public function create({Model_name} ${model_name}, Auth $auth, Easytext $easy_text)
     {
         //$auth->access(["admin"]);
 
@@ -116,7 +101,7 @@ class {Model_name}Controller extends Controller implements ModuleInterface
      * Can use for validation data from create form and save
      * @return void
      */
-    public function insert(Auth $auth, {Model_name} $model, LoraException $lora_exception, StringUtils $string_utils)
+    public function insert({Model_name} ${model_name}, Auth $auth, LoraException $lora_exception, StringUtils $string_utils, Redirect $redirect)
     {
         //$auth->access(["admin"]);
 
@@ -130,13 +115,18 @@ class {Model_name}Controller extends Controller implements ModuleInterface
 
             //returns true or THROW
             $this->validate();
-            
+            ${model_name}->insert([
+                "title" => $post["title"],
+                "content" => $post["content"],
+                "created_at" => time(),
+                "updated_at" => time(),
+            ]);
             $lora_exception->successMessage("");
-            @Redirect::redirect("");
+            $redirect->to("");
         }catch(LoraException $ex)
         {
             $lora_exception->errorMessage($ex->getMessage());
-            @Redirect::previous();
+            $redirect->previous();
         }
     }
 
@@ -144,13 +134,13 @@ class {Model_name}Controller extends Controller implements ModuleInterface
      * Can use for viewing form to edit row (getting data from url parameter)
      * @return array|void
      */
-    public function edit(Auth $auth, {Model_name} $model, EasyText $easy_text, LoraException $lora_exception)
+    public function edit({Model_name} ${model_name}, Auth $auth, EasyText $easy_text, LoraException $lora_exception)
     {
         //$auth->access(["admin"]);
 
         $param = $this->u["param"];
 
-        $get = $model->get($param);
+        $get = ${model_name}->get($param);
 
         return $this->data = [
             "get" => $get,
@@ -162,7 +152,7 @@ class {Model_name}Controller extends Controller implements ModuleInterface
      * Can use for validation edited data and update row
      * @return void
      */
-    public function update(Auth $auth, {Model_name} $model, LoraException $lora_exception)
+    public function update({Model_name} ${model_name}, Auth $auth, LoraException $lora_exception, Redirect $redirect)
     {
         //$auth->access(["admin"]);
 
@@ -171,14 +161,18 @@ class {Model_name}Controller extends Controller implements ModuleInterface
 
         try {
             $this->validate();
-
+            ${model_name}->update([
+                "title" => $post["title"],
+                "content" => $post["content"],
+                "updated_at" => time(),
+            ]);
             $lora_exception->successMessage("Webová stránka přidána!");
-            @Redirect::redirect("");
+            $redirect->to("");
             
         }catch(LoraException $ex)
         {
             $lora_exception->errorMessage($ex->getMessage());
-            @Redirect::previous();
+            $redirect->previous();
         }
     }
 
@@ -186,7 +180,7 @@ class {Model_name}Controller extends Controller implements ModuleInterface
      * Can use for deleting row
      * @return void
      */
-    public function delete(Auth $auth, {Model_name} $model, LoraException $lora_exception)
+    public function delete({Model_name} ${model_name}, Auth $auth, LoraException $lora_exception, Redirect $redirect)
     {
         //$auth->access(["admin"]);
 
@@ -195,13 +189,13 @@ class {Model_name}Controller extends Controller implements ModuleInterface
         try {
             $this->validate();
             //delete
-
+            ${model_name}->delete();
             $lora_exception->successMessage("Příspěvek byl smazán!");
-            @Redirect::redirect("");
+            $redirect->to("");
         }catch(LoraException $ex)
         {
             $lora_exception->errorMessage($ex->getMessage());
-            @Redirect::previous();
+            $redirect->previous();
         }
     }
 }

@@ -6,28 +6,37 @@
 
     "lines": {
         "line1": {
-            "cmd": "php bin/module list",
+            "cmd": "php lora module:list",
             "description": "Prints available and installed modules in project"
         },
         
         "line2": {
-            "cmd": "php bin/module create [module-name] ",
-            "example": "php bin/module create eshop",
-            "description": "creates module EMshopModule in App/Modules/"
+            "cmd": "php lora module:create [module-name] [--crud] ",
+            "option --crud": "Creates new CRUD main model in module",
+            "example": "php lora module:create eshop",
+            "description": "creates module EshopModule in App/Modules/"
         },
         
         "line3": {
-            "cmd": "php bin/module splitter:create [Controller-name] [module-name]",
-            "example": "php bin/module splitter:create AuthAdmin admin",
-            "description": "Creates new splitter for module Admin in /App/Modules/AdminModule/Splitter/AuthAdminController.php"
+            "cmd": "php lora splitter:create [Controller-name] [--module, --templates]",
+            "option --module": "Define module destination ex.: --module=Admin",
+            "option --templates": "Define templates folder ex.: --templates=security creates security folder in Module/resources/views/{}",
+            "example": "php lora splitter:create Security --module=Admin --template=security",
+            "description": "Creates new splitter AdminSecurityController for module Admin in /App/Modules/AdminModule/Splitter/AuthAdminController.php"
         },
         
         "line4": {
-            "cmd": "php bin/module model:create [model-name] (options: --crud)",
-            "example": "php bin/module model:create authmanager admin",
-            "description": "Creates new model for module Admin in /App/Modules/AdminModule/Module/Authmanager.php",
-            "example 2": "php bin/module model:create AuthManager --crud",
-            "description 2": "Creates new CRUD model for module Admin ..."
+            "cmd": "php lora module:update [Module-name] [--addmodel, --crud]",
+            "option --addmodel": "Adds new model to module",
+            "option --crud": "Creates new CRUD main model in module (must be with --addmodel option)",
+            "example": "php lora module:update Admin --addmodel=Security --crud",
+            "description": "Creates new model named AdminSecurity for module Admin in /App/Modules/AdminModule/Module/Authmanager.php"
+        },
+
+        "line5": {
+            "cmd": "php lora module:delete [Module-name]",
+            "example": "php lora module:delete Admin",
+            "description": "Deletes module Admin"
         }
     }
 }

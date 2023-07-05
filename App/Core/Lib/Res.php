@@ -14,7 +14,7 @@ class Res
     
     public function __construct() 
     {
-        $this->web_path = $this->injector["Config"]->var("WEB_ADDRESS");
+        $this->web_path = $this->container["Config"]->var("WEB_ADDRESS");
     }
     
     public function asset(string $path): String
@@ -32,11 +32,11 @@ class Res
     
     public function cfg(string $config_key): String
     {
-        return $this->injector["Config"]->var($config_key);
+        return $this->container["Config"]->var($config_key);
     }
     
     public function lang(string $lang_key): String
     {
-        return $this->injector["Language"]->translate($lang_key);
+        return $this->container["Language"]->translate($lang_key);
     }
 }

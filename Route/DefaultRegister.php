@@ -47,7 +47,7 @@ trait DefaultRegister
             ["url"=>"auth/verify-success", "controller"=> AuthController::class, "module"=>false, "template"=>"auth/verify_success", "route" => "auth.verifySuccess@default"],
             ["url"=>"auth/verify-error", "controller"=> AuthController::class, "module"=>false, "template"=>"auth/verify_dead", "route" => "auth.verifyError@default"],
             ["url"=>"auth/register-rules", "controller"=> AuthController::class, "module"=>false, "template"=>"auth/rules", "route" => "auth.rules@default"],
-            ["url"=>"auth/do-login", "controller"=> AuthController::class, "method"=>"doLogin", "request"=>"default", "template"=>"", "module"=>false, "route" => "auth.doLogin@update"],
+            ["url"=>"auth/do-login", "controller"=> AuthController::class, "template"=>"", "module"=>false, "route" => "auth.doLogin@update"],
             ["url"=>"auth/do-register", "controller"=> AuthController::class, "template" => null, "module"=>false, "route" => "auth.doRegister@default"],
             ["url" => "route/:route/:data", "controller"=>RouteController::class, "module"=>false, "template"=>"", "route"=>"route.getRoute@get"],
             ["url" => "homepage", "controller" => HomepageController::class, "method" => "index", "request" => "default", "module" => true, "template" => "index", "route" => "homepage.index@default"],

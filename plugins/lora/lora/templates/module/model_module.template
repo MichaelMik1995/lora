@@ -10,6 +10,8 @@ declare (strict_types=1);
 
 namespace App\Modules\{Module_name}Module\Model;
 
+use App\Core\DI\DIContainer;
+
 /**
 *   Using main module Model
 */
@@ -17,9 +19,9 @@ use App\Modules\{Module_name}Module\Model\{Module_name};
 
 class {Model_name} extends {Module_name}
 {
-    public function __construct()
+    public function __construct(DIContainer $container)
     {
-        parent::__construct();
+        parent::__construct($container);
     }
 
 

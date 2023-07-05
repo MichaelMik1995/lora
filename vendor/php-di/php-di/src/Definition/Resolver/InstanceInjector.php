@@ -15,7 +15,7 @@ use Psr\Container\NotFoundExceptionInterface;
  * @since 5.0
  * @author Matthieu Napoli <matthieu@mnapoli.fr>
  */
-class InstanceInjector extends ObjectCreator
+class Instancecontainer extends ObjectCreator
 {
     /**
      * Injects dependencies on an existing instance.

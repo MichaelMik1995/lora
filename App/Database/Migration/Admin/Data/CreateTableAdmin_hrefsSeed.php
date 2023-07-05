@@ -34,12 +34,6 @@ class CreateTableAdmin_hrefsSeed
             "href" => "dashboard",
             "icon" => "dashboard",
         ]);
-        
-        $factory->createSeed($this->table, [
-            "name" => "Pagembler",
-            "href" => "pagembler",
-            "icon" => "file",
-        ]);
 
         $factory->createSeed($this->table, [
             "name" => "Uživatelé",
@@ -51,12 +45,6 @@ class CreateTableAdmin_hrefsSeed
             "name" => "Média",
             "href" => "media",
             "icon" => "photo-film",
-        ]);
-
-        $factory->createSeed($this->table, [
-            "name" => "PHP Cli",
-            "href" => "phpclis",
-            "icon" => "code",
         ]);
 
         $factory->createSeed($this->table, [
@@ -78,9 +66,15 @@ class CreateTableAdmin_hrefsSeed
         ]);
 
         $factory->createSeed($this->table, [
-            "name" => "Nastavení",
-            "href" => "settings",
-            "icon" => "cog",
+            "name" => "Scheduler",
+            "href" => "scheduler",
+            "icon" => "calendar",
+        ]);
+
+        $factory->createSeed($this->table, [
+            "name" => "Cache",
+            "href" => "cache",
+            "icon" => "database",
         ]);
     }
 

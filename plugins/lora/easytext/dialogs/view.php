@@ -1,6 +1,6 @@
 <?php
     require_once('../../../../core/model/easyText.php');
-    $easyText = $this->injector["Easytext"];
+    $easyText = $this->container["Easytext"];
     
     $txt = $easyText->translateText($_POST['text'], "50%");
     echo "<script>alert('".$_GET['text']."')</script>";

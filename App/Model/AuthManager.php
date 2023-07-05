@@ -3,7 +3,6 @@ declare (strict_types=1);
 
 namespace App\Model;
 
-use App\Core\Model;
 use App\Core\Lib\Utils\StringUtils;
 use App\Core\Lib\EmailSender;
 use App\Middleware\Session;
@@ -12,11 +11,13 @@ use App\Core\Database\DB;
 use App\Core\Application\DotEnv;
 use App\Core\Lib\Uploader;
 use App\Core\Lib\Utils\MediaUtils;
+use App\Core\DI\DIContainer;
+use App\Exception\LoraException;
 
-class AuthManager extends Model
+class AuthManager
 {
 
-    public Uploader $upload;
+    public ?Uploader $uploader;
     public ?StringUtils $s_utils = null;
     
     protected $database;
@@ -25,41 +26,27 @@ class AuthManager extends Model
     
     protected $email;
     protected $env;
+
+    private $session;
+
+    private DIContainer $container;
     
-    private static $_instance;
-    private static $_instance_id;
-    
-    public static function instance()
-    {
-        if(self::$_instance == null)
-        {
-            self::$_instance = new self;
-            self::$_instance_id = rand(000000,999999);
-        }
-        
-        return self::$_instance;
-    }
-    
-    public function __construct($injected_classes = null)
+    public function __construct(DIContainer $container, Uploader $uploader, StringUtils $string_utils, EmailSender $email_sender)
     {
         
-        $this->init();
-        $this->env = new DotEnv();
+        $this->container = $container;
+
+        $this->env = $this->container->set(DotEnv::class, [".env"]);
         
-        $this->database = DB::instance($_ENV["db_driver"], db_name: $_ENV["db_name"]);//$injected_classes["Database"];
+        $this->database = DB::instance($_ENV["db_driver"], db_name: $_ENV["db_name"]);
        
+        $this->s_utils = $string_utils;
+    
+        $this->uploader = $uploader;
         
-        if($this->s_utils == null)
-        {
-            $this->s_utils = new StringUtils();
-        }
+        $this->email = $email_sender;
         
-        if($this->uploader == null)
-        {
-            $this->uploader = new Uploader();
-        }
-        
-        $this->email = new EmailSender();
+        $this->session = $this->env = $this->container->get(Session::class);
     }
     
     public function login(string $name, string $password)
@@ -77,15 +64,14 @@ class AuthManager extends Model
             
             if(password_verify($password, $db_password))
             {         
-                $_SESSION[$this->auth->session_instance]["user"] = $user_name;
-                $_SESSION[$this->auth->session_instance]["uid"] = $uid;
-                $_SESSION[$this->auth->session_instance]["user_email"] = $email;
-                $_SESSION[$this->auth->session_instance]["raw_id"] = $raw_id;
-                $_SESSION[$this->auth->session_instance]["status"] = 1;
+                $_SESSION[$this->container->get(Auth::class)->session_instance]["user"] = $user_name;
+                $_SESSION[$this->container->get(Auth::class)->session_instance]["uid"] = $uid;
+                $_SESSION[$this->container->get(Auth::class)->session_instance]["user_email"] = $email;
+                $_SESSION[$this->container->get(Auth::class)->session_instance]["raw_id"] = $raw_id;
+                $_SESSION[$this->container->get(Auth::class)->session_instance]["status"] = 1;
                 
-                $session = new Session();
-                $session->generateSID(1);
-                $session->generateSJID(1);
+                $this->session->generateSID(1);
+                $this->session->generateSJID(1);
                 
                 $this->database->update($this->table, ["last_login"=>time(), "status"=>1], "uid=?", [$uid]);
                 if(isset($_COOKIE["cookies_accepted"]) && $_COOKIE["cookies_accepted"] == true)
@@ -103,28 +89,27 @@ class AuthManager extends Model
             }
             else
             {
-                throw new \App\Exception\LoraException("Zadané heslo není platné!");
+                throw new LoraException("Zadané heslo není platné!");
             }
         }
         else 
         {
-            throw new \App\Exception\LoraException("Tento uživatel zde není zaregistrován nebo nemá ověřený účet!");
+            throw new LoraException("Tento uživatel zde není zaregistrován nebo nemá ověřený účet!");
         }
     }
     
     public function logout(): Bool
     {
         session_regenerate_id(true);
-        $session = new Session();
 
-        if(isset($_SESSION[$this->auth->session_instance]))
+        if(isset($_SESSION[$this->container->get(Auth::class)->session_instance]))
         {
-            $this->database->update($this->table, ["status"=>0], "uid=?", [$_SESSION[$this->auth->session_instance]["uid"]]);
-            unset($_SESSION[$this->auth->session_instance]);
+            $this->database->update($this->table, ["status"=>0], "uid=?", [$_SESSION[$this->container->get(Auth::class)->session_instance]["uid"]]);
+            unset($_SESSION[$this->container->get(Auth::class)->session_instance]);
         }
 
-        $session->generateSID(1);
-        $session->generateSJID(1);
+        $this->session->generateSID(1);
+        $this->session->generateSJID(1);
         
         if(isset($_COOKIE["session_key"]))
         {
@@ -181,7 +166,7 @@ class AuthManager extends Model
         }
         else
         {
-            throw new \App\Exception\LoraException("Toto jméno nebo email je již zaregistrované v systému!");
+            throw new LoraException("Toto jméno nebo email je již zaregistrované v systému!");
         }
     }
     
@@ -222,11 +207,11 @@ class AuthManager extends Model
     
     public function changeStatus($status): Bool
     {
-        if(isset($_SESSION[$this->auth->session_instance]))
+        if(isset($_SESSION[$this->container->get(Auth::class)->session_instance]))
         {
-            $this->database->update($this->table, ["status"=>$status], "uid=?", [$_SESSION[$this->auth->session_instance]["uid"]]);
-            $_SESSION[$this->auth->session_instance]["user_status"] = $status;
-            $this->auth->user_status = $status;
+            $this->database->update($this->table, ["status"=>$status], "uid=?", [$_SESSION[$this->container->get(Auth::class)->session_instance]["uid"]]);
+            $_SESSION[$this->container->get(Auth::class)->session_instance]["user_status"] = $status;
+            $this->container->get(Auth::class)->user_status = $status;
             return true;
         }
         else

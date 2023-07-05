@@ -26,12 +26,12 @@ class UserDashboardController extends UserController
     private string $template_folder = "User/";
 
     
-    public function __construct($injector, $model)
+    public function __construct($container, $model)
     {
-        parent::__construct($injector);
+        parent::__construct($container);
         
         $this->module = "User";
-        $this->injector = $injector;
+        $this->container = $container;
         $this->model = $model;
     }
     
@@ -61,7 +61,7 @@ class UserDashboardController extends UserController
     public function create()
     {
         $this->data = [
-            "form" => $this->injector["Easytext"]->form("content", "", ["hide_submit" => 1])
+            "form" => $this->container["Easytext"]->form("content", "", ["hide_submit" => 1])
         ];
         return $this->view = $this->template_folder."create";
     }
@@ -87,7 +87,7 @@ class UserDashboardController extends UserController
 
         $this->data = [
             "get" => $get,
-            "form" => $this->injector["Easytext"]->form("content", "", ["hide_submit" => 1])
+            "form" => $this->container["Easytext"]->form("content", "", ["hide_submit" => 1])
         ];
         return $this->view = $this->template_folder."edit";
     }

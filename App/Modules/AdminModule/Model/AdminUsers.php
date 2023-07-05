@@ -16,16 +16,17 @@ namespace App\Modules\AdminModule\Model;
 use App\Modules\AdminModule\Model\Admin;
 use App\Core\Lib\Utils\ArrayUtils;
 use App\Core\Interface\ModelDBInterface;
+use App\Core\DI\DIContainer;
 
 class AdminUsers extends Admin implements ModelDBInterface
 {
 
     protected $model_table = "users";
-    private array|null $model_data;
+    private array|null $model_data = [];
 
-    public function __construct()
+    public function __construct(DIContainer $container)
     {
-        parent::__construct();        
+        parent::__construct($container);      
     }
 
     /**
@@ -92,7 +93,6 @@ class AdminUsers extends Admin implements ModelDBInterface
                 $db_query[$id]["_content"] = $this->easy_text->translateText($content);
                 $db_query[$id]["_tags"] = ArrayUtils::charStringToArray($tags);
             }
-            $this->model_data = $db_query;
             return $db_query;
         }
         else
@@ -119,7 +119,17 @@ class AdminUsers extends Admin implements ModelDBInterface
         $db_query = $this->db->selectRow($this->model_table, "uid=?", [$uid]);
         if(!empty($db_query))
         {            
-            $this->model_data = $db_query;
+            $is_admin = $this->db->selectRow("role-id", "user_uid=? AND role_slug=?", [$uid, "admin"]);
+                
+                if(!empty($is_admin))
+                {
+                    $db_query["is_admin"] = true;
+                }
+                else
+                {
+                    $db_query["is_admin"] = false;
+                }
+
             return $db_query;
         }
         else

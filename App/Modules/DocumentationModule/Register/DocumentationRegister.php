@@ -87,7 +87,7 @@ class DocumentationRegister
                 "url" => $url_name."/delete/:url",
                 "controller" => $class,
                 "template" => "",
-                "route" => $route_name.".delete@delete",
+                "route" => $route_name.".delete@get",
                 "classes" => [],
                 "access" => "admin,editor"
             ]

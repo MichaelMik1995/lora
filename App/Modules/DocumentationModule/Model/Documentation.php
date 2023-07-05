@@ -3,23 +3,26 @@ declare (strict_types=1);
 
 namespace App\Modules\DocumentationModule\Model;
 
-use App\Core\Model;
 use App\Core\Lib\Utils\StringUtils;
+use App\Core\DI\DIContainer;
+use App\Core\Database\DB;
+use Lora\Easytext\Easytext;
 
-class Documentation extends Model
+class Documentation
 {
 
     protected $table = "documentation";
     protected $table_categories = "documentation-categories";
     protected $table_versions = "documentation-versions";
-    
-    public function __construct(string $route_param = null) {
-        $this->init();
-        if ($route_param != null) {
-            $this->db->route_param = $route_param;
-        }
 
-        $this->db->table = $this->table; //Uncheck if table name is not like controller name
+    protected DB $database;
+    protected Easytext $easy_text;
+    
+    public function __construct(DIContainer $container) 
+    {
+        $this->database = $container->get(DB::class);
+        $this->database->table = $this->table; //Uncheck if table name is not like controller name
+        $this->easy_text = $container->get(Easytext::class);
     }
     
     /**
@@ -29,7 +32,7 @@ class Documentation extends Model
      */
     public function getAll(string $order_by = "id ASC"): Array
     {
-        $db_query = $this->db->select($this->table_categories, "id!=? ORDER BY $order_by", [0]);
+        $db_query = $this->database->select($this->table_categories, "id!=? ORDER BY $order_by", [0]);
         
         if(!empty($db_query))
         {
@@ -58,7 +61,7 @@ class Documentation extends Model
      */
     public function getSheetsByCategory(string $category_url, string $order_by = "id ASC"): Array
     {
-        $db_query = $this->db->select($this->table, "category=? ORDER BY $order_by", [$category_url]);
+        $db_query = $this->database->select($this->table, "category=? ORDER BY $order_by", [$category_url]);
         
         if(!empty($db_query))
         {
@@ -88,7 +91,7 @@ class Documentation extends Model
     public function get(string $url, string $route_key="url"): Array
     {
         
-        $db_query = $this->db->selectRow("documentation", "url=?", [$url]);
+        $db_query = $this->database->selectRow("documentation", "url=?", [$url]);
 
 
         if(!empty($db_query))
@@ -110,7 +113,7 @@ class Documentation extends Model
      * @param array $post
      * @param string $new_url
      * @param StringUtils $string_utils
-     * @return type
+     * @return void
      */
     public function insert(array $post, string $new_url, StringUtils $string_utils)
     {
@@ -121,7 +124,7 @@ class Documentation extends Model
         {
             $version = $post["add-version"];
             $version_url = $string_utils->toSlug($version);
-            $this->db->insert($this->table_versions, ["version" => $version, "url" => $version_url]);
+            $this->database->insert($this->table_versions, ["version" => $version, "url" => $version_url]);
         }
         else
         {
@@ -134,7 +137,7 @@ class Documentation extends Model
         {
             $category = $post["add-category"];
             $category_url = $string_utils->toSlug($category);
-            $this->db->insert($this->table_categories, ["title" => $category, "url" => $category_url]);
+            $this->database->insert($this->table_categories, ["title" => $category, "url" => $category_url]);
         }
         else
         {
@@ -143,7 +146,7 @@ class Documentation extends Model
         }
         
         
-        return $this->db->tableInsert($this->table, [
+        return $this->database->tableInsert($this->table, [
             "title" => $post["title"],
             "url" => $new_url,
             "version" => $version_url,
@@ -163,7 +166,7 @@ class Documentation extends Model
         {
             $version = $post["add-version"];
             $version_url = $string_utils->toSlug($version);
-            $this->db->insert($this->table_versions, ["version" => $version, "url" => $version_url]);
+            $this->database->insert($this->table_versions, ["version" => $version, "url" => $version_url]);
         }
         else
         {
@@ -176,7 +179,7 @@ class Documentation extends Model
         {
             $category = $post["add-category"];
             $category_url = $string_utils->toSlug($category);
-            $this->db->insert($this->table_categories, ["title" => $category, "url" => $category_url]);
+            $this->database->insert($this->table_categories, ["title" => $category, "url" => $category_url]);
         }
         else
         {
@@ -185,7 +188,7 @@ class Documentation extends Model
         }
         
         
-        return $this->db->update($this->table, [
+        return $this->database->update($this->table, [
             "title" => $post["title"],
             "version" => $version_url,
             "category" => $category_url,
@@ -195,20 +198,20 @@ class Documentation extends Model
         ], "url=?", [$post['url']]);
     }
     
-    public function delete(string $route_key = "url")
+    public function delete(string $url)
     {
         // delete row
-        return $this->db->tableDeleteByRoute($route_key);
+        return $this->database->delete($this->table, "url=?", [$url]);
     }
     
     public function getVersions()
     {
-        return $this->db->select($this->table_versions, "id!=? ORDER BY version DESC", [0]);
+        return $this->database->select($this->table_versions, "id!=? ORDER BY version DESC", [0]);
     }
     
     public function getCategories()
     {
-        return $this->db->select($this->table_categories, "id!=? ORDER BY title DESC", [0]);
+        return $this->database->select($this->table_categories, "id!=? ORDER BY title DESC", [0]);
     }
 }
 ?>

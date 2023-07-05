@@ -19,6 +19,7 @@ use App\Modules\AdminModule\Controller\Splitter\AdminPluginsController;
 use App\Modules\AdminModule\Controller\Splitter\AdminSettingController;
 use App\Modules\AdminModule\Controller\Splitter\AdminUsersController;
 use App\Modules\AdminModule\Controller\Splitter\AdminVariablesController;
+use App\Modules\AdminModule\Controller\Splitter\AdminSecurityController;
 
 //Interfaces
 use App\Core\Interface\ModuleInterface;
@@ -26,6 +27,7 @@ use App\Core\Interface\ModuleInterface;
 //Module Model
 use App\Modules\AdminModule\Model\Admin;
 use App\Modules\AdminModule\Model\AdminHrefs;
+use App\Middleware\Auth;
 
 /**
  * 
@@ -33,10 +35,6 @@ use App\Modules\AdminModule\Model\AdminHrefs;
 class AdminController extends Controller implements ModuleInterface
 {
     
-    /**
-     * @var array <p>Injected classes to controller</p>
-     */
-    protected $injector;
     
     /**
      * @var array <p>Data from URL address (/homepage/show/:url) -> $u['url'] = ?</p>
@@ -48,15 +46,15 @@ class AdminController extends Controller implements ModuleInterface
      */
     protected $model;
     
-    public function __construct($injector)
+    public function __construct($container)
     {
-        parent::__construct($injector, u: $this->u, model: $this->model);
+        parent::__construct($container, u: $this->u, model: $this->model);
         
-        $injector["Auth"]->access(["admin"]);
+        $container->get(Auth::class)->access(["admin"]);
 
-        $this->injector = $injector;
+        //$this->container = $container;
         $this->model = [
-            "admin" => new Admin(),
+            "admin" => new Admin($this->container),
         ];
     }
     
@@ -95,12 +93,22 @@ class AdminController extends Controller implements ModuleInterface
                 "media-pictures-delete" => "pictureDelete",
                 "picture-update-alt" => "updateAltText",
             ];
+
+            $log_pages = [
+                "logs" => "index"
+            ];
+
+            $security_pages = [
+                "security" => "index"
+            ];
             
             $this->splitter(AdminDashboardController::class, $dashboard_pages, "Přehled");
             $this->splitter(AdminUsersController::class, $users_pages, "Uživatelé");
             $this->splitter(AdminCLIController::class, $cli_pages, "PHP CLI");
             $this->splitter(AdminSettingController::class, $settings_pages);
             $this->splitter(AdminMediaController::class, $media_pages);
+            $this->splitter(AdminLogController::class, $log_pages);
+            $this->splitter(AdminSecurityController::class, $security_pages);
         }
 
 

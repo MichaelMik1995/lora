@@ -3,18 +3,25 @@ declare (strict_types=1);
 
 namespace App\Modules\{module}Module\Model;
 
-use App\Core\Model;
+use App\Core\DI\DIContainer;
+use Lora\Easytext\Easytext;
+use App\Core\Database\DB;
 
-class {Model_name} extends Model
+class {Model_name}
 {
 
     protected $table = "{model_name}";
+
+    private $database;
+    protected $container;
+    private $easy_text;
     
-    public function __construct(string $route_param = null) {
-        $this->init();
-        if ($route_param != null) {
-            $this->db->route_param = $route_param;
-        }
+    //__Parent Constructed
+    public function __construct(DIContainer $container)  //Cannot add more arguments! DIContainer $container must be only one argument
+    {
+        $this->container = $container;
+        $this->database = $container->get(DB::class);
+        $this->easy_text = $container->get(Easytext::class);
 
         //$this->database->table = $this->table; //Uncheck if table name is not like controller name
     }
@@ -26,20 +33,25 @@ class {Model_name} extends Model
      */
     public function getAll(string $order_by = "id ASC"): Array
     {
-        $db_query = $this->db->tableAllData($order_by);
+        $db_query = $this->database->tableAllData($order_by);
         if(!empty($db_query))
         {
-            $returnArray = [];
+            $return_array = [];
             $i = 0;
+            
             foreach($db_query as $row)
             {
                 $id = $i++;
-                $content = $row["content"];
                 
-                $db_query[$id]["_content"] = $this->easy_text->translateText($content);
+                //Filter indexes from $row
+                $return_array[$id] = array_filter($row, "is_string", ARRAY_FILTER_USE_KEY);
+                
+                //$content = $row["content"];
+                
+                //$return_array[$id]["_content"] = $this->easy_text->translateText($content);
             }
             
-            return $db_query;
+            return $return_array;
         }
         else
         {
@@ -58,7 +70,7 @@ class {Model_name} extends Model
 
         $computed_limit = (($page - 1)*$limit_per_page. ", " .$limit_per_page);
 
-        $db_query = $this->db->tableAllData("id", $computed_limit);
+        $db_query = $this->database->tableAllData("id", $computed_limit);
         
         if(!empty($db_query))
         {
@@ -69,7 +81,7 @@ class {Model_name} extends Model
                 $tags = $row["tags"];
                 
                 $db_query[$id]["_content"] = $this->easy_text->translateText($content);
-                $db_query[$id]["_tags"] = ArrayUtils::charStringToArray($tags);
+                $db_query[$id]["_tags"] = $this->container->get(ArrayUtils::class)::charStringToArray($tags);
             }
             
             return $db_query;
@@ -89,7 +101,7 @@ class {Model_name} extends Model
      */
     public function get(string $route_key="url"): Array
     {
-        $db_query = $this->db->tableRowByRoute();
+        $db_query = $this->database->tableRowByRoute();
         if(!empty($db_query))
         {
             $content = $db_query["content"];
@@ -107,19 +119,19 @@ class {Model_name} extends Model
     public function insert(array $insert_values)
     {
         // Insert new row
-        return $this->db->tableInsert($this->table, $insert_values);
+        return $this->database->tableInsert($this->table, $insert_values);
     }
     
     public function update(array $set, string $route_key = "url")
     {
         // update row
-        return $this->db->tableUpdateByRoute($set, $route_key);
+        return $this->database->tableUpdateByRoute($set, $route_key);
     }
     
     public function delete(string $route_key = "url")
     {
         // delete row
-        return $this->db->tableDeleteByRoute($route_key);
+        return $this->database->tableDeleteByRoute($route_key);
     }
 }
 ?>
