@@ -1,4 +1,0 @@
-original_name=KatarinaPreFINAL.png
-generated_name=ed91686
-extension=png
-alt=Write alternative text for this picture

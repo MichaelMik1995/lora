@@ -1,4 +1,0 @@
-original_name=1634728803214.jpg
-generated_name=b15c82f
-extension=jpg
-alt=Gun trezor

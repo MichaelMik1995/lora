@@ -1,4 +1,0 @@
-original_name=fotor-ai-2023070510126.jpg
-generated_name=2afc55b
-extension=jpg
-alt=Write alternative text for this picture

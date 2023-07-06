@@ -1,4 +1,0 @@
-original_name=dream_TradingCard (12).jpg
-generated_name=a6a258e
-extension=jpg
-alt=Write alternative text for this picture
