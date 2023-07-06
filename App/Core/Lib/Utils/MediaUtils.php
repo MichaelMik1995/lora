@@ -41,7 +41,7 @@ class MediaUtils implements InstanceInterface
     
     public function uploadOneImage(string $folder, string $post_field_name = "image", string $new_image_name = "", string $new_ext = "none")
     {
-        // Získání informací o souboru
+        // Collecting information from uploaded image
         $file = $_FILES[$post_field_name];
         $file_name = $file['name'];
         $file_tmp = $file['tmp_name'];
@@ -49,14 +49,14 @@ class MediaUtils implements InstanceInterface
 
         // Kontrola, zda byl soubor úspěšně nahrán
         if (!is_uploaded_file($file_tmp)) {
-            throw new Exception('Neplatný soubor');
+            throw new Exception('Soubor se nepodařilo nahrát!');
         }
 
         // Kontrola typu souboru
         $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
         $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
         if (!in_array($file_ext, $allowed_extensions)) {
-            throw new Exception('Neplatný typ souboru. Povolené formáty: ' . implode(', ', $allowed_extensions));
+            throw new Exception('Neplatný typ nahráváného obrázku. Povolené formáty: ' . implode(', ', $allowed_extensions));
         }
 
         // Pokud je $new_image_name prázdný, vygeneruj nové jméno souboru
@@ -157,8 +157,8 @@ class MediaUtils implements InstanceInterface
     * @param string $source_image The path to the source image.
     * @param string $image_destination The destination folder where the resized image will be saved.
     * @param string $new_image_name The name of the resized image.
-    * @param int $target_width The target width of the resized image. Default is 256 pixels.
-    * @param int $target_height The target height of the resized image. Default is 256 pixels.
+    * @param int|null $target_width The target width of the resized image. Default is 256 pixels.
+    * @param int|null $target_height The target height of the resized image. Default is 256 pixels.
     * @return bool Returns true on success, false on failure.
     */
     public function resizeImage($source_image, $image_destination, mixed $new_image_name, $target_width = 256, $target_height = 128, $percent_scale = 0): Bool

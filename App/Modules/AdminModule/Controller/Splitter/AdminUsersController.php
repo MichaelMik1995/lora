@@ -3,6 +3,7 @@ declare (strict_types=1);
 
 namespace App\Modules\AdminModule\Controller\Splitter;
 
+use App\Core\Lib\Uploader;
 use App\Modules\AdminModule\Controller\AdminController;
 use App\Modules\AdminModule\Model\AdminUsers;
 use App\Core\Lib\Utils\StringUtils;
@@ -90,7 +91,7 @@ class AdminUsersController extends AdminController
         
     }
     
-    public function userVerify(AdminUsers $users, LoraException $exception)
+    public function userVerify(AdminUsers $users, LoraException $exception, Redirect $redirect)
     {
         $user_uid = $this->u["param"];
         
@@ -116,6 +117,27 @@ class AdminUsersController extends AdminController
     public function userAdminSwitcher(AdminUsers $users, LoraException $exception)
     {
 
+    }
+
+    public function userChangeProfileImage(MediaUtils $media, LoraException $lora_exception, Redirect $redirect)
+    {
+        $uid = $this->u["param"];
+        try {
+            $media->uploadOneImage("public/img/avatar", "avatar", $uid);
+
+            //resize image
+            $media->resizeImage("public/img/avatar/$uid.png", "public/img/avatar/512", $uid, target_width: "512", target_height: null);
+            $media->resizeImage("public/img/avatar/$uid.png", "public/img/avatar/256", $uid, target_width: "256", target_height: null);
+            $media->resizeImage("public/img/avatar/$uid.png", "public/img/avatar/128", $uid, target_width: "128", target_height: null);
+            $media->resizeImage("public/img/avatar/$uid.png", "public/img/avatar/64", $uid, target_width: "64", target_height: null);
+            $media->resizeImage("public/img/avatar/$uid.png", "public/img/avatar/32", $uid, target_width: "32", target_height: null);
+
+            unlink("public/img/avatar/$uid.png");
+            $lora_exception->successMessage("Avatar byl úspěšně změněn!");
+        }catch (LoraException $ex) {
+            $lora_exception->errorMessage($ex->getMessage());
+        }
+        $redirect->to("admin/app/user-show/$uid");
     }
 }
 

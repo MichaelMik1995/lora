@@ -5,6 +5,17 @@
         <div>
             <img alt="profile-picture128-{{ $user['uid'] }}" class="height-128p" src="{{ asset('img/avatar/128/'.$user['uid'].'.png') }}">
         </div>
+        <div>
+            <form method="post" action="/admin/app/user-change-profile-image/{{ $user['uid'] }}" enctype="multipart/form-data">
+                @csrfgen
+                @request(update)
+
+                <div class="form-line">
+                    <input type="file" name="avatar" id="avatar" class="input-dark pd-2"><br>
+                    <button type="submit" class="button button-info">Změnit obrázek</button>
+                </div>
+            </form> 
+        </div>
         <div class="pdy-2 header-4 t-bolder">
             {{ $user['name'] }}
         </div>

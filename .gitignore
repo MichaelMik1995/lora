@@ -8,6 +8,8 @@ App/Modules/*
 !HomepageModule/
 !UserModule/
 
+App/Modules/AdminModule/resources/img/user/*
+
 App/Trash
 
 
