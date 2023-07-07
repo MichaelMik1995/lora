@@ -75,7 +75,7 @@ class AdminUsersController extends AdminController
         return $this->view = "users/show";
     }
     
-    public function createUser(AdminUsers $users, AuthManager $manager)
+    public function createUser(AdminUsers $users, AuthManager $manager, Redirect $redirect, LoraException $exception)
     {
         $post = $this->input("user-name", "required,maxchars64", "User name")
             ->input("user-real-name", "required,maxchars64")
@@ -86,9 +86,14 @@ class AdminUsersController extends AdminController
         
         try {
             $manager->register($post["user-name"], $post["user-email"], "man", $post["user-password"], $post["user-password"], DATE("Y")+1);
+            $exception->successMessage("User created successfully");
+            $redirect->to("admin/app/users");
         } catch (LoraException $ex) {
-
+            $exception->errorMessage($ex->getMessage());
+            $redirect->previous();
         }
+
+        
         
     }
     
@@ -161,9 +166,26 @@ class AdminUsersController extends AdminController
     }
 
 
-    public function userRemove(AdminUsers $users, LoraException $exception, Redirect $redirect)
+    public function userRemove(AdminUsers $users, EmailSender $sender, LoraException $exception, Redirect $redirect)
     {
+        $uid = $this->u["param"];
+        $user_data = $users->getUser($uid);
+        $user_email = $user_data["email"];
 
+        try {
+            $sender->send($user_email, "Odebrání uživatele", "message_deleted_account_by_system", [
+                "{user}" => $user_data["name"],
+                "{web_name}" => env("web_name", false),
+            ]);
+            $users->deleteUser($uid);
+
+            $exception->successMessage("Uživatel byl odebrán!");
+        }catch(LoraException $ex) {
+            $exception->errorMessage($ex->getMessage());
+        }
+        $redirect->to("admin/app/users");
+    
+        
     }
     public function userChangeProfileImage(MediaUtils $media, LoraException $lora_exception, Redirect $redirect)
     {

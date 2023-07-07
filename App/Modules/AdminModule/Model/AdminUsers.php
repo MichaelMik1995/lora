@@ -156,10 +156,52 @@ class AdminUsers extends Admin implements ModelDBInterface
         return $this->database->update($this->model_table, $set, "url=?", [$url]);
     }
     
-    public function deleteUser(string $url)
+    public function deleteUser(string $uid)
     {
-        // delete row
-        return $this->database->delete($this->model_table, "url=?", [$url]);
+        //Destroy image avatar
+        @unlink("./public/img/avatar/32/$uid.png");
+        @unlink("./public/img/avatar/64/$uid.png");
+        @unlink("./public/img/avatar/128/$uid.png");
+        @unlink("./public/img/avatar/256/$uid.png");
+        @unlink("./public/img/avatar/512/$uid.png");
+
+        if(file_exists("./public/img/avatar/$uid.png"))
+        {
+            unlink("./public/img/avatar/$uid.png");
+        }
+
+        //Destroy admin folders if exists
+        $admin_media_path = "./App/Modules/AdminModule/resources/img/user/$uid";
+        if(is_dir($admin_media_path))
+        {
+            foreach(glob($admin_media_path."/thumb/*") as $file_thumb)
+            {
+                unlink($file_thumb);
+            }
+            rmdir($admin_media_path."/thumb");
+
+            foreach(glob($admin_media_path."/*") as $file_image)
+            {
+                unlink($file_image);
+            }
+
+            rmdir($admin_media_path);
+        }
+
+        //Remove from roles
+        $remove_roles = $this->database->delete("role-id", "user_uid=?", [$uid]);
+
+        //Remove from users
+        $remove_user = $this->database->delete("users", "uid=?", [$uid]);
+
+        if($remove_roles && $remove_user)
+        {
+            return true;
+        }
+        else
+        {
+            throw new LoraException("Chyba při odstraňování uživatele!");
+        }
     }
 
     public function verifyUser(int|string $uid)

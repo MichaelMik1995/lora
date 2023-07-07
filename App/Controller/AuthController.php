@@ -228,6 +228,7 @@ class AuthController extends Controller
 
             $sender->send($post["email"], "Reset hesla", "message_req_reset_password", [
                 "{user}" => "",
+                "{email_full}" => $post["email"],
                 "{web_name}" => env("web_name", false),
                 "{web_url}" => env("web_url", false),
                 "{recover_code}" => urlencode($recover_code),

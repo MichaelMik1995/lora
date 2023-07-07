@@ -185,7 +185,6 @@ class AuthManager
             //create Avatars
             $this->createAvatars($gender, $uid);
             
-            
             //send email for verify code
             $this->email->send($email, "Registrace nového člena", "message_register", [
                 "{new_user}" => $name,
@@ -274,32 +273,6 @@ class AuthManager
         unlink("public/img/avatar/$uid.png");
         
         return true;
-    }
-    public function removeUser($uid)
-    {
-        //Destroy image avatar
-        @unlink("./public/img/avatar/$uid.png");
-
-        //Destroy folders
-        @unlink("./public/img/user/$uid/images/thumb");
-        @unlink("./public/img/user/$uid/images");
-        @unlink("./public/img/user/$uid");
-
-        //Remove from roles
-        $remove_roles = $this->database->delete("role-id", "user_uid=?", [$uid]);
-
-        //Remove from users
-        $remove_user = $this->database->delete($this->table, "uid=?", [$uid]);
-
-        if($remove_roles && $remove_user)
-        {
-            return true;
-        }
-        else
-        {
-            throw new \Exception("Chyba při odstraňování uživatele!");
-        }
-
     }
 
     public function sendRecoverPasswordCode(string $email)
