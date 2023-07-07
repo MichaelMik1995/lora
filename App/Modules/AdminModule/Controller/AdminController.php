@@ -76,6 +76,10 @@ class AdminController extends Controller implements ModuleInterface
                 "user-upload" => "userUpload",
                 "user-verify" => "userVerify",
                 "user-change-profile-image" => "userChangeProfileImage",
+                "user-admin-grant" => "userAdminGrant",
+                "user-admin-remove" => "userAdminRemove",
+                "user-password-reset" => "userPasswordReset",
+                "user-remove" => "userRemove",
             ];
 
             $cli_pages = [

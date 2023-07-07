@@ -3,6 +3,7 @@ declare (strict_types=1);
 
 namespace App\Controller;
 
+use App\Core\Lib\EmailSender;
 use App\Model\AuthManager;
 use App\Exception\LoraException;
 use App\Middleware\Session;
@@ -210,6 +211,106 @@ class AuthController extends Controller
     public function verifyError()
     {
         $this->title = lang("title_verify_error", false);
+    }
+
+    public function forgotPassword()
+    {
+        $this->title = lang("forgot_header", false);
+    }
+
+    public function sendRecoverPasswordKey(AuthManager $auth_manager, EmailSender $sender, Redirect $redirect, LoraException $lora_exception)
+    {
+        $post = $this->input("email", "required,email", lang("recover_email_field", false))->returnFields();
+
+        try {
+            $this->validate();
+            $recover_code = $auth_manager->sendRecoverPasswordCode($post["email"]);
+
+            $sender->send($post["email"], "Reset hesla", "message_req_reset_password", [
+                "{user}" => "",
+                "{web_name}" => env("web_name", false),
+                "{web_url}" => env("web_url", false),
+                "{recover_code}" => urlencode($recover_code),
+                "{email}" => urlencode(str_replace('.', '%2E', $post["email"])),
+            ]);
+
+            $lora_exception->successMessage(lang("forgot_success_message", false));
+            $redirect->to("auth/forgot-success");
+        }
+        catch (LoraException $ex)
+        {
+            $lora_exception->errorMessage($ex->getMessage());
+            $redirect->to("auth/login");
+        }
+    }
+
+    public function forgotSuccess()
+    {
+        $this->title = lang("title_forgot_success", false);
+    }
+
+    /**
+     * View form to change password (auth/request-recover-password)
+     *
+     * @return array
+     */
+    public function requestRecoverPassword(AuthManager $auth_manager, Auth $auth, Redirect $redirect, LoraException $lora_exception)
+    {
+        $url_email = urldecode($this->u["email"]);
+        $url_key = urldecode($this->u["key"]);
+        $email = str_replace("%2E", ".", $url_email);
+
+        // check if user is logged
+        if($auth->isLogged() == true)
+        {
+            $lora_exception->errorMessage("Recover password is not available for logged user!");
+            $redirect->to("homepage");
+        }
+
+        if($auth_manager->checkExistinRecoverKey($url_key, $email) == false)
+        {
+            $lora_exception->errorMessage("Recover password is not available for this email!");
+            $redirect->to("auth/login");
+        }
+
+        
+
+        
+
+        return $this->data = [
+            "email" => $email,
+            "key" => $url_key
+        ];
+    }
+
+    public function doRecoverPassword(AuthManager $auth_manager, Redirect $redirect, LoraException $lora_exception)
+    {
+        $post = $this->input("name", "required,string", lang("recover_name_field", false))
+                ->input("email", "required,email", lang("recover_email_field", false))
+                ->input("key", "required,url", lang("recover_key_field", false))
+                ->input("password1", "required,string", lang("recover_password1_field", false))
+                ->input("password2", "required,string", lang("recover_password2_field", false))
+                ->input("antispam", "required,antispam,not0", lang("register_antispam_field", false))
+                ->returnFields();
+
+        try {
+            $this->validate();
+            $this->passwordConfirm($post["password1"], $post["password2"]);
+
+            $auth_manager->recoverPassword($post);
+
+            $lora_exception->successMessage(lang("succes_recover_password_message", false));
+            $redirect->to("auth/recover-password-success");
+        }catch(LoraException $ex)
+        {
+            $lora_exception->errorMessage($ex->getMessage());
+            $redirect->previous();
+        }
+    }
+
+    public function recoverPasswordSuccess()
+    {
+        $this->title = lang("title_recover_password_success", false);
     }
 }
 ?>

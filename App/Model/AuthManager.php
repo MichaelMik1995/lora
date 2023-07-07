@@ -13,6 +13,7 @@ use App\Core\Lib\Uploader;
 use App\Core\Lib\Utils\MediaUtils;
 use App\Core\DI\DIContainer;
 use App\Exception\LoraException;
+use App\Core\Lib\Language;
 
 
 class AuthManager
@@ -299,6 +300,50 @@ class AuthManager
             throw new \Exception("Chyba při odstraňování uživatele!");
         }
 
+    }
+
+    public function sendRecoverPasswordCode(string $email)
+    {
+        $new_key_hash = $this->s_utils->genarateHashedString(26);
+        
+        $slugged_string = $this->s_utils->toSlug($new_key_hash);
+        $this->database->update($this->table, ["password_recover_key"=>$slugged_string], "email=?", [$email]);
+        return $slugged_string;
+    }
+
+    /**
+     * Check, if key exists in database with user email address (if is valid)
+     *
+     * @param string $key
+     * @param string $email
+     * @return bool
+     */
+    public function checkExistinRecoverKey(string $key, string $email): Bool
+    {
+        $db_query = $this->database->selectRow($this->table, "email=? AND password_recover_key=?", [$email, $key]);
+        if(!empty($db_query))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function recoverPassword(array $post)
+    {
+        extract($post);
+        $db_query = $this->database->selectRow($this->table, "email=? AND password_recover_key=? AND name=?", [$email, $key, $name]);
+        if(!empty($db_query))
+        {
+            $password_hash = $this->s_utils->generateHashedPassword($password1);
+            return $this->database->update($this->table, ["password"=>$password_hash, "password_recover_key"=>null], "email=? AND name=?", [$email, $name]);
+        }
+        else
+        {
+            throw new LoraException($this->container->get(Language::class)->lang("recover_password_error"));
+        }
     }
 }
 ?>

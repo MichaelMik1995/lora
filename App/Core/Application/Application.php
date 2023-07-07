@@ -191,7 +191,7 @@ class Application
 
             if($this->register_url_request != $to_lower_case && $this->register_url_request != "mixed")
             {
-                $redirect->to("error/bad-method");
+                $this->container->get(Redirect::class)->to("error/bad-method");
             }
         }
 

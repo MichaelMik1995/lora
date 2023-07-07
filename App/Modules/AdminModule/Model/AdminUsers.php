@@ -16,7 +16,11 @@ namespace App\Modules\AdminModule\Model;
 use App\Modules\AdminModule\Model\Admin;
 use App\Core\Lib\Utils\ArrayUtils;
 use App\Core\Interface\ModelDBInterface;
+use App\Core\Lib\Utils\StringUtils;
 use App\Core\DI\DIContainer;
+use App\Exception\LoraException;
+use App\Core\Database\Database;
+use App\Middleware\Auth;
 
 class AdminUsers extends Admin implements ModelDBInterface
 {
@@ -120,8 +124,8 @@ class AdminUsers extends Admin implements ModelDBInterface
         if(!empty($db_query))
         {            
             $is_admin = $this->database->selectRow("role-id", "user_uid=? AND role_slug=?", [$uid, "admin"]);
-                
-                if(!empty($is_admin))
+
+                if(empty($is_admin))
                 {
                     $db_query["is_admin"] = true;
                 }
@@ -130,6 +134,7 @@ class AdminUsers extends Admin implements ModelDBInterface
                     $db_query["is_admin"] = false;
                 }
 
+            $this->model_data = $db_query;
             return $db_query;
         }
         else
@@ -160,6 +165,71 @@ class AdminUsers extends Admin implements ModelDBInterface
     public function verifyUser(int|string $uid)
     {
         return $this->database->update($this->model_table, ["email_verified_at"=>time()], "uid=?", [$uid]);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param integer|string $uid
+     * @return void
+     */
+    public function grantAdmin(int|string $uid)
+    {
+        //chceck if user is already admin
+        $db_query = $this->database->selectRow("role-id", "user_uid=? AND role_slug=?", [$uid, "admin"]);
+        if(empty($db_query))
+        {
+            return $this->database->insert("role-id", ["user_uid"=>$uid, "role_slug"=>"admin"]);
+        }
+        else
+        {
+            throw new LoraException("Nelze povýšit uživatele jako admina");
+            
+        }
+
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param integer|string $uid
+     * @return void
+     */
+    public function removeAdmin(int|string $uid)
+    {
+        //chceck if user is already admin
+        $db_query = $this->database->selectRow("role-id", "user_uid=? AND role_slug=?", [$uid, "admin"]);
+        if(!empty($db_query))
+        {
+            return $this->database->delete("role-id", "user_uid=? AND role_slug=?", [$uid, "admin"]);
+        }
+        else
+        {
+            throw new LoraException("Nelze odebrat uživatele z admin grantu");
+            
+        }
+
+    }
+
+    public function sendRecoverPasswordCode(int|string $uid, StringUtils $string_utils)
+    {
+        $new_key_hash = $string_utils->genarateHashedString(26);
+        
+        $slugged_string = $string_utils->toSlug($new_key_hash);
+        $this->database->update($this->model_table, ["password_recover_key"=>$slugged_string], "uid=?", [$uid]);
+        return $slugged_string;
+    }
+
+    public function resetPassword(string|int $uid, StringUtils $string_utils)
+    {
+        //regenerate password -> update password field ->send email with new password
+        $new_password_hash = $string_utils->genarateHashedString(26);
+        
+        $slugged_string = $string_utils->toSlug($new_password_hash);
+        $password_hash = $string_utils->generateHashedPassword($slugged_string);
+        
+        $this->database->update($this->model_table, ["password"=>$password_hash], "uid=?", [$uid]);
+        return $slugged_string;
     }
 
     /** MAGICAL METHODS **/

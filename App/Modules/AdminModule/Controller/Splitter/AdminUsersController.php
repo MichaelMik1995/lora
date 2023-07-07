@@ -13,6 +13,7 @@ use \App\Core\Lib\FormValidator;
 use \App\Core\Application\Redirect;
 use App\Core\Lib\Utils\MediaUtils;
 use App\Exception\LoraException;
+use App\Core\Lib\EmailSender;
 //Module Model  
 
 
@@ -109,16 +110,61 @@ class AdminUsersController extends AdminController
         
     }
 
-    public function userDelete(AdminUsers $users, LoraException $exception)
-    {
-        
-    }
-
-    public function userAdminSwitcher(AdminUsers $users, LoraException $exception)
+    public function userAdminSwitcher(AdminUsers $users, LoraException $exception, Redirect $redirect)
     {
 
     }
 
+    public function userAdminGrant(AdminUsers $users, LoraException $exception, Redirect $redirect)
+    {
+        $uid = $this->u["param"];
+        try {
+            $users->grantAdmin($uid);
+            $exception->successMessage("Uživatel byl povýšen na admina!");
+        }catch(LoraException $ex) {
+            $exception->errorMessage($ex->getMessage());
+        }
+    }
+
+    public function userAdminRemove(AdminUsers $users, LoraException $exception, Redirect $redirect)
+    {
+        $uid = $this->u["param"];
+        try {
+            $users->removeAdmin($uid);
+            $exception->successMessage("Uživatel byl odebrán z admin grantu!");
+        }catch(LoraException $ex) {
+            $exception->errorMessage($ex->getMessage());
+        }
+    }
+
+    public function userPasswordReset(AdminUsers $users, StringUtils $string_utils, LoraException $exception, Redirect $redirect, EmailSender $sender)
+    {
+        $uid = $this->u["param"];
+        $user_data = $users->getUser($uid);
+        $user_email = $user_data["email"];
+
+        try {
+            $recover_code = $users->sendRecoverPasswordCode($uid, $string_utils);
+            $sender->send($user_email, "Reset hesla", "message_req_reset_password", [
+                "{user}" => $user_data["name"],
+                "{web_name}" => env("web_name", false),
+                "{web_url}" => env("web_url", false),
+                "{recover_code}" => urlencode($recover_code),
+                "{email}" => urlencode(str_replace('.', '%2E', $user_email)),
+            ]);
+
+            $exception->successMessage("Reset hesla proběhl úspěšně!");
+        }catch(LoraException $ex) {
+            $exception->errorMessage($ex->getMessage());
+        }
+        $redirect->to("admin/app/users");
+    }
+
+
+    public function userRemove(AdminUsers $users, LoraException $exception, Redirect $redirect)
+    {
+
+    }
     public function userChangeProfileImage(MediaUtils $media, LoraException $lora_exception, Redirect $redirect)
     {
         $uid = $this->u["param"];

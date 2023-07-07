@@ -39,9 +39,9 @@ class EmailSender
 
     public function __construct() 
     {
-        require ("./vendor/phpmailer/phpmailer/src/PHPMailer.php");
-        require ("./vendor/phpmailer/phpmailer/src/SMTP.php");
-        require ("./vendor/phpmailer/phpmailer/src/Exception.php");
+        require_once ("./vendor/phpmailer/phpmailer/src/PHPMailer.php");
+        require_once ("./vendor/phpmailer/phpmailer/src/SMTP.php");
+        require_once ("./vendor/phpmailer/phpmailer/src/Exception.php");
     
         $this->compiler = new Compiler();
         $this->email_from = $_ENV["web_main_mail"];
@@ -77,8 +77,8 @@ class EmailSender
             "{style}" => "<link rel='stylesheet' href='https:shoesby.eu/public/css/stylize.css'>",
             "{Web_url}" => $_ENV["base_href"],
             "{company-name}" => $_ENV["web_name"],
-            "{style-custom}" => file_get_contents("./public/css/compiled/modules.css"),
-            "{logo-src}" => "https://scontent.fprg3-1.fna.fbcdn.net/v/t1.15752-9/309393491_494906778903220_9053395409882774678_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=ae9488&_nc_ohc=PoCegcX-bhkAX9wOcM0&_nc_ht=scontent.fprg3-1.fna&oh=03_AdRf4k_qsI4Oq_wj7e-H81ZY_cAVC0JHSmSHJzCJNSsmqQ&oe=636EBEE4",
+            "{style-custom}" => file_get_contents("./public/css/stylize.css"),
+            "{logo-src}" => $_ENV["main_logo"],
         ];
         
         $content = file_get_contents($this->email_body.".phtml");

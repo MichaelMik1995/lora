@@ -63,14 +63,18 @@
     <div class="row cols-auto col-space-2">
         <div class='column-shrink'>
             @if $user['is_admin'] == true @
-            <button title="Povýšit na admina" class='button button-bd-info'><i class="fa fa-unlock" aria-label="Povýšit na admina"></i>Povýšit na admina</button>
+            <button redirect="admin/app/user-admin-grant/{{ $user['uid'] }}" title="Povýšit na admina" class='button button-bd-info'><i class="fa fa-unlock" aria-label="Povýšit na admina"></i>Povýšit na admina</button>
             @else
-            <button title="Zrušit admina" class='button button-info' aria-label="Odebrat admina"><i class="fa fa-lock"></i> Odebrat admina</button>
+            <button redirect="admin/app/user-admin-remove/{{ $user['uid'] }}" title="Zrušit admina" class='button button-info' aria-label="Odebrat admina"><i class="fa fa-lock"></i> Odebrat admina</button>
             @endif
         </div>
         
         <div class="column-shrink">
-            <button title="Resetovat heslo" class="button button-info" aria-label="Resetovat heslo"><i class="fa fa-key"></i> Resetovat heslo</button>
+            <div class="element-group element-group-medium">
+                <button redirect="admin/app/user-password-reset/{{ $user['uid'] }}" title="Resetovat heslo" class="button button-info" aria-label="Resetovat heslo"><i class="fa fa-key"></i> Žádost</button>
+                <button title="Resetovat heslo" aria-label="Resetovat heslo" class="button button-bd-info"><i class="fa fa-pen"></i> Vynutit</button>
+            </div>
+            <div>Input </div>
         </div>
 
         @if $user['email_verified_at'] <= 0 @
@@ -80,7 +84,7 @@
         @endif
 
         <div class="column-shrink">
-            <button title="Smazat uživatele" class="button button-bd-error" aria-label="Smazat uživatele"><i class="fa fa-trash"></i> Smazat uživatele</button>
+            <button redirect="admin/app/user-remove/{{ $user['uid'] }}" title="Smazat uživatele" class="button button-bd-error" aria-label="Smazat uživatele"><i class="fa fa-trash"></i> Smazat uživatele</button>
         </div>
     </div>
 </div>
