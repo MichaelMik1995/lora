@@ -12,6 +12,8 @@ App/Modules/AdminModule/resources/img/user/*
 
 App/Trash
 
+public/img/avatar/*
+
 
 .storybook/
 .vscode/
