@@ -12,8 +12,6 @@ App/Modules/AdminModule/resources/img/user/*
 
 App/Trash
 
-/public/img/avatar/*
-
 
 .storybook/
 .vscode/
@@ -29,3 +27,5 @@ log/*
 
 temp/cache/*
 !do-not-erase
+
+public/img/avatar/*
