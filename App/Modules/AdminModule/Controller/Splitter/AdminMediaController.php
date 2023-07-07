@@ -83,13 +83,13 @@ class AdminMediaController extends AdminController
         try{
             if (count($_FILES["images"]["size"]) > 0) 
             {
-                $uploader->uploadImages("images", "./App/Modules/AdminModule/resources/img/user/".$auth->user_uid);
+                $uploader->uploadImages("images", "./App/Modules/AdminModule/resources/img/user/".$auth->user_uid, 50);
             }
 
             $redirect->to("admin/app/media");
 
         }catch(LoraException $ex){
-            $redirect->previous();
+           $redirect->previous();
         }
         
     }

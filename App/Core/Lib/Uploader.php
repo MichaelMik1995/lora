@@ -105,6 +105,7 @@ class Uploader
     public function uploadImages($varFiles, $path="", int $max_images = 8) 
     {
         
+
         // Count total files
         $countfiles = count($_FILES[$varFiles]['name']);
         
@@ -114,35 +115,51 @@ class Uploader
         }
         else
         {
-            
-                foreach ($_FILES[$varFiles]['name'] as $key => $val) {
-                    $filename = basename($_FILES[$varFiles]['name'][$key]);
+            ini_set('upload_max_filesize', '20M');
+            ini_set('post_max_size', '200M');
+            ini_set('max_file_uploads', $max_images);
 
-                    $this->resize_image(
-                        $_FILES[$varFiles]['type'][$key],
-                        $_FILES[$varFiles]['tmp_name'][$key],
-                        $_FILES[$varFiles]['name'][$key],
-                        $this->upload_dir . $path . "/thumb/"
-                    );
+            foreach ($_FILES[$varFiles]['name'] as $key => $val) 
+            {
+                
+                $filename = basename($_FILES[$varFiles]['name'][$key]);
 
-                    $filenameGenerateName = substr(hash("sha256", rand(00000, 99999)), 0, 7);
-                    $path_parts_thumb = pathinfo($path . "/thumb/" . $filename);
-
-                    move_uploaded_file($_FILES[$varFiles]['tmp_name'][$key], $this->upload_dir . $path . "/" . $filename);
-                    rename($this->upload_dir . $path . "/thumb/" . $filename, $this->upload_dir . $path . "/thumb/" . $filenameGenerateName . "." . $path_parts_thumb['extension']);
-
-                    //rename image
-                    rename($this->upload_dir . $path . "/" . $filename, $this->upload_dir . $path . "/" . $filenameGenerateName . "." . $path_parts_thumb['extension']);
-                    
-                    //Create Image info file
-                    if(!file_exists($this->upload_dir . $path . "/" . $filenameGenerateName. ".txt"))
-                    {
-                        $file = fopen($this->upload_dir . $path . "/" . $filenameGenerateName. ".txt", "w");
-                        fwrite($file,"original_name=$filename\ngenerated_name=$filenameGenerateName\nextension=".$path_parts_thumb['extension']."\nalt=Write alternative text for this picture"
-                        );
-                        fclose($file);
-                    }
+                if(! ($this->resize_image(
+                    $_FILES[$varFiles]['type'][$key],
+                    $_FILES[$varFiles]['tmp_name'][$key],
+                    $_FILES[$varFiles]['name'][$key],
+                    $this->upload_dir . $path . "/thumb/"
+                )))
+                {
+                    throw new LoraException("Chyba při změně rozlišení: ".$this->upload_dir. $path. "/". $_FILES[$varFiles]['name'][$key]);
                 }
+
+                $filenameGenerateName = substr(hash("sha256", rand(00000, 99999)), 0, 7);
+                $path_parts_thumb = pathinfo($path . "/thumb/" . $filename);
+
+                if(!move_uploaded_file($_FILES[$varFiles]['tmp_name'][$key], $this->upload_dir . $path . "/" . $filename))
+                {
+                    throw new LoraException("Chyba při přesouvání obrázku: ".$this->upload_dir. $path. "/". $_FILES[$varFiles]['name'][$key]);
+                }
+
+                rename($this->upload_dir . $path . "/thumb/" . $filename, $this->upload_dir . $path . "/thumb/" . $filenameGenerateName . "." . $path_parts_thumb['extension']);
+
+                //rename image
+                rename($this->upload_dir . $path . "/" . $filename, $this->upload_dir . $path . "/" . $filenameGenerateName . "." . $path_parts_thumb['extension']);
+                
+                //Create Image info file
+                if(!file_exists($this->upload_dir . $path . "/" . $filenameGenerateName. ".txt"))
+                {
+                    $file = fopen($this->upload_dir . $path . "/" . $filenameGenerateName. ".txt", "w");
+                    fwrite($file,"original_name=$filename\ngenerated_name=$filenameGenerateName\nextension=".$path_parts_thumb['extension']."\nalt=Write alternative text for this picture"
+                    );
+                    fclose($file);
+                }
+
+                
+            }
+
+            
             return true;
         }
     }
@@ -174,7 +191,7 @@ class Uploader
     
     private function resize_image($imageType, $imageTmpName, $imageName, $path, $width = 256, $height = 256) 
     {
-       
+
         switch (strtolower($imageType)) 
         {
             case 'image/jpeg':
@@ -198,9 +215,10 @@ class Uploader
                 break;
             
             default:
-                return false;
-                exit('Neznámý typ formátu obrázku: ' . $imageType.". Jsou povoleny pouze BMP PNG JPG GIF");
+                throw new LoraException('Neznámý typ formátu obrázku: ' . $imageType.". Jsou povoleny pouze BMP PNG JPG GIF");
         }
+
+        
         
         // Set max dimension of picture
         $max_width = $width;
