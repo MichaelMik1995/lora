@@ -212,6 +212,26 @@ class AdminUsers extends Admin implements ModelDBInterface
     /**
      * Undocumented function
      *
+     * @param string|integer $uid
+     * @param string $password
+     * @return void
+     */
+    public function forcePasswordReset(string|int $uid, string $password)
+    {
+        if($password != null || $password != "")
+        {
+            $hashed_password = $this->string_utils->generateHashedPassword($password);
+            return $this->database->update($this->model_table, ["password"=>$hashed_password], "uid=?", [$uid]);
+        }
+        else
+        {
+            throw new LoraException("Zadané heslo je prázdné!");
+        }
+    }
+
+    /**
+     * Undocumented function
+     *
      * @param integer|string $uid
      * @return void
      */

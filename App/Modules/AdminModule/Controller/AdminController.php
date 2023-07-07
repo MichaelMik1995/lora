@@ -79,6 +79,7 @@ class AdminController extends Controller implements ModuleInterface
                 "user-admin-grant" => "userAdminGrant",
                 "user-admin-remove" => "userAdminRemove",
                 "user-password-reset" => "userPasswordReset",
+                "user-password-force-reset" => "userPasswordForceReset",
                 "user-remove" => "userRemove",
             ];
 

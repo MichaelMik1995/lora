@@ -72,9 +72,21 @@
         <div class="column-shrink">
             <div class="element-group element-group-medium">
                 <button redirect="admin/app/user-password-reset/{{ $user['uid'] }}" title="Resetovat heslo" class="button button-info" aria-label="Resetovat heslo"><i class="fa fa-key"></i> Žádost</button>
-                <button title="Resetovat heslo" aria-label="Resetovat heslo" class="button button-bd-info"><i class="fa fa-pen"></i> Vynutit</button>
+                <button onClick="$('#user-password-form').slideToggle(200)" title="Resetovat heslo" aria-label="Resetovat heslo" class="button button-bd-info"><i class="fa fa-pen"></i> Vynutit</button>
             </div>
-            <div>Input </div>
+            <div>
+                <form method="post" action="/admin/app/user-password-force-reset">
+                    @csrfgen
+                    @request(update)
+                    <input hidden type="text" name="uid" value="{{ $user['uid'] }}">
+                    <div id="user-password-form" class="display-0">
+                        <div class="element-group element-group-small">
+                            <input required type="text" name="password" id="password" class="input-dark pd-1"><br>
+                            <button type="submit" class="button button-info">Resetovat heslo</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
 
         @if $user['email_verified_at'] <= 0 @

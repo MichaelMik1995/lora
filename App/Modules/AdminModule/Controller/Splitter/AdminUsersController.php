@@ -64,7 +64,6 @@ class AdminUsersController extends AdminController
         $uid = $this->u["param"];
         $get_user_data = $user->getUser($uid);
 
-        echo $user->is_admin;
         $this->data = [
             "user" => $get_user_data,
         ];
@@ -110,14 +109,23 @@ class AdminUsersController extends AdminController
         $redirect->to("admin/app/users");
     }
 
-    public function userUpdate(AdminUsers $users, LoraException $exception)
+    public function userPasswordForceReset(AdminUsers $users, LoraException $exception, Redirect $redirect)
     {
-        
-    }
+        $post = $this->input("password", "required,maxchars128")
+                        ->input("uid", "required,url")
+                        ->returnFields();
 
-    public function userAdminSwitcher(AdminUsers $users, LoraException $exception, Redirect $redirect)
-    {
+        try {
+            $this->validate();
+            $users->forcePasswordReset($post["uid"], $post["password"]);
 
+            $exception->successMessage("Heslo bylo změněno!");
+        }
+        catch (LoraException $ex) {
+            $exception->errorMessage($ex->getMessage());
+        }
+        $redirect->to("admin/app/user-show/".$post["uid"]);
+       
     }
 
     public function userAdminGrant(AdminUsers $users, LoraException $exception, Redirect $redirect)
@@ -151,6 +159,7 @@ class AdminUsersController extends AdminController
         try {
             $recover_code = $users->sendRecoverPasswordCode($uid, $string_utils);
             $sender->send($user_email, "Reset hesla", "message_req_reset_password", [
+                "{email_full}" => $user_email,
                 "{user}" => $user_data["name"],
                 "{web_name}" => env("web_name", false),
                 "{web_url}" => env("web_url", false),
