@@ -60,7 +60,7 @@ class AuthController extends Controller
             $lora_exception->successMessage("Přihlášení proběhlo úspěšně!");
             $session->generateSID(1);
             
-            $redirect->to("");
+            $redirect->to();
 
         } catch (LoraException $ex) 
         {

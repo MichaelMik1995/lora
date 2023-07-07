@@ -122,7 +122,7 @@ class BlogPostController extends BlogController
             //model insert method
 
             $lora_exception->successMessage("");
-            $redirect->to("");
+            $redirect->to();
         }catch(LoraException $ex)
         {
             $lora_exception->errorMessage($ex->getMessage());
@@ -165,7 +165,7 @@ class BlogPostController extends BlogController
             //model update method
 
             $lora_exception->successMessage("Webová stránka přidána!");
-            $redirect->to("");
+            $redirect->to();
             
         }catch(LoraException $ex)
         {
@@ -189,7 +189,7 @@ class BlogPostController extends BlogController
             //model delete method
 
             $lora_exception->successMessage("Příspěvek byl smazán!");
-            $redirect->to("");
+            $redirect->to();
         }catch(LoraException $ex)
         {
             $lora_exception->errorMessage($ex->getMessage());

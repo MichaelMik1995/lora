@@ -1,32 +1,18 @@
 <?php
 declare (strict_types=1);
 
-namespace App\Modules\BlogModule\Controller\Splitter;
+namespace App\Modules\AdmindevModule\Controller\Splitter;
 
-//Main module Controller
-use App\Modules\BlogModule\Controller\BlogController;
-
-//Core
-use App\Middleware\Auth;
+use App\Modules\AdmindevModule\Controller\AdmindevController;
 use App\Core\Application\Redirect;
-use App\Core\DI\DIContainer;
 use App\Exception\LoraException;
 use App\Core\Lib\FormValidator;  
-
-
-//Utils
 use App\Core\Lib\Utils\StringUtils;
-use Lora\Easytext\Easytext;
+use App\Model\AuthManager;
 
-/**
- *  Main controller for module {Model_name}
- *
- * @author miroji <miroslav.jirgl@seznam.cz>
- * @version 3.2
- * @package lora/sandbox
- */
-class BlogCategoryController extends BlogController 
+class AdminDevUtilsController extends AdmindevController 
 {
+    use Redirect;
     use FormValidator;
     
     /**
@@ -38,21 +24,19 @@ class BlogCategoryController extends BlogController
      * Template folder
      * @var string $template_folder
      */
-    private string $template_folder = "Blog/";
+    private string $template_folder = "utils/";
 
-    /**
-     * Splitter Title
-     *
-     * @var string
-     */
-    protected string $splitter_title = "";
+    private AuthManager $auth_manager;
 
     
-    public function __construct(DIContainer $container)
+    public function __construct($injector)
     {
-        parent::__construct($container);
+        parent::__construct($injector);
         
-        $this->module = "Blog";
+        $this->module = "Admindev";
+        $this->injector = $injector;
+
+        $this->auth_manager = new AuthManager($injector);
     }
     
     
@@ -60,9 +44,9 @@ class BlogCategoryController extends BlogController
      * Can use for viewing all tables (rows) in template
      * @return string
      */
-    public function index($model) 
+    public function index() 
     {
-        /* $get_all = $model->getAll();
+        /* $get_all = $this->model[""]->getAll();
         
         $this->data = [
             "all" => $get_all,
@@ -71,14 +55,24 @@ class BlogCategoryController extends BlogController
         return $this->view = $this->template_folder."index";
     }
 
+    public function generatePassword()
+    {
+        $post = $this->input("gen-password", "required,maxchars1024", "Heslo")->returnFields();
+        $this->data = [
+            "original_password" => $post["gen-password"],
+            "hash" => $this->auth_manager->password_hash($post["gen-password"]),
+        ];
+        return $this->view = $this->template_folder."/password/generated_password";
+    }
+
     /**
      * Can use for viewing one table (row) in template
      * @return string
      */
-    public function show($model)
+    public function show()
     {
         $url = $this->u["param"];
-        $get_one = $model->get($url);
+        $get_one = $this->model[""]->get($url);
 
         $this->data = [
             "get" => $get_one,
@@ -91,12 +85,12 @@ class BlogCategoryController extends BlogController
      * Can use for viewing form to create a new row
      * @return string
      */
-    public function create($model, Auth $auth, EasyText $easy_text)
+    public function create()
     {
-        //$tauth->access(["admin"]);
+        //$this->injector["Auth"]->access(["admin"]);
 
         $this->data = [
-            "form" => $easy_text->form("content", "", ["hide_submit" => 1])
+            "form" => $this->injector["Easytext"]->form("content", "", ["hide_submit" => 1])
         ];
         return $this->view = $this->template_folder."create";
     }
@@ -105,28 +99,28 @@ class BlogCategoryController extends BlogController
      * Can use for validation data from create form and save
      * @return void
      */
-    public function insert($model, Auth $auth, StringUtils $string_utils, LoraException $lora_exception, Redirect $redirect)
+    public function insert()
     {
-        //$auth->access(["admin"]);
+        //$this->injector["Auth"]->access(["admin"]);
 
         //Fill $post variable with values of form fields
         $post = $this->input("title", "required,maxchars128", "Název")
             ->input("content", "required,maxchars6000")->returnFields();
 
+        $string_utils = StringUtils::instance();
         $url = $string_utils->toSlug($post["title"]);
 
         try {
 
             //returns true or THROW
             $this->validate();
-            //model insert method
-
-            $lora_exception->successMessage("");
-            $redirect->to();
+            
+            $this->injector["LoraException"]->successMessage("");
+            @Redirect::redirect("");
         }catch(LoraException $ex)
         {
-            $lora_exception->errorMessage($ex->getMessage());
-            $redirect->previous();
+            $this->injector["LoraException"]->errorMessage($ex->getMessage());
+            @Redirect::previous();
         }
     }
 
@@ -134,17 +128,17 @@ class BlogCategoryController extends BlogController
      * Can use for viewing form to edit row (getting data from url parameter)
      * @return string
      */
-    public function edit($model, Auth $auth, EasyText $easy_text)
+    public function edit()
     {
-        //$auth->access(["admin"]);
+        //$this->injector["Auth"]->access(["admin"]);
 
         $param = $this->u["param"];
 
-        $get = $model->get($param);
+        $get = $this->model["model"]->get($param);
 
         $this->data = [
             "get" => $get,
-            "form" => $easy_text->form("content", "", ["hide_submit" => 1])
+            "form" => $this->injector["Easytext"]->form("content", "", ["hide_submit" => 1])
         ];
         return $this->view = $this->template_folder."edit";
     }
@@ -153,24 +147,23 @@ class BlogCategoryController extends BlogController
      * Can use for validation edited data and update row
      * @return void
      */
-    public function update($model, Auth $auth, LoraException $lora_exception, Redirect $redirect)
+    public function update()
     {
-        //$auth->access(["admin"]);
+        //$this->injector["Auth"]->access(["admin"]);
 
         $post = $this->input("title", "required,maxchars128", "Název")
             ->input("content", "required,maxchars6000")->returnFields();
 
         try {
             $this->validate();
-            //model update method
 
-            $lora_exception->successMessage("Webová stránka přidána!");
-            $redirect->to();
+            $this->injector["LoraException"]->successMessage("Webová stránka přidána!");
+            @Redirect::redirect("");
             
         }catch(LoraException $ex)
         {
-            $lora_exception->errorMessage($ex->getMessage());
-            $redirect->previous();
+            $this->injector["LoraException"]->errorMessage($ex->getMessage());
+            @Redirect::previous();
         }
     }
 
@@ -178,22 +171,22 @@ class BlogCategoryController extends BlogController
      * Can use for deleting row
      * @return void
      */
-    public function delete($model, Auth $auth, LoraException $lora_exception, Redirect $redirect)
+    public function delete()
     {
-        //$auth->access(["admin"]);
+        //$this->injector["Auth"]->access(["admin"]);
 
         $post = $this->input("url","required,maxchars128")->returnFields();
 
         try {
             $this->validate();
-            //model delete method
+            //delete
 
-            $lora_exception->successMessage("Příspěvek byl smazán!");
-            $redirect->to();
+            $this->injector["LoraException"]->successMessage("Příspěvek byl smazán!");
+            @Redirect::redirect("");
         }catch(LoraException $ex)
         {
-            $lora_exception->errorMessage($ex->getMessage());
-            $redirect->previous();
+            $this->injector["LoraException"]->errorMessage($ex->getMessage());
+            @Redirect::previous();
         }
     }
 }

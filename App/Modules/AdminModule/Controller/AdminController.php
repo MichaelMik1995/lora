@@ -23,6 +23,7 @@ use App\Modules\AdminModule\Controller\Splitter\AdminSecurityController;
 
 //Interfaces
 use App\Core\Interface\ModuleInterface;
+use App\Exception\LoraException;
 
 //Module Model
 use App\Modules\AdminModule\Model\Admin;
@@ -48,20 +49,20 @@ class AdminController extends Controller implements ModuleInterface
     
     public function __construct($container)
     {
-        parent::__construct($container, u: $this->u, model: $this->model);
-        
-        $container->get(Auth::class)->access(["admin"]);
+        parent::__construct($container, u: $this->u, model: $this->model); 
 
-        //$this->container = $container;
-        $this->model = [
-            "admin" => new Admin($this->container),
-        ];
+        //Check if user is admin and authorized
+        if(!$container->get(Auth::class)->isAuth(["admin"]))
+        {
+            $container->get(LoraException::class)->errorMessage("You are not authorized to access this page.");
+            $container->get(Redirect::class)->to();
+        }
     }
     
     /**
      * 
      */
-    public function initialize(AdminHrefs $admin_hrefs) 
+    public function initialize(AdminHrefs $admin_hrefs, Auth $auth) 
     {
         if(isset($this->u["page"]))
         {

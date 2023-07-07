@@ -3,6 +3,7 @@ node_modules
 
 App/Modules/*
 !AdminModule/
+!AdmindevModule/
 !BlogModule/
 !DocumentationModule/
 !HomepageModule/

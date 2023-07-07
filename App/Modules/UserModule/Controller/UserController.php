@@ -127,7 +127,7 @@ class UserController extends Controller implements ModuleInterface
                 "updated_at" => time(),
             ]);
             $lora_exception->successMessage("");
-            $redirect->to("");
+            $redirect->to();
         }catch(LoraException $ex)
         {
             $lora_exception->errorMessage($ex->getMessage());
@@ -172,7 +172,7 @@ class UserController extends Controller implements ModuleInterface
                 "updated_at" => time(),
             ]);
             $lora_exception->successMessage("Webová stránka přidána!");
-            $redirect->to("");
+            $redirect->to();
             
         }catch(LoraException $ex)
         {
@@ -196,7 +196,7 @@ class UserController extends Controller implements ModuleInterface
             //delete
             $user->delete();
             $lora_exception->successMessage("Příspěvek byl smazán!");
-            $redirect->to("");
+            $redirect->to();
         }catch(LoraException $ex)
         {
             $lora_exception->errorMessage($ex->getMessage());

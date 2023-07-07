@@ -29,22 +29,11 @@ class Redirect
     }
 
     /**
-     * Redirecting to requesting url adress (OLD Method -> please ue Redirect::instance()->to(string $url))
-     * 
-     * @var string $redirect_url <p>url to redirect (ex.: controller/action/param)</p>
-     */
-    public static function redirect(string $redirect_url): Void
-    {
-        header("location: /".$redirect_url);
-        exit();
-    }
-
-    /**
      * Redirecting to requesting url adress
      * 
      * @var string $redirect_url <p>url to redirect (ex.: controller/action/param)</p>
      */
-    public function to(string $redirect_url): Void
+    public function to(string $redirect_url = ""): Void
     {
         header("location: /".$redirect_url);
         exit();

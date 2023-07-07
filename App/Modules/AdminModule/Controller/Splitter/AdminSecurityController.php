@@ -124,7 +124,7 @@ class AdminSecurityController extends AdminController
             //model insert method
 
             $lora_exception->successMessage("");
-            $redirect->to("");
+            $redirect->to();
         }catch(LoraException $ex)
         {
             $lora_exception->errorMessage($ex->getMessage());
@@ -167,7 +167,7 @@ class AdminSecurityController extends AdminController
             //model update method
 
             $lora_exception->successMessage("Webová stránka přidána!");
-            $redirect->to("");
+            $redirect->to();
             
         }catch(LoraException $ex)
         {
@@ -191,7 +191,7 @@ class AdminSecurityController extends AdminController
             //model delete method
 
             $lora_exception->successMessage("Příspěvek byl smazán!");
-            $redirect->to("");
+            $redirect->to();
         }catch(LoraException $ex)
         {
             $lora_exception->errorMessage($ex->getMessage());

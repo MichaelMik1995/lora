@@ -120,6 +120,8 @@ class Auth
         {            
             if($callback != null)
             {
+                $this->exception->errorMessage("Access denied");
+
                 if(gettype($callback) == "string")
                 {
                     header("location: /".$callback);
@@ -132,9 +134,7 @@ class Auth
             }
             else
             {
-
-                //Redirect::previous();
-                //header("location: /");
+                header("location: /");
             }          
         }
     }

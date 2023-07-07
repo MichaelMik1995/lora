@@ -125,7 +125,7 @@ class HomepageController extends Controller implements ModuleInterface
             $this->validate();
             
             $lora_exception->successMessage("");
-            $redirect->to("");
+            $redirect->to();
         }catch(LoraException $ex)
         {
             $lora_exception->errorMessage($ex->getMessage());
@@ -166,7 +166,7 @@ class HomepageController extends Controller implements ModuleInterface
             $this->validate();
 
             $lora_exception->successMessage("Webová stránka přidána!");
-            $redirect->to("");
+            $redirect->to();
             
         }catch(LoraException $ex)
         {
@@ -190,7 +190,7 @@ class HomepageController extends Controller implements ModuleInterface
             //delete
 
             $lora_exception->successMessage("Příspěvek byl smazán!");
-            $redirect->to("");
+            $redirect->to();
         }catch(LoraException $ex)
         {
             $lora_exception->errorMessage($ex->getMessage());

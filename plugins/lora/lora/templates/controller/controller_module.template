@@ -123,7 +123,7 @@ class {Model_name}Controller extends Controller implements ModuleInterface
                 "updated_at" => time(),
             ]);
             $lora_exception->successMessage("");
-            $redirect->to("");
+            $redirect->to();
         }catch(LoraException $ex)
         {
             $lora_exception->errorMessage($ex->getMessage());
@@ -168,7 +168,7 @@ class {Model_name}Controller extends Controller implements ModuleInterface
                 "updated_at" => time(),
             ]);
             $lora_exception->successMessage("Webová stránka přidána!");
-            $redirect->to("");
+            $redirect->to();
             
         }catch(LoraException $ex)
         {
@@ -192,7 +192,7 @@ class {Model_name}Controller extends Controller implements ModuleInterface
             //delete
             ${model_name}->delete();
             $lora_exception->successMessage("Příspěvek byl smazán!");
-            $redirect->to("");
+            $redirect->to();
         }catch(LoraException $ex)
         {
             $lora_exception->errorMessage($ex->getMessage());

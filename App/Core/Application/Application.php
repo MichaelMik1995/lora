@@ -126,7 +126,7 @@ class Application
             
             if(!Policy::checkControllerAccess($this->register_access))
             {
-               $this->container->get(Redirect::class)->to("");
+               $this->container->get(Redirect::class)->to();
                throw new LoraException("Cannot access to this page!");
             }
         }catch(LoraException $ex)
