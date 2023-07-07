@@ -12,7 +12,7 @@ App/Modules/AdminModule/resources/img/user/*
 
 App/Trash
 
-public/img/avatar/*
+/public/img/avatar/*
 
 
 .storybook/
