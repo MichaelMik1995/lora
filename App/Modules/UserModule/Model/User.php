@@ -8,7 +8,6 @@ use App\Core\DI\DIContainer;
 
 class User extends Model
 {
-
     protected $table = "users";
     
     //__Parent Constructed

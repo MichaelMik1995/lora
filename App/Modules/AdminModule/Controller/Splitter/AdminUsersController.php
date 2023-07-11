@@ -3,6 +3,7 @@ declare (strict_types=1);
 
 namespace App\Modules\AdminModule\Controller\Splitter;
 
+use App\Core\DI\DIContainer;
 use App\Core\Lib\Uploader;
 use App\Modules\AdminModule\Controller\AdminController;
 use App\Modules\AdminModule\Model\AdminUsers;
@@ -38,12 +39,11 @@ class AdminUsersController extends AdminController
     
 
     
-    public function __construct($container, $model)
+    public function __construct(DIContainer $container, $model)
     {
         parent::__construct($container);
         
         $this->module = "admin";
-        $this->container = $container;
         $this->model = $model;
     }
     
@@ -215,6 +215,11 @@ class AdminUsersController extends AdminController
             $lora_exception->errorMessage($ex->getMessage());
         }
         $redirect->to("admin/app/user-show/$uid");
+    }
+
+    public function userLog()
+    {
+        return $this->view = "users/log";
     }
 }
 

@@ -3,25 +3,19 @@ declare (strict_types=1);
 
 namespace App\Modules\BlogModule\Model;
 
+use App\Core\Model;
 use App\Core\DI\DIContainer;
-use Lora\Easytext\Easytext;
-use App\Core\Database\Database;
 
-class Blog
+class Blog extends Model
 {
 
     protected $table = "blog";
-
-    private $database;
-    protected $container;
-    private $easy_text;
     
     //__Parent Constructed
     public function __construct(DIContainer $container)  //Cannot add more arguments! DIContainer $container must be only one argument
     {
-        $this->container = $container;
-        $this->database = $container->get(Database::class);
-        $this->easy_text = $container->get(Easytext::class);
+        //Initilize main model
+        $this->init($container);
 
         //$this->database->table = $this->table; //Uncheck if table name is not like controller name
     }

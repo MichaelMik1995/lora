@@ -40,7 +40,6 @@ class {Name}Register
                 "controller" => $class,
                 "template" => "index",
                 "route" => $route_name.".initiliaze@default",
-                "classes" => [],
                 "access" => "any"
             ],
             [
@@ -48,7 +47,6 @@ class {Name}Register
                 "controller" => $class,
                 "template" => "show",
                 "route" => $route_name.".show@get",
-                "classes" => [],
                 "access" => "any"
             ],
             [
@@ -56,7 +54,6 @@ class {Name}Register
                 "controller" => $class,
                 "template" => "create",
                 "route" => $route_name.".create@default",
-                "classes" => [],
                 "access" => "admin,editor"
             ],
             [
@@ -64,7 +61,6 @@ class {Name}Register
                 "controller" => $class,
                 "template" => "",
                 "route" => $route_name.".insert@insert",
-                "classes" => [],
                 "access" => "admin,editor"
             ],
             [
@@ -72,7 +68,6 @@ class {Name}Register
                 "controller" => $class,
                 "template" => "edit",
                 "route" => $route_name.".edit@get",
-                "classes" => [],
                 "access" => "admin,editor"
             ],
             [
@@ -80,7 +75,6 @@ class {Name}Register
                 "controller" => $class,
                 "template" => "",
                 "route" => $route_name.".update@update",
-                "classes" => [],
                 "access" => "admin,editor"
             ],
             [
@@ -88,9 +82,24 @@ class {Name}Register
                 "controller" => $class,
                 "template" => "",
                 "route" => $route_name.".delete@delete",
-                "classes" => [],
                 "access" => "admin,editor"
-            ]
+            ],
+
+            //Splitter Settings = uncomment if you want to use splitters
+            /*[
+                "url" => $url_name."/app/:page",
+                "controller" => $class,
+                "template" => "index",
+                "route" => $route_name.".initialize@mixed",     //Mixed request
+                "access" => "any"   //in every method use App\Middleware\Auth->access(array $roles)
+            ],
+            [
+                "url" => $url_name."/app/:page/:param",
+                "controller" => $class,
+                "template" => "index",
+                "route" => $route_name.".initialize@mixed",     //Mixed request
+                "access" => "any"   //in every method use App\Middleware\Auth->access(array $roles)
+            ],*/
         ];
    }
 }

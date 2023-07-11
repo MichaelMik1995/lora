@@ -1,10 +1,10 @@
 <?php
 declare (strict_types=1);
 
-namespace App\Modules\BlogModule\Controller\Splitter;
+namespace App\Modules\UserModule\Controller\Splitter;
 
 //Main module Controller
-use App\Modules\BlogModule\Controller\BlogController;
+use App\Modules\UserModule\Controller\UserController;
 
 //Core
 use App\Middleware\Auth;
@@ -25,7 +25,7 @@ use Lora\Easytext\Easytext;
  * @version 3.2
  * @package lora/sandbox
  */
-class BlogCommentController extends BlogController 
+class UserDataController extends UserController 
 {
     use FormValidator;
     
@@ -38,7 +38,7 @@ class BlogCommentController extends BlogController
      * Template folder
      * @var string $template_folder
      */
-    private string $template_folder = "Blog/";
+    private string $template_folder = "User/";
 
     /**
      * Splitter Title
@@ -52,7 +52,7 @@ class BlogCommentController extends BlogController
     {
         parent::__construct($container);
         
-        $this->module = "Blog";
+        $this->module = "User";
     }
     
     

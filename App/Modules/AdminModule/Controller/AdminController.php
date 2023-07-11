@@ -20,6 +20,7 @@ use App\Modules\AdminModule\Controller\Splitter\AdminSettingController;
 use App\Modules\AdminModule\Controller\Splitter\AdminUsersController;
 use App\Modules\AdminModule\Controller\Splitter\AdminVariablesController;
 use App\Modules\AdminModule\Controller\Splitter\AdminSecurityController;
+use App\Modules\AdminModule\Controller\Splitter\AdminSchedulerController;
 
 //Interfaces
 use App\Core\Interface\ModuleInterface;
@@ -82,6 +83,7 @@ class AdminController extends Controller implements ModuleInterface
                 "user-password-reset" => "userPasswordReset",
                 "user-password-force-reset" => "userPasswordForceReset",
                 "user-remove" => "userRemove",
+                "user-log" => "userLog"
             ];
 
             $cli_pages = [
@@ -108,14 +110,19 @@ class AdminController extends Controller implements ModuleInterface
             $security_pages = [
                 "security" => "index"
             ];
+
+            $scheduler_pages = [
+                "scheduler" => "index"
+            ];
             
             $this->splitter(AdminDashboardController::class, $dashboard_pages, "Přehled");
             $this->splitter(AdminUsersController::class, $users_pages, "Uživatelé");
             $this->splitter(AdminCLIController::class, $cli_pages, "PHP CLI");
             $this->splitter(AdminSettingController::class, $settings_pages);
-            $this->splitter(AdminMediaController::class, $media_pages);
-            $this->splitter(AdminLogController::class, $log_pages);
-            $this->splitter(AdminSecurityController::class, $security_pages);
+            $this->splitter(AdminMediaController::class, $media_pages, "Média");
+            $this->splitter(AdminLogController::class, $log_pages, "Logy");
+            $this->splitter(AdminSecurityController::class, $security_pages, "Zabezpečení");
+            $this->splitter(AdminSchedulerController::class, $scheduler_pages, "Plánovač");
         }
 
 

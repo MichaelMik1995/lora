@@ -14,6 +14,7 @@ use App\Core\Lib\Utils\MediaUtils;
 use App\Core\DI\DIContainer;
 use App\Exception\LoraException;
 use App\Core\Lib\Language;
+use App\Core\Lib\Logger;
 
 
 class AuthManager
@@ -24,7 +25,7 @@ class AuthManager
     
     protected $database;
     protected string $table = "users";
-    
+    protected $logger;
     
     protected $email;
     protected $env;
@@ -33,7 +34,7 @@ class AuthManager
 
     private DIContainer $container;
     
-    public function __construct(DIContainer $container, Uploader $uploader, StringUtils $string_utils, EmailSender $email_sender)
+    public function __construct(DIContainer $container, Uploader $uploader, StringUtils $string_utils, EmailSender $email_sender, Logger $logger)
     {
         
         $this->container = $container;
@@ -49,6 +50,11 @@ class AuthManager
         $this->email = $email_sender;
         
         $this->session = $this->container->get(Session::class);
+
+        $this->logger = $logger;
+
+
+        /* Check all files -> if eny greater than XXX -> pack and delete old */
     }
     
     /**
@@ -114,7 +120,8 @@ class AuthManager
                         setcookie("session_key", $session_key, time() + 3600*24*10, "/");
                         echo "<script>localStorage.setItem('user_name','".$user_name."');</script>";
                         $this->database->update($this->table, ["session_key"=>$session_key], "uid=?", [$uid]);
-
+                        //LOG event
+                        $this->logger->log("User ".$user_name." [uid].".$uid."[/uid]logged in with session key ".$session_key, log_file: "users");
                         //unset attempt test session
                     }
                 }

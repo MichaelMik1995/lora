@@ -58,7 +58,7 @@ class Request extends Controller
         
     }
     
-    public function get(string $url_request, $request_controller, string $request_function, string $template="", $classes = [], $is_module=1)
+    public function get(string $url_request, $request_controller, string $request_function, string|null $template="", $classes = [], $is_module=1)
     {
         $get_domain = $this->url_utils->urlParse();
         $get_request = $this->url_utils->stringToUrl($url_request);
@@ -117,7 +117,7 @@ class Request extends Controller
         }
     }
     
-    public function post(string $url_request, $request_controller, string $request_function, string $template="", $classes = [], $is_module=1)
+    public function post(string $url_request, $request_controller, string $request_function, string|null $template="", $classes = [], $is_module=1)
     {       
         return $this->get($url_request, $request_controller, $request_function, $template, $classes, $is_module);
     }

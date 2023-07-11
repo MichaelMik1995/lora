@@ -1,1 +1,1 @@
-Simple blog module for bloggers
+Description of module

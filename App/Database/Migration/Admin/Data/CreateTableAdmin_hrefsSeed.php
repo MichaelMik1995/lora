@@ -58,6 +58,12 @@ class CreateTableAdmin_hrefsSeed
             "href" => "logs",
             "icon" => "pen",
         ]);
+
+        $factory->createSeed($this->table, [
+            "name" => "Discord",
+            "href" => "discord",
+            "icon" => "discord",
+        ]);
         
         $factory->createSeed($this->table, [
             "name" => "Utility",
@@ -66,15 +72,9 @@ class CreateTableAdmin_hrefsSeed
         ]);
 
         $factory->createSeed($this->table, [
-            "name" => "Scheduler",
+            "name" => "Plánovač",
             "href" => "scheduler",
             "icon" => "calendar",
-        ]);
-
-        $factory->createSeed($this->table, [
-            "name" => "Cache",
-            "href" => "cache",
-            "icon" => "database",
         ]);
     }
 

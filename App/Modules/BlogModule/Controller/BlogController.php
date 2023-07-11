@@ -16,7 +16,6 @@ use App\Core\Interface\ModuleInterface;
 
 //Module Model
 use App\Modules\BlogModule\Model\Blog;
-use App\Modules\BlogModule\Model\BlogPost;
 
 //Utils
 use App\Core\Lib\Utils\StringUtils;
@@ -43,7 +42,8 @@ class BlogController extends Controller implements ModuleInterface
      */
     protected $model;
 
-    public function __construct(DIContainer $container)
+    //Only DIContainer can be pass as argument in __construct()!
+    public function __construct(DIContainer $container)     
     {
         parent::__construct($container, u: $this->u, model: $this->model);
     }
@@ -52,9 +52,9 @@ class BlogController extends Controller implements ModuleInterface
      *  Replaces old index() function for initiliazing module with splitters (IF MODULE IS NOT USE SPLITTERS, USE BASIC CRUD METHODS BELLOW!)
      *
      */
-    public function initiliaze(BlogPost $post) 
+    public function initiliaze() 
     {
-        
+      
     }
 
 /* ---------------------------------------------------------------- CRUD METHODS -------------------------------- */

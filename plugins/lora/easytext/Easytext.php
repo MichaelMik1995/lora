@@ -95,7 +95,7 @@ class Easytext implements InstanceInterface
 
     public function parseCode($string)
     {
-        return preg_replace('~\[Code]\s*(.+?)\s*\[/Code]~is', '<div class="eTcode pdy-3 pdx-4"><pre>'.htmlspecialchars('$1').'</pre></div>', $string);
+        return preg_replace('~\[Code]\s*(.+?)\s*\[/Code]~is', '<div class="eTcode pdy-3 pdx-4"><pre><code>'.htmlspecialchars('$1').'</code></pre></div>', $string);
     }
     
     public function charsDecode($content)

@@ -39,8 +39,7 @@ class UserRegister
                 "url" => $url_name,
                 "controller" => $class,
                 "template" => "index",
-                "route" => $route_name.".initiliaze@default",
-                "classes" => [],
+                "route" => $route_name.".initialize@default",
                 "access" => "any"
             ],
             [
@@ -90,7 +89,23 @@ class UserRegister
                 "route" => $route_name.".delete@delete",
                 "classes" => [],
                 "access" => "admin,editor"
-            ]
+            ],
+
+            //Splitter Settings
+            [
+                "url" => $url_name."/app/:page",
+                "controller" => $class,
+                "template" => "index",
+                "route" => $route_name.".initialize@mixed",     //Mixed request
+                "access" => "any"   //in every method use App\Middleware\Auth->access(array $roles)
+            ],
+            [
+                "url" => $url_name."/app/:page/:param",
+                "controller" => $class,
+                "template" => "index",
+                "route" => $route_name.".initialize@mixed",     //Mixed request
+                "access" => "any"   //in every method use App\Middleware\Auth->access(array $roles)
+            ],
         ];
    }
 }

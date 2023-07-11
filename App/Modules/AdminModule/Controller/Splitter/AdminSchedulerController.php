@@ -1,17 +1,20 @@
 <?php
 declare (strict_types=1);
 
-namespace App\Modules\BlogModule\Controller\Splitter;
+namespace App\Modules\AdminModule\Controller\Splitter;
 
 //Main module Controller
-use App\Modules\BlogModule\Controller\BlogController;
+use App\Modules\AdminModule\Controller\AdminController;
 
 //Core
 use App\Middleware\Auth;
 use App\Core\Application\Redirect;
 use App\Core\DI\DIContainer;
 use App\Exception\LoraException;
-use App\Core\Lib\FormValidator;  
+use App\Core\Lib\FormValidator; 
+use App\Modules\AdminModule\Model\AdminScheduler;
+
+
 
 
 //Utils
@@ -25,7 +28,7 @@ use Lora\Easytext\Easytext;
  * @version 3.2
  * @package lora/sandbox
  */
-class BlogCategoryController extends BlogController 
+class AdminSchedulerController extends AdminController 
 {
     use FormValidator;
     
@@ -38,7 +41,7 @@ class BlogCategoryController extends BlogController
      * Template folder
      * @var string $template_folder
      */
-    private string $template_folder = "Blog/";
+    private string $template_folder = "scheduler/";
 
     /**
      * Splitter Title
@@ -47,12 +50,16 @@ class BlogCategoryController extends BlogController
      */
     protected string $splitter_title = "";
 
+    protected AdminScheduler $scheduler;
+
     
     public function __construct(DIContainer $container)
     {
         parent::__construct($container);
         
-        $this->module = "Blog";
+        $this->module = "Admin";
+        
+        $this->scheduler = $this->container->get(AdminScheduler::class);
     }
     
     
@@ -60,7 +67,7 @@ class BlogCategoryController extends BlogController
      * Can use for viewing all tables (rows) in template
      * @return string
      */
-    public function index($model) 
+    public function index(AdminScheduler $model) 
     {
         /* $get_all = $model->getAll();
         
@@ -75,7 +82,7 @@ class BlogCategoryController extends BlogController
      * Can use for viewing one table (row) in template
      * @return string
      */
-    public function show($model)
+    public function show(AdminScheduler $model)
     {
         $url = $this->u["param"];
         $get_one = $model->get($url);

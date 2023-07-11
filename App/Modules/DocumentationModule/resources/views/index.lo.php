@@ -21,7 +21,7 @@
                     <summary class='t-light-2 header-4 header-5-xsm'>{{ $category['title'] }}</summary>
                     <div>
                         @foreach $category['sheets'] as $sheet @
-                        <div onClick="generateSheet('{{ $sheet['url'] }}')" class='pdx-5 cursor-point t-info-hover'><i class="fa fa-file"></i> {{ $sheet['title'] }}</div>
+                        <div id="{{ $sheet['url'] }}" onClick="generateSheet('{{ $sheet['url'] }}')" class='pdx-5 cursor-point t-info-hover sheet-list'><i class="fa fa-file"></i> {{ $sheet['title'] }}</div>
                         @endforeach
                     </div>
                 </details>
@@ -89,7 +89,6 @@
               
               document_sheet.html(sheet_cnt);
                 
-                
             }
         });
         
@@ -98,6 +97,8 @@
             document_sheet.html("<div class='t-error'>Nenalezen žádný záznam</div>");
         });
         
+        $(".sheet-list").removeClass("t-bolder t-info");
+        $("#"+sheet_url).addClass("t-bolder t-info");
         
     }
 </script>

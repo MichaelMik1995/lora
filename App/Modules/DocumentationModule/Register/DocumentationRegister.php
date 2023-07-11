@@ -40,7 +40,6 @@ class DocumentationRegister
                 "controller" => $class,
                 "template" => "index",
                 "route" => $route_name.".index@default",
-                "classes" => [],
                 "access" => "any"
             ],
             [
@@ -48,7 +47,6 @@ class DocumentationRegister
                 "controller" => $class,
                 "template" => "show",
                 "route" => $route_name.".show@get",
-                "classes" => [],
                 "access" => "any"
             ],
             [
@@ -56,7 +54,6 @@ class DocumentationRegister
                 "controller" => $class,
                 "template" => "create",
                 "route" => $route_name.".create@default",
-                "classes" => [],
                 "access" => "admin,editor"
             ],
             [
@@ -64,7 +61,6 @@ class DocumentationRegister
                 "controller" => $class,
                 "template" => "",
                 "route" => $route_name.".insert@insert",
-                "classes" => [],
                 "access" => "admin,editor"
             ],
             [
@@ -72,7 +68,6 @@ class DocumentationRegister
                 "controller" => $class,
                 "template" => "edit",
                 "route" => $route_name.".edit@get",
-                "classes" => [],
                 "access" => "admin,editor"
             ],
             [
@@ -80,7 +75,6 @@ class DocumentationRegister
                 "controller" => $class,
                 "template" => "",
                 "route" => $route_name.".update@update",
-                "classes" => [],
                 "access" => "admin,editor"
             ],
             [
@@ -88,7 +82,6 @@ class DocumentationRegister
                 "controller" => $class,
                 "template" => "",
                 "route" => $route_name.".delete@get",
-                "classes" => [],
                 "access" => "admin,editor"
             ]
         ];

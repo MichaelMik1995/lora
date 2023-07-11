@@ -11,6 +11,7 @@ use App\Middleware\Auth;
 use App\Core\Lib\FormValidator;
 use App\Core\Application\Redirect;
 use App\Core\DI\DIContainer;
+use App\Core\Lib\Logger;
 
 class AuthController extends Controller
 {
