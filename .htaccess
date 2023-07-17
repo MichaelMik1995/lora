@@ -10,7 +10,7 @@ AddType application/x-httpd-php .php .phtml
 
 RewriteCond %{HTTP:X-Forwarded-Proto} !https
 
-/* RewriteCond %{HTTP_HOST} ^(www\.)?odchytykvk.cz */
+/* RewriteCond %{HTTP_HOST} ^(www\.)?sampledomain.cz */
 
 RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L]
 

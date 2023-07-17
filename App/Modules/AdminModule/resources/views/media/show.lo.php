@@ -1,6 +1,6 @@
 <div class="row">
     <div class="display-flex column-5 column-10-xsm content-center ali-center column-justify-center">
-        <img rel="easySlider" class="width-95 width-100-xsm " src="./App/Modules/AdminModule/resources/img/user/{{ $user_uid }}/{{ $picture['filename'] }}.{{$picture['file_extension']}}">
+        <img rel="easySlider" class="width-95 width-100-xsm " src="./public/upload/images/{{ $picture['filename'] }}.{{$picture['file_extension']}}">
     </div>
     <div class="column-5 column-10-xsm mgy-2-xsm">
         <table rules="none" class="table table-medium">
@@ -18,7 +18,7 @@
             </tr>
             <tr>
                 <td>Velikost souboru:</td>
-                <td>{{ real_filesize($picture['filesize']) }}</td>
+                <td>{{ $picture['filesize'] }}</td>
             </tr>
             <tr>
                 <td>typ MIME:</td>

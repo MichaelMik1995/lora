@@ -1,11 +1,14 @@
 <?php
-
+declare(strict_types=1);
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
  */
 
 namespace App\Core\Lib\Utils;
+use \RecursiveIteratorIterator;
+use \FilesystemIterator;
+use \RecursiveDirectoryIterator;
 
 /**
  * Description of FileUtils
@@ -43,5 +46,16 @@ class FileUtils
         $sz = 'BKMGTP';
         $factor = floor((strlen($bytes) - 1) / 3);
         return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
+    }
+
+    public function GetDirectorySize($path){
+        $bytestotal = 0;
+        $path = realpath($path);
+        if($path!==false && $path!='' && file_exists($path)){
+            foreach(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS)) as $object){
+                $bytestotal += $object->getSize();
+            }
+        }
+        return $bytestotal;
     }
 }

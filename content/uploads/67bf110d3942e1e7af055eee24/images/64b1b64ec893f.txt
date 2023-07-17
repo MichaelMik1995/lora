@@ -1,0 +1,4 @@
+original_name=popstava1.png
+generated_name=64b1b64ec893f
+extension=png
+alt=Write alternative text for this picture

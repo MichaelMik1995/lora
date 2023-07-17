@@ -10,13 +10,19 @@
 
 <hr>
 
+<div class="content-center pdy-1 header-5">
+    <span class="t-info t-bolder">{{ $folder_data["count"] }}</span> obrázků | <span class="t-info t-bolder">{{ $folder_data["folder_size"] }}</span> prostoru
+</div>
+
+@if !empty($images) @
 <div class="row row-center-lrg row-center-xsm cols-auto cols-2-xsm">
-    @foreach glob("./App/Modules/AdminModule/resources/img/user/".$user_uid."/thumb/*") as $image @
-        @php $image_full_name = str_replace("./App/Modules/AdminModule/resources/img/user/".$user_uid."/thumb/", "", $image) @
+
+    @foreach $images as $image @
+        @php $image_full_name = str_replace("public/upload/images/thumb/", "", $image) @
         @php $image_exploded = explode(".", $image_full_name); $image_name = $image_exploded[0]; $image_ext = $image_exploded[1] @
         
-        @if file_exists("./App/Modules/AdminModule/resources/img/user/".$user_uid."/$image_name.txt") @
-            @php $image_alt_text = $text_parser->parse("./App/Modules/AdminModule/resources/img/user/".$user_uid."/$image_name.txt")->get("alt") @
+        @if file_exists("public/upload/images/$image_name.txt") @
+            @php $image_alt_text = $text_parser->parse("public/upload/images/$image_name.txt")->get("alt") @
         @else
             @php $image_alt_text = $image_name @
         @endif
@@ -33,3 +39,6 @@
             </div>
     @endforeach
 </div>
+@else
+    <div class="mgy-4 content-center header-3 t-bolder"><i class="fa fa-exclamation-triangle mgx-2"></i>Nejsou zde nahrány žádné veřejné obrázky</div>
+@endif

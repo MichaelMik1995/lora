@@ -12,6 +12,11 @@ use App\Core\Application\Redirect;
 use App\Core\DI\DIContainer;
 use App\Exception\LoraException;
 use App\Core\Lib\FormValidator;  
+use App\Core\Lib\TextParser;
+use App\Core\Lib\Utils\MediaUtils;
+
+//Model
+use App\Modules\UserModule\Model\UserGallery;
 
 
 //Utils
@@ -38,7 +43,7 @@ class UserGalleryController extends UserController
      * Template folder
      * @var string $template_folder
      */
-    private string $template_folder = "User/";
+    private string $template_folder = "gallery/";
 
     /**
      * Splitter Title
@@ -60,13 +65,17 @@ class UserGalleryController extends UserController
      * Can use for viewing all tables (rows) in template
      * @return string
      */
-    public function index($model) 
+    public function galleryIndex(UserGallery $gallery, Auth $auth, TextParser $parser) 
     {
-        /* $get_all = $model->getAll();
-        
+        $gallery_images = $gallery->getUserGallery($auth->user_uid);
+        $folder_data = $gallery->getUploadFolderData($auth->user_uid);
+
         $this->data = [
-            "all" => $get_all,
-        ]; */
+            "gallery" => $gallery_images,
+            "upload_folder" => $gallery->getUploadFolder($auth->user_uid),
+            "text_parser" => $parser,
+            "folder_data" => $folder_data,
+        ]; 
 
         return $this->view = $this->template_folder."index";
     }
@@ -75,126 +84,108 @@ class UserGalleryController extends UserController
      * Can use for viewing one table (row) in template
      * @return string
      */
-    public function show($model)
+    public function imageShow(UserGallery $gallery, Auth $auth, TextParser $parser) 
     {
-        $url = $this->u["param"];
-        $get_one = $model->get($url);
+       //Get data from Picture
+       $picture = $this->u["param"];
+       $picture_name = str_replace("@", ".", $picture);
+       $picture = explode(".", $picture_name);
 
-        $this->data = [
-            "get" => $get_one,
-        ];
+       $this->data = [
+           "picture" => $gallery->getPictureData($auth->user_uid, $picture_name),
+           "upload_folder" => $gallery->getUploadFolder($auth->user_uid),
+           "user_uid" => $gallery->user_uid,
+       ];
 
         return $this->view = $this->template_folder."show";
     }
 
     /**
      * Can use for viewing form to create a new row
-     * @return string
-     */
-    public function create($model, Auth $auth, EasyText $easy_text)
-    {
-        //$tauth->access(["admin"]);
-
-        $this->data = [
-            "form" => $easy_text->form("content", "", ["hide_submit" => 1])
-        ];
-        return $this->view = $this->template_folder."create";
-    }
-
-    /**
-     * Can use for validation data from create form and save
      * @return void
      */
-    public function insert($model, Auth $auth, StringUtils $string_utils, LoraException $lora_exception, Redirect $redirect)
+    public function imagesInsert(UserGallery $gallery, Auth $auth, EasyText $easy_text, MediaUtils $media_utils, LoraException $exception, Redirect $redirect)
     {
-        //$auth->access(["admin"]);
+        $upload_folder = $gallery->getUploadFolder($auth->user_uid);
+        $folder_data = $gallery->getUploadFolderData($auth->user_uid);
 
-        //Fill $post variable with values of form fields
-        $post = $this->input("title", "required,maxchars128", "Název")
-            ->input("content", "required,maxchars6000")->returnFields();
+        $count_images = $folder_data["count"] + count($_FILES["images"]["size"]);
 
-        $url = $string_utils->toSlug($post["title"]);
+        try{
+            if (count($_FILES["images"]["size"]) > 0) 
+            {
+                if($count_images <= env("max_uploaded_images", false) || $auth->is_admin == true)
+                {
+                    $media_utils->uploadGalleryImages("content/uploads/$upload_folder/images", "images", "256");
+                }
+                else
+                {
+                    $exception->errorMessage("V galerii může být maximálně ".env("max_uploaded_images", false)." obrázků.");
+                    $redirect->previous();
+                }
 
-        try {
+                
+            }
 
-            //returns true or THROW
-            $this->validate();
-            //model insert method
+            $redirect->to("user/app/gallery");
 
-            $lora_exception->successMessage("");
-            $redirect->to();
-        }catch(LoraException $ex)
-        {
-            $lora_exception->errorMessage($ex->getMessage());
-            $redirect->previous();
+        }catch(LoraException $ex){
+           $redirect->previous();
         }
     }
 
-    /**
-     * Can use for viewing form to edit row (getting data from url parameter)
-     * @return string
-     */
-    public function edit($model, Auth $auth, EasyText $easy_text)
+    public function updateAltImage(UserGallery $gallery, TextParser $text_parser, Auth $auth, LoraException $lora, Redirect $redirect, StringUtils $string_utils)
     {
-        //$auth->access(["admin"]);
+        $upload_folder = $gallery->getUploadFolder($auth->user_uid);
 
-        $param = $this->u["param"];
+        //Fill $post variable with values of form fields
+        $post = $this->input("alt_text", "required,maxchars128", "Alternativní text")
+        ->input("picture_name", "maxchars256", "Jméno obrázku")->returnFields();
 
-        $get = $model->get($param);
+        $alt_text = $post["alt_text"];
+        $picture = $post["picture_name"];
 
-        $this->data = [
-            "get" => $get,
-            "form" => $easy_text->form("content", "", ["hide_submit" => 1])
-        ];
-        return $this->view = $this->template_folder."edit";
-    }
-
-    /**
-     * Can use for validation edited data and update row
-     * @return void
-     */
-    public function update($model, Auth $auth, LoraException $lora_exception, Redirect $redirect)
-    {
-        //$auth->access(["admin"]);
-
-        $post = $this->input("title", "required,maxchars128", "Název")
-            ->input("content", "required,maxchars6000")->returnFields();
-
-        try {
+        try 
+        {
             $this->validate();
-            //model update method
-
-            $lora_exception->successMessage("Webová stránka přidána!");
-            $redirect->to();
+            $text_parser->parse("./content/uploads/$upload_folder/images/".$picture.".txt")->set("alt", $string_utils->toSlug($alt_text, true));
+            $lora->successMessage("Alternativní text byl upraven");
             
         }catch(LoraException $ex)
         {
-            $lora_exception->errorMessage($ex->getMessage());
-            $redirect->previous();
+            $lora->errorMessage($ex->getMessage());
         }
+
+        $redirect->previous();
     }
 
-    /**
-     * Can use for deleting row
-     * @return void
-     */
-    public function delete($model, Auth $auth, LoraException $lora_exception, Redirect $redirect)
+    public function imageDelete(UserGallery $gallery, Auth $auth, Redirect $redirect, LoraException $lora_exception)
     {
-        //$auth->access(["admin"]);
+        $upload_folder = $gallery->getUploadFolder($auth->user_uid);
 
-        $post = $this->input("url","required,maxchars128")->returnFields();
+        $picture_slug = $this->u["param"];
+        $picture_name = str_replace("@", ".", $picture_slug);
 
-        try {
-            $this->validate();
-            //model delete method
+        $explo = explode(".", $picture_name);
 
-            $lora_exception->successMessage("Příspěvek byl smazán!");
-            $redirect->to();
-        }catch(LoraException $ex)
+        $path = "./content/uploads/$upload_folder/images";
+
+        if(file_exists($path."/thumb/$picture_name"))
         {
-            $lora_exception->errorMessage($ex->getMessage());
-            $redirect->previous();
+            unlink($path."/thumb/".$picture_name);
+            unlink($path."/".$picture_name);
+
+            //unlink text file
+            if(file_exists($path."/".$explo[0].".txt"))
+            {
+                unlink($path."/".$explo[0].".txt");
+            }
+            
         }
+
+        $lora_exception->successMessage("Obrázek byl úspěšně smazán.");
+        $redirect->to("user/app/gallery");
     }
+
 }
 

@@ -18,97 +18,26 @@ use App\Core\Database\Database;
 
 //Interface
 use App\Core\Interface\ModelDBInterface;
+use App\Core\Lib\Utils\StringUtils;
+use App\Core\Lib\Utils\FileUtils;
 
 //Core
 use App\Core\DI\DIContainer;
 
 class UserGallery extends User implements ModelDBInterface
 {
-    protected $model_table = "UserGallery";
     protected array|null $model_data;
-    protected $database;
 
-    public function __construct(DIContainer $container, Database $database) //Can expand to multiple arguments, first must be DIContainer
+    public function __construct(DIContainer $container) //Can expand to multiple arguments, first must be DIContainer
     {
         parent::__construct($container);    //Only this one argument is needed
-
-        $this->database = $database;
-        //$this->database->table = $this->model_table;      //Uncheck this, if table is different from controller name
     }
 
-    /**
-     * 
-     * @param string $order_by <p>Order tables in rows (ex.: id ASC)</p>
-     * @return object <p>Returns all rows from table {model_name}</p>
-     */
-    public function getAllUserGallery(string $order_by = "id ASC"): Array
+
+    public function getUploadFolder($uid): string
     {
-        $db_query = $this->database->select($this->model_table, "id!=? ORDER BY $order_by", [0]);
-        if(!empty($db_query))
-        {
-            $return_array = [];
-            $i = 0;
-            
-            foreach($db_query as $row)
-            {
-                $id = $i++;
-                
-                //Filter indexes from $row
-                $return_array[$id] = array_filter($row, "is_string", ARRAY_FILTER_USE_KEY);
-                
-                $content = $row["content"];
-                
-                $return_array[$id]["_content"] = $this->easy_text->translateText($content);
-            }
-            
-            return $return_array;
-        }
-        else
-        {
-            return [];
-        }
-    }
-
-    /**
-     * Returns rows computed by $limit_per_page variable
-     * 
-     * @param string $order_by <p>Order tables in rows (ex.: id ASC)</p>
-     * @return object <p>Returns all rows from table test</p>
-     */
-    public function getAllByPage(int|string $page = 1, int $limit_per_page = 25, string $order_by = "id ASC"): Array
-    {
-
-        $computed_limit = (($page - 1)*$limit_per_page. ", " .$limit_per_page);
-
-        $db_query = $this->database->tableAllData("id", $computed_limit);
-        
-        if(!empty($db_query))
-        {
-            foreach($db_query as $row)
-            {
-                $id = $i++;
-                $content = $row["content"];
-                $tags = $row["tags"];
-                
-                $db_query[$id]["_content"] = $this->easy_text->translateText($content);
-                //$db_query[$id]["_tags"] = ArrayUtils::charStringToArray($tags);
-            }
-            
-            return $db_query;
-        }
-        else
-        {
-            return [];
-        }
-
-    }
-
-    public function getavaliablePages(int $limit_per_page = 25)
-    {
-        //Count CEIL of avaliable pages
-        $count_rows = $this->database->countRows($this->table, "id!=?", [0]);   //100
-        $avaliable_pages = ceil($count_rows / $limit_per_page); //100 / 20 = 5
-        return $avaliable_pages;
+        $string_utils = $this->string_utils;
+        return $string_utils->generateHashFromString($uid, md5($uid.$uid), 26);
     }
     
     /**
@@ -116,39 +45,186 @@ class UserGallery extends User implements ModelDBInterface
      * @return object <p>Returns one row from table depends on URL key</p>
      * @see Database()->tableRowByRoute()
      */
-    public function getUserGallery(string $url): Array
+    public function getUserGallery(string|int $uid): Array
     {
-        $db_query = $this->database->selectRow($this->model_table, "url=?", [$url]);
-        if(!empty($db_query))
+        //Hash folder for hide UID
+        $hashed_content_folder = $this->getUploadFolder($uid);
+
+        $path = "./content/uploads/$hashed_content_folder";
+
+        if(!is_dir($path))
         {
-            $content = $db_query["content"];
+            //Create upload folder if not exist
+            $this->createUploadFolder($uid, $hashed_content_folder);
+        }
+
+        if(!is_dir($path."/images"))
+        {
+            mkdir($path."/images", 0700, true);
+            mkdir($path."/images/thumb", 0700, true);
+        }
+
+        $images = scandir($path."/images", SCANDIR_SORT_DESCENDING);
+        $gallery = [];
+
+        foreach($images as $image)
+        {
+            if($image != "." && $image != "..")
+            {
+                if($image != "thumb" && (
+                    str_contains($image, ".png") || 
+                    str_contains($image, ".jpg") || 
+                    str_contains($image, ".jpeg") || 
+                    str_contains($image, ".gif") ||
+                    str_contains($image, ".webp")
+                    )
+                )
+                {
+                    
+                    $gallery[] = $path."/images/thumb/".$image;
+                }
+                
+            }
+        }
+
+        return $gallery;
+        
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string|integer $uid
+     * @return array
+     */
+    public function getUploadFolderData(string|int $uid): Array
+    {
+        //Hash folder for hide UID
+        $hashed_content_folder = $this->getUploadFolder($uid);
+        $folder = "./content/uploads/$hashed_content_folder/images/";
+
+        $scan_folder = scandir($folder, SCANDIR_SORT_DESCENDING);
+
+        $i = 0;
+        foreach($scan_folder as $file)
+        {
+            if($file!= "." && $file!= ".." && $file!= "thumb")
+            {
+                $image = $file;
+                if(
+                    str_contains($image, ".png") || 
+                    str_contains($image, ".jpg") || 
+                    str_contains($image, ".jpeg") || 
+                    str_contains($image, ".gif") ||
+                    str_contains($image, ".webp") 
+                )
+                {
+                    $i++;
+                }
+            }
+        }
+
+        
+        $folder_size = $this->number_utils->real_filesize($this->container->get(FileUtils::class)->GetDirectorySize($folder));
+
+
+        $return_data = [
+            "folder" => $folder,
+            "folder_size" => $folder_size,
+            "count" => $i,
+        ];
+
+        $this->model_data = $return_data;
+        return $return_data;
+    }
+    
+    public function insertPicture(array $insert_values)
+    {
+        // Insert new row
+        
+    }
+    
+    public function updateAltData(array $set, string $url)
+    {
+        // update row
+       
+    }
+    
+    public function deletePicture(string $url)
+    {
+        // delete row
+    }
+
+    /**
+     * Get Admin Picture Data from source
+     * @param string $picture_name
+     */
+    public function getPictureData(string|int $uid, string $picture_name): Array
+    {
+        $hashed_content_folder = $this->getUploadFolder($uid);
+        $folder = "./content/uploads/$hashed_content_folder/images";
+
+        $filename = $folder."/".$picture_name;
+
+        if(file_exists($filename))
+        {
+
+            $picture_explo = explode(".", $picture_name);
+
+            // Get File Size
+            $filesize = $this->number_utils->real_filesize(filesize($filename));
+
+            // Get MIME Type info
+            $filetype = mime_content_type($filename);
+
+            // Get Image resolution information
+            $dimensions = getimagesize($filename);
+            $width = $dimensions[0];
+            $height = $dimensions[1];
+
+            // Get EXIF Information if available
+            $exifData = @exif_read_data($filename);
+
+            $alt_text_file = $folder."/".$picture_explo[0].".txt";
+
             
-            $db_query["_content"] = $this->easy_text->translateText($content);
-            
-            return $db_query;
+            $file_info = file_get_contents($alt_text_file);
+
+            $file_explode = explode("\n", $file_info);
+
+            foreach($file_explode as $line)
+            {
+                $generated_data[] =  explode("=", $line); 
+
+            }
+
+
+            if($exifData !== false)
+            {
+                $exif_data = $exifData;
+            }
+            else
+            {
+                $exif_data = [];
+            }
+
+
+
+            return [
+                "filename" => $picture_explo[0],
+                "file_extension" => $picture_explo[1],
+                "filesize" => $filesize,
+                "filetype" => $filetype,
+                "width" => $width,
+                "height" => $height,
+                "exifdata" => $exif_data,
+                "alt_text" => $generated_data[3][1],
+            ];
         }
         else
         {
             return [];
         }
-    }
-    
-    public function insertUserGallery(array $insert_values)
-    {
-        // Insert new row
-        return $this->database->insert($this->model_table, $insert_values);
-    }
-    
-    public function updateUserGallery(array $set, string $url)
-    {
-        // update row
-        return $this->database->update($this->model_table, $set, "url=?", [$url]);
-    }
-    
-    public function deleteUserGallery(string $url)
-    {
-        // delete row
-        return $this->database->delete($this->model_table, "url=?", [$url]);
     }
 
     /** MAGICAL METHODS **/
@@ -161,6 +237,17 @@ class UserGallery extends User implements ModelDBInterface
             return $this->model_data[$name];
         }
         return null;
+    }
+
+    private function createUploadFolder(string|int $uid, string $hashed_folder): bool
+    {
+        $user = $uid;
+
+        $folder = "./content/uploads/$hashed_folder/";
+        mkdir($folder, 0700, true);
+        chmod($folder, 0700);
+        chown($folder, $user);
+        return true;
     }
 } 
 

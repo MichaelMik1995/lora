@@ -80,6 +80,8 @@ class MediaUtils implements InstanceInterface
             throw new Exception('Nepodařilo se uložit soubor');
         }
 
+        $this->createMetadata($new_image_name, $folder, $new_ext, $file_name);
+
         // Návrat cesty k uploadovanému souboru
         return $upload_path;
     }
@@ -92,6 +94,11 @@ class MediaUtils implements InstanceInterface
         // Počet nahraných souborů
         $file_count = count($files['name']);
 
+        if($file_count <= 0)
+        {
+            return;
+        }
+
         // Kontrola limitu na počet nahraných souborů
         if ($file_count > $limit) {
             throw new Exception('Překročen limit počtu souborů. Maximální povolený počet: ' . $limit);
@@ -101,7 +108,8 @@ class MediaUtils implements InstanceInterface
         $uploaded_files = [];
 
         // Iterace přes nahrané soubory
-        for ($i = 0; $i < $file_count; $i++) {
+        for ($i = 0; $i < $file_count; $i++) 
+        {
             $file_name = $files['name'][$i];
             $file_tmp = $files['tmp_name'][$i];
             $file_size = $files['size'][$i];
@@ -128,19 +136,32 @@ class MediaUtils implements InstanceInterface
 
             // Přidání cesty k uploadovanému souboru do pole
             $uploaded_files[] = $upload_path;
+
+            $this->createMetadata($new_image_name, $folder, $file_ext, $file_name);
         }
 
         // Návrat pole s cestami k uploadovaným souborům
         return $uploaded_files;
     }
     
-    
-    public function uploadGalleryImages($folder, $post_field_name = "images", $thumb_width = null, $thumb_height = null, int|float $thumb_scale = 0.3)
+    /**
+     * Upload images to gallery with thumbs and metadata files
+     *
+     * @param string $folder                    <p>Folder to upload images (! PATH is NOT begining with "./" and ends with "/")</p>
+     * @param string $post_field_name           <p>Name of field from form with attribute enctype ex.: images</p>
+     * @param string|int|float $thumb_width     <p>Set width of thumb</p>
+     * @param string|int|float $thumb_height    <p>OR Set height of thumb</p>
+     * @param string|int|float $thumb_scale     <p>OR set scale of image from source</p>
+     * @return void
+     */
+    public function uploadGalleryImages(string $folder, string $post_field_name = "images", string|int|float $thumb_width = null, string|int|float $thumb_height = null, string|int|float $thumb_scale = 0.3)
     {
         $files = $this->uploadMultipleImages($folder, $post_field_name);
         
         foreach($files as $file)
         {
+            //if is dot on first position -> delete
+
             $explode_image = explode(".", $file);
             $explode_path = explode("/", $explode_image[0]);
             
@@ -247,5 +268,17 @@ class MediaUtils implements InstanceInterface
         imagedestroy($source_image_resource);
         
         return true;
+    }
+
+    public function createMetadata(string $image_name, string $image_path, string $image_extension = "", string $source_name = "")
+    {
+        //Create Image info file
+        if(!file_exists($image_path . "/" . $image_name. ".txt"))
+        {
+            $file = fopen($image_path . "/" . $image_name. ".txt", "w");
+            fwrite($file,"original_name=$source_name\ngenerated_name=$image_name\nextension=".$image_extension."\nalt=Write alternative text for this picture"
+            );
+            fclose($file);
+        }
     }
 }

@@ -43,7 +43,6 @@ function env(string $environment_parameter, $echo = true)
         if($echo === true)
         {
             echo $trimm;
-            return 1;
         }
         else
         {

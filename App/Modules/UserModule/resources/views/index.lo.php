@@ -1,8 +1,8 @@
 <!-- USER Module -->
-<div class="row pd-2">
+<div class="row pd-2 pd-0-xsm">
 
     <!-- Left panel - menu -->
-    <div class="column-2 bgr-dark-2 bd-right-dark position-sticky" style="flex-direction: column; height: 100vh">
+    <div content-height-auto="user-main" class="column-2 bgr-dark-2 bd-right-dark" style="flex-direction: column; min-height: 100vh">
         <div class="row bgr-dark pdy-2">  <!-- Profile photo & status -->
             <div class="column-3 content-center">
                 <img class="width-64p" src="{{ asset('img/avatar/64/111111111.png') }}" alt="profile-image-admin">
@@ -39,7 +39,7 @@
     </div>
 
     <!-- Content panel -->
-    <div class="column-8">
+    <div content-height-auto="user-main" class="column-8">
 
         <!-- USER header - notification. logout -->
         <div class="bd-bottom-dark-2 pd-1">

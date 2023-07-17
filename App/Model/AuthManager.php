@@ -106,6 +106,7 @@ class AuthManager
                 $_SESSION[$this->container->get(Auth::class)->session_instance]["user_email"] = $email;
                 $_SESSION[$this->container->get(Auth::class)->session_instance]["raw_id"] = $raw_id;
                 $_SESSION[$this->container->get(Auth::class)->session_instance]["status"] = 1;
+                $_SESSION[$this->container->get(Auth::class)->session_instance]["hashed_uid"] = $this->s_utils->generateHashFromString($uid, md5($uid.$uid), 26);
                 
                 $this->session->generateSID(1);
                 $this->session->generateSJID(1);

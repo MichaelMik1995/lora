@@ -52,11 +52,13 @@ class AdminMediaController extends AdminController
     }
     
     
-    public function mediaIndex(Uploader $upload, TextParser $parser, Auth $auth, AdminMedia $media) 
+    public function mediaIndex(AdminMedia $media, Uploader $upload, TextParser $parser, Auth $auth) 
     {
         $this->data = [
             "user_uid" => $auth->user_uid,
             "text_parser" => $parser,
+            "images" => $media->getImages(),
+            "folder_data" => $media->getFolderData(),
         ];
 
         $this->splitter_title = lang("title_media_index", false);
@@ -83,7 +85,7 @@ class AdminMediaController extends AdminController
         try{
             if (count($_FILES["images"]["size"]) > 0) 
             {
-                $uploader->uploadImages("images", "./App/Modules/AdminModule/resources/img/user/".$auth->user_uid, 50);
+                $uploader->uploadImages("images", "./public/upload/images", 50);
             }
 
             $redirect->to("admin/app/media");
@@ -101,7 +103,7 @@ class AdminMediaController extends AdminController
 
         $explo = explode(".", $picture_name);
 
-        $path = "App/Modules/AdminModule/resources/img/user/".$auth->user_uid;
+        $path = "./public/upload/images";
         if(file_exists($path."/thumb/$picture_name"))
         {
             unlink($path."/thumb/".$picture_name);
@@ -131,7 +133,7 @@ class AdminMediaController extends AdminController
         try 
         {
             $this->validate();
-            $text_parser->parse("./App/Modules/AdminModule/resources/img/user/".$auth->user_uid."/".$picture.".txt")->set("alt", $alt_text);
+            $text_parser->parse("./public/upload/images/".$picture.".txt")->set("alt", $alt_text);
             $lora->successMessage("Alternativní text byl upraven");
             
         }catch(LoraException $ex)

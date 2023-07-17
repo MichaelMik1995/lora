@@ -16,7 +16,6 @@ final class web
     public function initPreload()
     {
         $di = DIContainer::instance();
-        //$di->getClassRegisterData();
         $this->container = $di;
     }
     

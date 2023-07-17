@@ -213,15 +213,14 @@ class Request extends Controller
         $index_data =
         [
             "WEB_TITLE" => $this->controll->title,
-            "WEB_ADDRESS" => $this->container->get(Config::class)->getVar()["WEB_ADDRESS"],
-            "WEB_DESCRIPTION" => $this->container->get(Config::class)->getVar()["WEB_DESCRIPTION"],
+            "WEB_ADDRESS" => env("base_href", false),
+            "WEB_DESCRIPTION" => env("web_description", false),
             "LANGUAGE" => env("language", false),
-            "WEB_STYLE" => $this->container->get(Config::class)->getVar()["WEB_STYLE"],
-            "page_title" => $this->container->get(Config::class)->getVar()["WEB_NAME"],
+            "page_title" => env("web_name", false),
             "lora_messages" => $this->container->get(LoraException::class)->returnMessage(),
             "lora_messages_true" => $this->container->get(LoraException::class)->returnMessageTrue(),
-            "WEB_STATUS" => $this->container->get(Config::class)->getVar()["WEB_DEVELOPMENT"],
-            "WEB_VERSION" => $this->container->get(Config::class)->getVar()["WEB_VERSION"],
+            "WEB_STATUS" => env("web_status", false),
+            "WEB_VERSION" => env("web_version", false),
         ];
 
         $index_controller->data = array_merge($index_data, $index_controller->data, ["controll"=> $this->controll]);

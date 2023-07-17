@@ -87,7 +87,7 @@ class DotEnv implements InstanceInterface
             $_ENV[$name] = str_replace('"', '', $value);
         }
         
-        $parse_ini = parse_ini_file("./config/public.ini");
+        $parse_ini = parse_ini_file("./config/configuration.ini");
         
         $browser_language = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
         

@@ -60,8 +60,7 @@ class Auth
 
         $this->exception = new LoraException();
 
-        $env = parse_ini_file("./config/web.ini");
-        $session_instance = $env["WEB_SESSION_STORE_NAME"];
+        $session_instance = env("session_store_container", false);
 
         $this->session_instance = $session_instance;
         

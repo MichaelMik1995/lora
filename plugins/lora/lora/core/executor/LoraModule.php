@@ -180,27 +180,35 @@ class LoraModule
                 [
                     "{module}" => $module,
                     "{Module}"=>$uc_module, 
-                    "{Splitter_name}"=>$uc_module.$splitter_name, 
+                    "{Splitter_name}"=>$uc_module.ucfirst($splitter_name), 
                     "{splitter_name}"=> strtolower($splitter_name)
                 ]
         );
         
-        //create splitter
-        $file_splitter = fopen($module_dir."/Controller/Splitter/$uc_module".$splitter_name."Controller.php", "w+");
-        fwrite($file_splitter, $compiled);
-        fclose($file_splitter);
-
-        if ($templates == true) {
-            //create view folder in module/resources/views
-            if (!is_dir($module_dir . "/resources/views/" . strtolower($template_names))) {
-                mkdir($module_dir . "/resources/views/" . strtolower($template_names));
-                LoraOutput::output("View folder for $splitter_name in module: $uc_module created!", "success");
-            } else {
-                LoraOutput::output("View folder for $splitter_name already exists in module: $uc_module! Skipping ... ", "warning");
-            }
+        $splitter_file = $module_dir."/Controller/Splitter/$uc_module".ucfirst($splitter_name)."Controller.php";
+        if(file_exists($splitter_file))
+        {
+            LoraOutput::output("Splitter:".$uc_module."".ucfirst($splitter_name)."Controller already exists in module: $uc_module! Skipping ... ", "warning");
         }
-        
-        LoraOutput::output("Splitter: ".$uc_module."".$splitter_name."Controller successfully created in $uc_module module!", "success");
+        else
+        {
+            //create splitter
+            $file_splitter = fopen($module_dir."/Controller/Splitter/$uc_module".ucfirst($splitter_name)."Controller.php", "w+");
+            fwrite($file_splitter, $compiled);
+            fclose($file_splitter);
+
+            if ($templates == true) {
+                //create view folder in module/resources/views
+                if (!is_dir($module_dir . "/resources/views/" . strtolower($template_names))) {
+                    mkdir($module_dir . "/resources/views/" . strtolower($template_names));
+                    LoraOutput::output("View folder for $splitter_name in module: $uc_module created!", "success");
+                } else {
+                    LoraOutput::output("View folder for $splitter_name already exists in module: $uc_module! Skipping ... ", "warning");
+                }
+            }
+            
+            LoraOutput::output("Splitter: ".$uc_module."".ucfirst($splitter_name)."Controller successfully created in $uc_module module!", "success");
+        }
     }
 
     /**

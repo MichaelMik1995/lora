@@ -42,23 +42,16 @@ class Application
         $this->container = $container;
         $this->url_request = UrlUtils::urlParse();
         $this->middleware = new Middleware($this->url_request);
+        $this->container->get(DotEnv::class);
 
-        /*$compressed   = gzcompress($this->container, 9);
-        $uncompressed = gzuncompress($compressed);
-        echo $uncompressed;*/
-
-        //$string = $this->container;
-
-       // $encoded = strtr(base64_encode(addslashes(gzcompress(serialize($string),9))), '+/=', '-_,');
-
-        //$string= unserialize(gzuncompress(stripslashes(base64_decode(strtr($encoded, '-_,', '+/=')))));
-
-        //echo $string;
+        $_SESSION["session_storage_key"] = env("session_store_container",false);
 
         //If request is empty -> redirect to WEB_HOMEPAGE defined in config/web.ini
         if(empty($this->url_request["controller"]))
         {
-            Redirect::instance()->to($this->container->get(Config::class)->var("WEB_HOMEPAGE"));
+            
+            $default_redirect = env("web_default_url", false);
+            $this->container->get(Redirect::class)->to($default_redirect);
             exit();
         }
 

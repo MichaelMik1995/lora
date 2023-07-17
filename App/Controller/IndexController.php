@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace App\Controller;
 
+use App\Core\DI\DIContainer;
 use App\Controller\Controller;
 use App\Core\Lib\Utils\UrlUtils;
 
@@ -15,8 +16,9 @@ class IndexController extends Controller
     public $template;
     public $u;
     
-    public function __construct($title = "", $container = null) {
-        parent::__construct($title, $container);
+    public function __construct(DIContainer $container = null) 
+    {
+        parent::__construct($container);
     }
     
     public function index()

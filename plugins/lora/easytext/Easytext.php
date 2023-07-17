@@ -210,6 +210,7 @@ class Easytext implements InstanceInterface
             "[COLUMN]" => "<div class='column-shrink pd-1'><div class='mg-auto;'>",
             "[/COLUMN]" => "</div></div>",
             "[/ROW]" => "</div>",
+            "<img rel=\"easySlider\" src=\"../../../../" => "<img rel=\"easySlider\" src=\"".$_ENV["base_href"]."/",
             
             //Headers
             "[H1]" => "<div class='header-1'>",

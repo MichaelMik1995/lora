@@ -20,7 +20,7 @@ class StringUtils
     /**
      * @var array $restricted_chars <p>Restricted chars in URL address -> replaced to "-" char</p> 
      */
-    public array $restricted_chars = ["_",",",".","@","&","|","/"," ", "?", "!", "<", ">", "$", "§", "'", "~", "°", "^", "˘", "˛", "`", "˙", "´", "˝", ":", "\\", '"', "(", ")", "{", "}", "[", "]"];
+    public array $restricted_chars = [" ","_",",",".","@","&","|","/","?", "!", "<", ">", "$", "§", "'", "~", "°", "^", "˘", "˛", "`", "˙", "´", "ˇ", "˝", ":", "\\", '"', "(", ")", "{", "}", "[", "]"];
 
     public static function instance()
     {
@@ -38,11 +38,21 @@ class StringUtils
      * @param string $string <p>Input string for replace</p>
      * @return string <p>Returns replaced slug (ex.: Fireball_Exte Nded => fireball-exte-nded)</p>
      */
-    public function toSlug(string $string)
+    public function toSlug(string $string, bool $allow_space = false)
     {
-        $string = mb_strtolower($string);
         
         $array_from_chars = $this->restricted_chars;
+        
+        if($allow_space === true)
+        {
+            unset($array_from_chars[0]);
+        }
+        else
+        {
+            $string = mb_strtolower($string);
+        }
+
+        
         
         $diacritics = ["ě","š","č","ř","ž","ý","á","í","é","ú","ů","ó", "ď"];
         $letters = ["e","s","c","r","z","y","a","i","e","u","u","o", "d"];
@@ -58,9 +68,17 @@ class StringUtils
      * @param int $lenght <p>Output size of chars (default: 8)</p>
      * @return string <p>Returns final hashed string</p>
      */
-    public function genarateHashedString(int $lenght = 8, bool $complex = false)
+    public function genarateHashedString(int $lenght = 8, bool $complex = false, string $salt = "")
     {
-        $hash = md5(hash("SHA256", "MD5".time()));
+        if($salt == "")
+        {
+            $hash = md5(hash("SHA256", "MD5".time()));
+        }
+        else
+        {
+            $hash = md5(hash("SHA256", "MD5".time().$salt));
+        }
+       
         $substring = substr($hash, 0, $lenght+$lenght);
         
         if($complex === false)
@@ -76,21 +94,53 @@ class StringUtils
         return substr($_crypt, 0, $lenght);   
     }
 
-        /**
+    /**
      * Summary of generateHashedPassword
      * @param string $password
      * @return string
      */
-    public function generateHashedPassword(string $password)
+    public function generateHashedPassword(string $password, string $salt = "")
     {
         $options = [
           "cost" => 12,  
         ];
         
-        $hash = password_hash($password, PASSWORD_BCRYPT, $options);
+        if($salt == "")
+        {
+            $hash = password_hash($password, PASSWORD_BCRYPT, $options);
+        }
+        else
+        {
+            $hash = password_hash($password.$salt, PASSWORD_BCRYPT, $options);
+        }
+        
         return $hash;
     }
     
+    /**
+     * Summary of generateHashFromString
+     * @param string $string
+     * @param string $salt
+     * @return string
+     */
+    public function generateHashFromString(string|int|float $string, string $salt = "", int $length = 8)
+    {
+        $options = [
+          "cost" => 12,  
+        ];
+        
+        if($salt == "")
+        {
+            $hash = hash("SHA256", $string);
+        }
+        else
+        {
+            $hash = hash("SHA256", $string.$salt);
+        }
+        
+        return substr($hash, 7, $length); 
+    }
+
     public function cutText(string $string, int $lenght=256)
     {
         
