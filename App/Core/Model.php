@@ -19,55 +19,9 @@ use Lora\Easytext\Easytext;
  */
 abstract class Model 
 {    
-    /**
-     * @var Database
-     */
-    protected $database;
+
+    protected $container, $database, $auth, $easy_text, $string_utils, $number_utils, $exception, $config, $lang, $uploader;
     
-    protected $db;
-
-    /**
-     * @var Auth
-     */
-    protected $auth;
-
-    /**
-     * @var EasyText
-     */
-    protected $easy_text;
-
-    /**
-     * @var StringUtils
-     */
-    protected $string_utils;
-
-    /**
-     * @var NumberUtils
-     */
-    protected $number_utils;
-
-    /**
-     * @var LoraException
-     */
-    protected $exception;
-
-    /**
-     * @var Config
-     */
-    protected $config;
-
-    /**
-     * @var Language
-     */
-    protected $lang;
-
-    /**
-     * @var Uploader
-     */
-    protected Uploader $uploader;
-
-    protected $container;
-
     private function __construct(){}
 
     public function init(DIContainer $container)
@@ -83,5 +37,39 @@ abstract class Model
         $this->lang = $container->get(Language::class);
         $this->uploader = $container->get(Uploader::class);
         $this->database = $container->get(Database::class);
+    }
+
+    /** MAGICAL METHODS **/
+    public function __get($name)
+    {
+        if (array_key_exists($name, $this->model_data)) {
+            return $this->model_data[$name];
+        }
+
+        $trace = debug_backtrace();
+        trigger_error(
+            'Undefined property via __get(): ' . $name .
+            ' in ' . $trace[0]['file'] .
+            ' on line ' . $trace[0]['line'],
+            E_USER_NOTICE);
+        return null;
+    }
+
+    public function __unset($name)
+    {
+        echo "Unsetting '$name'\n";
+        unset($this->data[$name]);
+    }
+
+    public function __call(string $name, array $arguments)
+    {
+        echo "Calling undefined object method '$name' "
+        . implode(', ', $arguments). "\n";
+    }
+
+    public static function __callStatic(string $name, array $arguments)
+    {
+        echo "Calling undefined static object method '$name' "
+             . implode(', ', $arguments). "\n";
     }
 }

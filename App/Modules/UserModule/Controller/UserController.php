@@ -91,18 +91,17 @@ class UserController extends Controller implements ModuleInterface
             ];
 
             $user_data = $this->container->get(UserData::class);
+            $user_data->getUserData($this->container->get(Auth::class)->user_uid);
 
             $this->splitter(UserDashboardController::class, $pages_dashboard, "Přehled");
             $this->splitter(UserGalleryController::class, $gallery_pages, "Galerie");
             $this->splitter(UserProfileController::class, $profile_pages, "Profil");
             $this->splitter(UserPasswordController::class, $password_pages, "Správa hesla");
-
-            
-
             
             $this->data = [
-                "user_data" => $user_data->getUserData($this->container->get(Auth::class)->user_uid),
+                "user" => $user_data,
             ];
+
         }
         else
         {

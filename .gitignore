@@ -9,10 +9,7 @@ App/Modules/*
 !HomepageModule/
 !UserModule/
 
-App/Modules/AdminModule/resources/img/user/*
-
 App/Trash
-
 
 .storybook/
 .vscode/
@@ -32,3 +29,5 @@ temp/cache/*
 public/img/avatar/*
 
 public/upload/images/*
+
+content/uploads/*

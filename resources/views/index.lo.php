@@ -1,5 +1,5 @@
-<!<!doctype html>
-<html lang="cz-cs">
+<!DOCTYPE html>
+<html lang="cs">
     <head>
     <title>{{ $page_title }} | {{ $WEB_TITLE }}</title>
         <base href="{{$WEB_ADDRESS}}/">

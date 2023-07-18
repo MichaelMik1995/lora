@@ -8,7 +8,7 @@
                 <img class="width-64p" src="{{ asset('img/avatar/64/111111111.png') }}" alt="profile-image-admin">
             </div>
             <div class="column-7 als-center column-10-xsm display-0-xsm">
-                <div class="t-bolder">AdminAdminosAdminos</div>
+                <div class="t-bolder">{{ $user->name }} {{ $user->real_name }} </div>
                 <div class="t-create">
                     <button class="button-circle width-15p height-15p button-create"></button> Online
                 </div>

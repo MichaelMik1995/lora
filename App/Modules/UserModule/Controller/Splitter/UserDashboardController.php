@@ -64,6 +64,7 @@ class UserDashboardController extends UserController
      */
     public function dashboard(UserData $user) 
     {
+        $user->user = "MichaelMik";
         /* $get_all = $model->getAll();
         
         $this->data = [

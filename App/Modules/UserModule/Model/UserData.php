@@ -16,24 +16,18 @@ namespace App\Modules\UserModule\Model;
 use App\Modules\UserModule\Model\User;
 use App\Core\Database\Database;
 
-//Interface
-use App\Core\Interface\ModelDBInterface;
-use App\Core\Interface\InstanceInterface;
-
 //Core
 use App\Core\DI\DIContainer;
 
-class UserData extends User implements ModelDBInterface
+class UserData extends User
 {
     protected $model_table = "users";
-    protected array|null $model_data;
+    public array|null $model_data;
     protected $database;
 
     protected static $_instance;
 
     protected static $_instance_id;
-    
-    public string $user = "Some Admin";
 
     public function __construct(DIContainer $container, Database $database) //Can expand to multiple arguments, first must be DIContainer
     {
@@ -41,81 +35,6 @@ class UserData extends User implements ModelDBInterface
 
         $this->database = $database;
         //$this->database->table = $this->model_table;      //Uncheck this, if table is different from controller name
-    }
-
-    /**
-     * 
-     * @param string $order_by <p>Order tables in rows (ex.: id ASC)</p>
-     * @return object <p>Returns all rows from table {model_name}</p>
-     */
-    public function getAllUserData(string $order_by = "id ASC"): Array
-    {
-        $db_query = $this->database->select($this->model_table, "id!=? ORDER BY $order_by", [0]);
-        if(!empty($db_query))
-        {
-            $return_array = [];
-            $i = 0;
-            
-            foreach($db_query as $row)
-            {
-                $id = $i++;
-                
-                //Filter indexes from $row
-                $return_array[$id] = array_filter($row, "is_string", ARRAY_FILTER_USE_KEY);
-                
-                $content = $row["content"];
-                
-                $return_array[$id]["_content"] = $this->easy_text->translateText($content);
-            }
-            
-            return $return_array;
-        }
-        else
-        {
-            return [];
-        }
-    }
-
-    /**
-     * Returns rows computed by $limit_per_page variable
-     * 
-     * @param string $order_by <p>Order tables in rows (ex.: id ASC)</p>
-     * @return object <p>Returns all rows from table test</p>
-     */
-    public function getAllByPage(int|string $page = 1, int $limit_per_page = 25, string $order_by = "id ASC"): Array
-    {
-
-        $computed_limit = (($page - 1)*$limit_per_page. ", " .$limit_per_page);
-
-        $db_query = $this->database->tableAllData("id", $computed_limit);
-        
-        if(!empty($db_query))
-        {
-            foreach($db_query as $row)
-            {
-                $id = $i++;
-                $content = $row["content"];
-                $tags = $row["tags"];
-                
-                $db_query[$id]["_content"] = $this->easy_text->translateText($content);
-                //$db_query[$id]["_tags"] = ArrayUtils::charStringToArray($tags);
-            }
-            
-            return $db_query;
-        }
-        else
-        {
-            return [];
-        }
-
-    }
-
-    public function getavaliablePages(int $limit_per_page = 25)
-    {
-        //Count CEIL of avaliable pages
-        $count_rows = $this->database->countRows($this->table, "id!=?", [0]);   //100
-        $avaliable_pages = ceil($count_rows / $limit_per_page); //100 / 20 = 5
-        return $avaliable_pages;
     }
     
     /**
@@ -125,46 +44,25 @@ class UserData extends User implements ModelDBInterface
      */
     public function getUserData(int $url): Array
     {
+
         $db_query = $this->database->selectRow($this->model_table, "uid=?", [$url]);
+
         if(!empty($db_query))
         {        
-            
-            return $db_query;
+            $this->model_data = $db_query;
         }
         else
         {
-            return [];
+           $this->model_data = [];
         }
-    }
-    
-    public function insertUserData(array $insert_values)
-    {
-        // Insert new row
-        return $this->database->insert($this->model_table, $insert_values);
+
+        return $this->model_data;
     }
     
     public function updateUserData(array $set, string $url)
     {
         // update row
         return $this->database->update($this->model_table, $set, "url=?", [$url]);
-    }
-    
-    public function deleteUserData(string $url)
-    {
-        // delete row
-        return $this->database->delete($this->model_table, "url=?", [$url]);
-    }
-
-    /** MAGICAL METHODS **/
-    public function __set($name, $value) {
-        $this->model_data[$name] = $value;
-    }
-
-    public function __get($name) {
-        if (isset($this->model_data[$name])) {
-            return $this->model_data[$name];
-        }
-        return null;
     }
 } 
 
