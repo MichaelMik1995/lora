@@ -66,17 +66,12 @@ class DIContainer implements InstanceInterface
         }
     
         // Object is not in container, create new instance
-        $object = $this->returnObject($class_name);
+        $object = $this->createObject($class_name);
     
         // Save object to cache
         $this->services[$class_name] = $object;
     
         return $object;
-    }
-
-    public function getData(string $data_key)
-    {
-        
     }
 
     /**
@@ -107,6 +102,7 @@ class DIContainer implements InstanceInterface
             {
                 //Delete old object from container
                 unset($this->services[$class_name]);
+
                 //Create new reflection object
                 $reflection = new \ReflectionClass($class_name);
                 $overrided_object = $reflection->newInstanceArgs($args);
@@ -127,9 +123,6 @@ class DIContainer implements InstanceInterface
 
             return $new_object;
         }
-
-        
-        
     }
 
 
@@ -138,7 +131,7 @@ class DIContainer implements InstanceInterface
      * @param object|string $requested_object
      * @return string|object|null
      */
-    public function returnObject(object|string|null $requested_object)
+    public function createObject(object|string|null $requested_object)
     {
         if($requested_object == null || $requested_object == "")
         {
@@ -151,14 +144,11 @@ class DIContainer implements InstanceInterface
             //if is static and has methos instance()
             if(method_exists($requested_object, "instance"))
             {
-                
-                return "Instance exists";
+                return $requested_object::instance();
             }
             else
-            {
-                
+            {  
                 //create new object
-
                 $new_object = new $requested_object();
                 return $new_object;
 
@@ -204,7 +194,7 @@ class DIContainer implements InstanceInterface
         foreach($classes as $key => $value)
         {
 
-            $this->services[$key] = $this->returnObject($value."\\".$key);
+            $this->services[$key] = $this->createObject($value."\\".$key);
         }
         return $this->services;
     }
@@ -236,7 +226,7 @@ class DIContainer implements InstanceInterface
                 {
                     $parameter_type = $parameter->getType();
                     $parameter_name = $parameter_type->getName();
-                    $arguments[] = $this->returnObject($parameter_name);
+                    $arguments[] = $this->createObject($parameter_name);
 
                 } else 
                 {

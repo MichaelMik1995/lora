@@ -5,6 +5,7 @@ namespace App\Modules\UserModule\Controller;
 use App\Modules\UserModule\Controller\Splitter\UserDashboardController;
 use App\Modules\UserModule\Controller\Splitter\UserGalleryController;
 use App\Modules\UserModule\Controller\Splitter\UserProfileController;
+use App\Modules\UserModule\Controller\Splitter\UserPasswordController;
 
 
 //Core
@@ -19,7 +20,7 @@ use App\Core\DI\DIContainer;
 use App\Core\Interface\ModuleInterface;
 
 //Module Model
-use App\Modules\UserModule\Model\User;
+use App\Modules\UserModule\Model\UserData;
 
 //Utils
 use App\Core\Lib\Utils\StringUtils;
@@ -85,14 +86,30 @@ class UserController extends Controller implements ModuleInterface
                 "user-profile" => "userProfile",
             ];
 
+            $password_pages = [
+                "change-password" => "changePassword",
+            ];
+
+            $user_data = $this->container->get(UserData::class);
+
             $this->splitter(UserDashboardController::class, $pages_dashboard, "Přehled");
             $this->splitter(UserGalleryController::class, $gallery_pages, "Galerie");
             $this->splitter(UserProfileController::class, $profile_pages, "Profil");
+            $this->splitter(UserPasswordController::class, $password_pages, "Správa hesla");
+
+            
+
+            
+            $this->data = [
+                "user_data" => $user_data->getUserData($this->container->get(Auth::class)->user_uid),
+            ];
         }
         else
         {
             $redirect->to("user/app/dashboard");
         }
+
+        
         
     }
 }

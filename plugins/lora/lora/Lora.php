@@ -28,11 +28,10 @@ class Lora
     use PluginCommander;
     use ModuleCommander;
 
-    
     public function __construct() 
     {
-        $this->loran_core = new loranCore();
-        $this->loran_module = new loranModule();
+        //$this->loran_core = new loranCore();
+        //$this->loran_module = new loranModule();
     }
     
     public function prepareCommand(string $command_line)

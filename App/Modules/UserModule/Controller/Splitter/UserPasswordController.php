@@ -1,18 +1,34 @@
 <?php
 declare (strict_types=1);
 
-namespace App\Modules\AdmindevModule\Controller\Splitter;
+namespace App\Modules\UserModule\Controller\Splitter;
 
-use App\Modules\AdmindevModule\Controller\AdmindevController;
+//Main module Controller
+use App\Modules\UserModule\Controller\UserController;
+
+//Core
+use App\Middleware\Auth;
 use App\Core\Application\Redirect;
+use App\Core\DI\DIContainer;
 use App\Exception\LoraException;
 use App\Core\Lib\FormValidator;  
-use App\Core\Lib\Utils\StringUtils;
-use App\Model\AuthManager;
 
-class AdminDevUtilsController extends AdmindevController 
+
+//Utils
+use App\Core\Lib\Utils\StringUtils;
+use Lora\Easytext\Easytext;
+
+
+use App\Modules\UserModule\Model\UserPassword;
+/**
+ *  Main controller for module {Model_name}
+ *
+ * @author miroji <miroslav.jirgl@seznam.cz>
+ * @version 3.2
+ * @package lora/sandbox
+ */
+class UserPasswordController extends UserController 
 {
-    use Redirect;
     use FormValidator;
     
     /**
@@ -24,19 +40,21 @@ class AdminDevUtilsController extends AdmindevController
      * Template folder
      * @var string $template_folder
      */
-    private string $template_folder = "utils/";
+    private string $template_folder = "password/";
 
-    private AuthManager $auth_manager;
+    /**
+     * Splitter Title
+     *
+     * @var string
+     */
+    protected string $splitter_title = "";
 
     
-    public function __construct($container)
+    public function __construct(DIContainer $container)
     {
         parent::__construct($container);
         
-        $this->module = "Admindev";
-        $this->container = $container;
-
-        $this->auth_manager = new AuthManager($container);
+        $this->module = "User";
     }
     
     
@@ -44,9 +62,9 @@ class AdminDevUtilsController extends AdmindevController
      * Can use for viewing all tables (rows) in template
      * @return string
      */
-    public function index() 
+    public function changePassword(UserPassword $password) 
     {
-        /* $get_all = $this->model[""]->getAll();
+        /* $get_all = $model->getAll();
         
         $this->data = [
             "all" => $get_all,
@@ -55,24 +73,14 @@ class AdminDevUtilsController extends AdmindevController
         return $this->view = $this->template_folder."index";
     }
 
-    public function generatePassword()
-    {
-        $post = $this->input("gen-password", "required,maxchars1024", "Heslo")->returnFields();
-        $this->data = [
-            "original_password" => $post["gen-password"],
-            "hash" => $this->auth_manager->password_hash($post["gen-password"]),
-        ];
-        return $this->view = $this->template_folder."/password/generated_password";
-    }
-
     /**
      * Can use for viewing one table (row) in template
      * @return string
      */
-    public function show()
+    public function show($model)
     {
         $url = $this->u["param"];
-        $get_one = $this->model[""]->get($url);
+        $get_one = $model->get($url);
 
         $this->data = [
             "get" => $get_one,
@@ -85,12 +93,12 @@ class AdminDevUtilsController extends AdmindevController
      * Can use for viewing form to create a new row
      * @return string
      */
-    public function create()
+    public function create($model, Auth $auth, EasyText $easy_text)
     {
-        //$this->container["Auth"]->access(["admin"]);
+        //$tauth->access(["admin"]);
 
         $this->data = [
-            "form" => $this->container["Easytext"]->form("content", "", ["hide_submit" => 1])
+            "form" => $easy_text->form("content", "", ["hide_submit" => 1])
         ];
         return $this->view = $this->template_folder."create";
     }
@@ -99,28 +107,28 @@ class AdminDevUtilsController extends AdmindevController
      * Can use for validation data from create form and save
      * @return void
      */
-    public function insert()
+    public function insert($model, Auth $auth, StringUtils $string_utils, LoraException $lora_exception, Redirect $redirect)
     {
-        //$this->container["Auth"]->access(["admin"]);
+        //$auth->access(["admin"]);
 
         //Fill $post variable with values of form fields
         $post = $this->input("title", "required,maxchars128", "Název")
             ->input("content", "required,maxchars6000")->returnFields();
 
-        $string_utils = StringUtils::instance();
         $url = $string_utils->toSlug($post["title"]);
 
         try {
 
             //returns true or THROW
             $this->validate();
-            
-            $this->container["LoraException"]->successMessage("");
-            @Redirect::redirect("");
+            //model insert method
+
+            $lora_exception->successMessage("");
+            $redirect->to();
         }catch(LoraException $ex)
         {
-            $this->container["LoraException"]->errorMessage($ex->getMessage());
-            @Redirect::previous();
+            $lora_exception->errorMessage($ex->getMessage());
+            $redirect->previous();
         }
     }
 
@@ -128,17 +136,17 @@ class AdminDevUtilsController extends AdmindevController
      * Can use for viewing form to edit row (getting data from url parameter)
      * @return string
      */
-    public function edit()
+    public function edit($model, Auth $auth, EasyText $easy_text)
     {
-        //$this->container["Auth"]->access(["admin"]);
+        //$auth->access(["admin"]);
 
         $param = $this->u["param"];
 
-        $get = $this->model["model"]->get($param);
+        $get = $model->get($param);
 
         $this->data = [
             "get" => $get,
-            "form" => $this->container["Easytext"]->form("content", "", ["hide_submit" => 1])
+            "form" => $easy_text->form("content", "", ["hide_submit" => 1])
         ];
         return $this->view = $this->template_folder."edit";
     }
@@ -147,23 +155,24 @@ class AdminDevUtilsController extends AdmindevController
      * Can use for validation edited data and update row
      * @return void
      */
-    public function update()
+    public function update($model, Auth $auth, LoraException $lora_exception, Redirect $redirect)
     {
-        //$this->container["Auth"]->access(["admin"]);
+        //$auth->access(["admin"]);
 
         $post = $this->input("title", "required,maxchars128", "Název")
             ->input("content", "required,maxchars6000")->returnFields();
 
         try {
             $this->validate();
+            //model update method
 
-            $this->container["LoraException"]->successMessage("Webová stránka přidána!");
-            @Redirect::redirect("");
+            $lora_exception->successMessage("Webová stránka přidána!");
+            $redirect->to();
             
         }catch(LoraException $ex)
         {
-            $this->container["LoraException"]->errorMessage($ex->getMessage());
-            @Redirect::previous();
+            $lora_exception->errorMessage($ex->getMessage());
+            $redirect->previous();
         }
     }
 
@@ -171,22 +180,22 @@ class AdminDevUtilsController extends AdmindevController
      * Can use for deleting row
      * @return void
      */
-    public function delete()
+    public function delete($model, Auth $auth, LoraException $lora_exception, Redirect $redirect)
     {
-        //$this->container["Auth"]->access(["admin"]);
+        //$auth->access(["admin"]);
 
         $post = $this->input("url","required,maxchars128")->returnFields();
 
         try {
             $this->validate();
-            //delete
+            //model delete method
 
-            $this->container["LoraException"]->successMessage("Příspěvek byl smazán!");
-            @Redirect::redirect("");
+            $lora_exception->successMessage("Příspěvek byl smazán!");
+            $redirect->to();
         }catch(LoraException $ex)
         {
-            $this->container["LoraException"]->errorMessage($ex->getMessage());
-            @Redirect::previous();
+            $lora_exception->errorMessage($ex->getMessage());
+            $redirect->previous();
         }
     }
 }

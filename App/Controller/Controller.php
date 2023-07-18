@@ -138,7 +138,7 @@ abstract class Controller
                         foreach($parameters as $parameter)
                         {
                             $parameter_type = $parameter->getType();
-                            $params[] = $this->container->returnObject($parameter_type->getName());
+                            $params[] = $this->container->get($parameter_type->getName());
                         }
                         call_user_func_array(array($this->splitter_controll, $method), $params);
                     }

@@ -1,10 +1,10 @@
 <?php
 /**
- * Description of Module Model - UserData:
+ * Description of Module Model - UserPassword:
  *
  * This model was created for module: User
  * @author MiroJi
- * Created_at: 1689059617
+ * Created_at: 1689666644
  */
 declare (strict_types=1);
 
@@ -18,22 +18,15 @@ use App\Core\Database\Database;
 
 //Interface
 use App\Core\Interface\ModelDBInterface;
-use App\Core\Interface\InstanceInterface;
 
 //Core
 use App\Core\DI\DIContainer;
 
-class UserData extends User implements ModelDBInterface
+class UserPassword extends User implements ModelDBInterface
 {
-    protected $model_table = "users";
+    protected $model_table = "UserPassword";
     protected array|null $model_data;
     protected $database;
-
-    protected static $_instance;
-
-    protected static $_instance_id;
-    
-    public string $user = "Some Admin";
 
     public function __construct(DIContainer $container, Database $database) //Can expand to multiple arguments, first must be DIContainer
     {
@@ -48,7 +41,7 @@ class UserData extends User implements ModelDBInterface
      * @param string $order_by <p>Order tables in rows (ex.: id ASC)</p>
      * @return object <p>Returns all rows from table {model_name}</p>
      */
-    public function getAllUserData(string $order_by = "id ASC"): Array
+    public function getAllUserPassword(string $order_by = "id ASC"): Array
     {
         $db_query = $this->database->select($this->model_table, "id!=? ORDER BY $order_by", [0]);
         if(!empty($db_query))
@@ -123,11 +116,14 @@ class UserData extends User implements ModelDBInterface
      * @return object <p>Returns one row from table depends on URL key</p>
      * @see Database()->tableRowByRoute()
      */
-    public function getUserData(int $url): Array
+    public function getUserPassword(string $url): Array
     {
-        $db_query = $this->database->selectRow($this->model_table, "uid=?", [$url]);
+        $db_query = $this->database->selectRow($this->model_table, "url=?", [$url]);
         if(!empty($db_query))
-        {        
+        {
+            $content = $db_query["content"];
+            
+            $db_query["_content"] = $this->easy_text->translateText($content);
             
             return $db_query;
         }
@@ -137,19 +133,19 @@ class UserData extends User implements ModelDBInterface
         }
     }
     
-    public function insertUserData(array $insert_values)
+    public function insertUserPassword(array $insert_values)
     {
         // Insert new row
         return $this->database->insert($this->model_table, $insert_values);
     }
     
-    public function updateUserData(array $set, string $url)
+    public function updateUserPassword(array $set, string $url)
     {
         // update row
         return $this->database->update($this->model_table, $set, "url=?", [$url]);
     }
     
-    public function deleteUserData(string $url)
+    public function deleteUserPassword(string $url)
     {
         // delete row
         return $this->database->delete($this->model_table, "url=?", [$url]);

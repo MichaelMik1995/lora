@@ -80,7 +80,7 @@ function randomInt(min, max) {
 }
 
 /**
- * Toggle input type text : password of element
+ * Toggle input type text : password of element on OnClick event
  * @param {object} element
  * @returns void
  */
@@ -102,8 +102,9 @@ function toggleViewPassword(element)
 /**
  * Use in event OnClick -> scrolls to anchor smoothly
  * @param {String} element 
+ * @param {Integer} speed
  */
-function scrollToAnchor(element, speed = "500")
+function scrollToAnchor(element, speed = 500)
 {
     $('html, body').animate({
         scrollTop: $(element).offset().top
@@ -118,15 +119,4 @@ $.fn.exists = () => {
     return this.length !== 0;
 }
 
-$(() => {
-    $('.mg-center').css({
-        'position': 'absolute',
-        'left': '50%',
-        'top': '50%',
-        'margin-left': -$('.mg-center').outerWidth() / 2,
-        'margin-top': -$('.mg-center').outerHeight() / 2,
-        'width': '100%',
-        'text-align': 'center'
-    });
-});
 

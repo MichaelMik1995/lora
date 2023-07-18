@@ -4,6 +4,7 @@ namespace App\Database;
 //use App\Core\Database\Database;
 use App\Core\Database\Database;
 use Lora\Lora\Core\LoraOutput;
+use App\Core\Application\DotEnv;
 
 /**
  * Description of MigrationFactory
@@ -35,8 +36,9 @@ class MigrationFactory
     
     public function __construct()
     {
-        $parse = parse_ini_file("./config/database.ini");
-        $this->database = Database::instance(db_driver: "sqlite", db_name: $parse["DB_NAME"], is_factory: true);
+        $dot_env = DotEnv::instance();
+
+        $this->database = Database::instance(db_driver: "sqlite", db_name: $_ENV["db_name"], is_factory: true);
     }
 
     public function __destruct() 

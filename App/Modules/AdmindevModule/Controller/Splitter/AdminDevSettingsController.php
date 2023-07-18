@@ -12,7 +12,7 @@ class AdminDevSettingsController extends AdmindevController
     /**
      * @var array <p>Injected classes to controller</p>
      */
-    protected $injector;
+    protected $container;
     
     /**
      * @var array <p>Data from URL address (/homepage/show/:url) -> $u['url'] = ?</p>
@@ -27,12 +27,12 @@ class AdminDevSettingsController extends AdmindevController
     public $title = "";
 
     
-    public function __construct($injector, $model)
+    public function __construct($container, $model)
     {
-        parent::__construct($injector);
+        parent::__construct($container);
         
         $this->module = "Admindev";
-        $this->injector = $injector;
+        $this->container = $container;
         $this->model = $model;
     }
     

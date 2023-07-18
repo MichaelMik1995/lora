@@ -79,29 +79,7 @@ trait MigrationCommander
                 {
                     LoraOutput::output("Usage: php lora migration:create [new table name] [--data, --caller]", "error");
                 }
-                break;
-
-            case "migrate:createdata":
-                if($argument != "")
-                {
-                    LoraUI::generateMigrationSeed($argument);
-                }
-                else
-                {
-                    LoraOutput::output("Usage: php lora migration:createdata [table name]", "error");
-                }
-                break;
-
-            case "migrate:data":
-                $migration = new MigrationFactory();
-                LoraMigrate::migrateSeed($migration);
-                break;
-
-            case "migrate:clear":
-                $migration = new MigrationFactory();
-                LoraMigrate::migrate($migration, clear_migration: true);
-                break;
-            
+                break;            
         }
     }
 }

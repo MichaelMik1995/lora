@@ -12,7 +12,7 @@ class AdminDevDashboardController extends AdmindevController
     /**
      * @var array <p>Injected classes to controller</p>
      */
-    protected $injector;
+    protected $container;
     
     /**
      * @var array <p>Data from URL address (/homepage/show/:url) -> $u['url'] = ?</p>
@@ -20,12 +20,12 @@ class AdminDevDashboardController extends AdmindevController
     public $u;
 
     
-    public function __construct($injector)
+    public function __construct($container)
     {
-        parent::__construct($injector);
+        parent::__construct($container);
         
         $this->module = "Admindev";
-        $this->injector = $injector;
+        $this->container = $container;
     }
     
     

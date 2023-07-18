@@ -12,7 +12,7 @@ class AdminDevCLIController extends AdmindevController
     /**
      * @var array <p>Injected classes to controller</p>
      */
-    protected $injector;
+    protected $container;
     
     /**
      * @var array <p>Data from URL address (/homepage/show/:url) -> $u['url'] = ?</p>
@@ -27,12 +27,12 @@ class AdminDevCLIController extends AdmindevController
     public $title = "";
 
     
-    public function __construct($injector, $model)
+    public function __construct($container, $model)
     {
-        parent::__construct($injector);
+        parent::__construct($container);
         
         $this->module = "Admindev";
-        $this->injector = $injector;
+        $this->container = $container;
         $this->model = $model;
     }
     
@@ -49,7 +49,7 @@ class AdminDevCLIController extends AdmindevController
 
     public function insert()
     {
-        $validation = $this->injector["Validation"];
+        $validation = $this->container["Validation"];
         $command = $_POST["cli_command"];
 
         $validation->validate($command, ["required", "max_chars512"], "Příkaz");
