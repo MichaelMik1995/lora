@@ -1,4 +1,0 @@
-original_name=_ffe2bc94-34f8-4f3b-b496-c694a5ee0c71.jpg
-generated_name=64b1b9e97c259
-extension=jpg
-alt=Write alternative text for this picture
