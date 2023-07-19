@@ -21,6 +21,8 @@ abstract class Model
 {    
 
     protected $container, $database, $auth, $easy_text, $string_utils, $number_utils, $exception, $config, $lang, $uploader;
+
+    protected array $model_data = [];
     
     private function __construct(){}
 

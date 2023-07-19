@@ -114,6 +114,10 @@ class AdminController extends Controller implements ModuleInterface
             $scheduler_pages = [
                 "scheduler" => "index"
             ];
+
+            $banned_pages = [
+                "bannedips" => "index",
+            ];
             
             $this->splitter(AdminDashboardController::class, $dashboard_pages, "Přehled");
             $this->splitter(AdminUsersController::class, $users_pages, "Uživatelé");
@@ -123,6 +127,7 @@ class AdminController extends Controller implements ModuleInterface
             $this->splitter(AdminLogController::class, $log_pages, "Logy");
             $this->splitter(AdminSecurityController::class, $security_pages, "Zabezpečení");
             $this->splitter(AdminSchedulerController::class, $scheduler_pages, "Plánovač");
+            $this->splitter(AdminBanController::class, $banned_pages, "Ban blacklist");
         }
 
 

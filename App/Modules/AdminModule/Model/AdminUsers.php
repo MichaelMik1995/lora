@@ -26,7 +26,6 @@ class AdminUsers extends Admin implements ModelDBInterface
 {
 
     protected $model_table = "users";
-    private array|null $model_data = [];
 
     public function __construct(DIContainer $container)
     {

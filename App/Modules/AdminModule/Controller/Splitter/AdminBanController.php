@@ -6,13 +6,11 @@ namespace App\Modules\AdminModule\Controller\Splitter;
 use App\Modules\AdminModule\Controller\AdminController;
 //Module Model  
 
+use App\Modules\AdminModule\Model\AdminBan;
+
 
 class AdminBanController extends AdminController 
 {
-    /**
-     * @var array <p>Injected classes to controller</p>
-     */
-    protected $container;
     
     /**
      * @var array <p>Data from URL address (/homepage/show/:url) -> $u['url'] = ?</p>
@@ -23,8 +21,8 @@ class AdminBanController extends AdminController
      * @instance of main model: Shop() of this controller.
      */
     protected $model;
-    
-    public $title = "";
+
+    protected $template_folder = "bannedips/";
 
     
     public function __construct($container, $model)
@@ -37,9 +35,10 @@ class AdminBanController extends AdminController
     }
     
     
-    public function index() 
+    public function index(AdminBan $ban) 
     {
-      
+        $patterns = $ban->pattern;
+        print_r($patterns);
     }
 }
 
