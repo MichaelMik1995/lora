@@ -46,8 +46,6 @@ class EmailSender
         $this->compiler = new Compiler();
         $this->email_from = $_ENV["web_main_mail"];
         $this->mail = new \PHPMailer\PHPMailer\PHPMailer(true);
-        
-        
     }
     
     /**
