@@ -3,6 +3,7 @@ declare (strict_types=1);
 
 namespace App\Core\Lib;
 
+use App\Core\DI\DIContainer;
 use Lora\Compiler\Compiler;
 use App\Exception\LoraException;
 /**
@@ -34,18 +35,25 @@ class EmailSender
     protected $compiler;
     protected $email_from;
     protected $mail;
+
+    private $exception;
     
 
 
-    public function __construct() 
+    public function __construct(DIContainer $container, Compiler $compiler, LoraException $exception) 
     {
-        require_once ("./vendor/phpmailer/phpmailer/src/PHPMailer.php");
-        require_once ("./vendor/phpmailer/phpmailer/src/SMTP.php");
-        require_once ("./vendor/phpmailer/phpmailer/src/Exception.php");
-    
-        $this->compiler = new Compiler();
-        $this->email_from = $_ENV["web_main_mail"];
-        $this->mail = new \PHPMailer\PHPMailer\PHPMailer(true);
+        if($_ENV["mail_plugin"] == "phpmailer")
+        {
+            require_once ("./vendor/phpmailer/phpmailer/src/PHPMailer.php");
+            require_once ("./vendor/phpmailer/phpmailer/src/SMTP.php");
+            require_once ("./vendor/phpmailer/phpmailer/src/Exception.php");
+            $this->mail = new \PHPMailer\PHPMailer\PHPMailer(true);
+        }
+        
+        $this->compiler = $compiler;
+        $this->email_from = $_ENV["mail_from"];
+
+        $this->exception = $exception;
     }
     
     /**
@@ -76,7 +84,7 @@ class EmailSender
             "{Web_url}" => $_ENV["base_href"],
             "{company-name}" => $_ENV["web_name"],
             "{style-custom}" => file_get_contents("./public/css/stylize.css"),
-            "{logo-src}" => $_ENV["main_logo"],
+            "{logo-src}" => $_ENV["mail_main_logo"],
         ];
         
         $content = file_get_contents($this->email_body.".phtml");
@@ -92,36 +100,41 @@ class EmailSender
         
         $message = $this->compileEmailBody($subject, $template, $template_opts);
        
-        
-        try {
-            
-            //mail($email_to, $subject, $message, $headers);
-            
-            $this->mail->isSMTP();
-            $this->mail->Host = "smtp.mailtrap.io";    //Email to
-            $this->mail->CharSet = 'UTF-8';
-            $this->mail->SMTPAuth = true;
-            $this->mail->Port = 2525;
-            $this->mail->Username = "aa9ad107b7ba87";//$this->getConfigData()["mail_user"];
-            $this->mail->Password = "25c18cff0572de";//$this->getConfigData()["mail_password"];
-            $this->mail->SMTPSecure = 'tls';
+        if($_ENV["mail_plugin"] == "phpmailer")
+        {
+            try {
+                
+                $this->mail->isSMTP();
+                $this->mail->Host = $_ENV["mail_host"];   //Email to
+                $this->mail->CharSet = $_ENV["mail_charset"];
+                $this->mail->SMTPAuth = true;
+                $this->mail->Port = $_ENV["mail_smtp_port"];
+                $this->mail->Username = $_ENV["mail_user"];
+                $this->mail->Password = $_ENV["mail_password"];
+                $this->mail->SMTPSecure = $_ENV["mail_smtp_secure"];
 
-            $this->mail->isHTML(true);
+                $this->mail->isHTML(true);
 
-            $this->mail->setFrom($this->email_from, $_ENV["web_main_mail"]);
-            $this->mail->addAddress($email_to);
-            $this->mail->Subject = $subject;
-            $this->mail->Body = $message;
-            $this->mail->Debugoutput = true;
-            $this->mail->Send();
-            
+                $this->mail->setFrom($this->email_from, $_ENV["mail_from"]);
+                $this->mail->addAddress($email_to);
+                $this->mail->Subject = $subject;
+                $this->mail->Body = $message;
+                $this->mail->Debugoutput = true;
+                $this->mail->Send();
+                
 
-        } catch (phpmailerException $ex) {
-            echo $ex->errorMessage(); //Pretty error messages from PHPMaile
+            } catch (LoraException $ex) {
+                $this->exception->errorMessage($ex->getMessage()); //Pretty error messages from PHPMaile
+            }
         }
-        catch (LoraException $e) {
-            echo $e->getMessage(); //Boring error messages from anything else!
-          }
+        else
+        {
+            try {
+                mail($email_to, $subject, $message, $headers);
+            }catch (LoraException $ex) {
+                $this->exception->errorMessage($ex->getMessage()); //Pretty error messages from PHPMaile
+            }
+        }
 
     }
 }
