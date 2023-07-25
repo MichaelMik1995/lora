@@ -2,6 +2,7 @@
 declare (strict_types=1);
 
 namespace App\Middleware;
+use App\Core\Interface\MiddlewareInterface;
 
 
 /**
@@ -9,42 +10,85 @@ namespace App\Middleware;
  *
  * @author michaelmik
  */
-class RestrictedIps 
+class RestrictedIps implements MiddlewareInterface
 {
-    protected $restricted_ips;
+    private $restricted_ips;
 
-    protected $ip;
+    private $ip;
+    private string $blacklist_file = ".blacklist";
+    private array $blacklist;
+    private string $remote_address;
+
+    private array $error = [];
 
     public function __construct()
     {
         $this->ip = $_SERVER["REMOTE_ADDR"];
-        $this->getBanned();
+        $this->process();
     }
     
-    public function getBanned()
+    public function process()
     {
-        $this->restricted_ips = $this->writeBanned();
+        $this->parseBlacklistFile();
+        $this->remote_address = $_SERVER['REMOTE_ADDR'];
+        $this->return();
     }
+
     
     public function return(): Bool
     {
-        if(in_array($this->ip, $this->restricted_ips))
-        {
+        $condition_array = [];
 
-            $_SESSION["error_middleware"][] = "Vaše IP adresa je zaregitrována jako nežádoucí!";
-            return false;
+        if(!empty($this->blacklist))
+        {
+            foreach ($this->blacklist as $pattern)
+            {
+                if($this->remote_address == $pattern || str_contains($this->remote_address, $pattern))
+                {
+                    $this->error[] = "IP: ".$this->remote_address." is matching with: ".$pattern." pattern";
+                    $condition_array[] = "false";
+                }
+                else
+                {
+                    $condition_array[] = "true";
+                }
+            }
+            
+            if(in_array("false", $condition_array))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
-        else{
+        else
+        {
             return true;
         }
     }
-
-    private function writeBanned()
+    
+    /**
+     * Undocumented function
+     *
+     * @return array
+     */
+    public function error(): Array
     {
-        return [
-            //"127.0.0.1",
-            "123.456.7",
-            //"::1"
-        ];
-    }    
+        return $this->error;
+    }
+
+    private function parseBlacklistFile()
+    {
+        $lines = file($this->blacklist_file, FILE_SKIP_EMPTY_LINES|FILE_IGNORE_NEW_LINES);
+        $count = 0;
+
+        foreach($lines as $line) 
+        {
+            $count += 1;
+            $this->blacklist[] = $line;
+        }
+        
+    }
 }

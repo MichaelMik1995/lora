@@ -19,6 +19,11 @@ class Session
     {
         return $this->isEqualSID();
     }
+
+    public function error()
+    {
+        return [];
+    }
     
     public function isEqualSID()
     {

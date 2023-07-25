@@ -21,6 +21,7 @@ use App\Modules\AdminModule\Controller\Splitter\AdminUsersController;
 use App\Modules\AdminModule\Controller\Splitter\AdminVariablesController;
 use App\Modules\AdminModule\Controller\Splitter\AdminSecurityController;
 use App\Modules\AdminModule\Controller\Splitter\AdminSchedulerController;
+use App\Modules\AdminModule\Controller\Splitter\AdminAnnouncementsController;
 
 //Interfaces
 use App\Core\Interface\ModuleInterface;
@@ -118,6 +119,12 @@ class AdminController extends Controller implements ModuleInterface
             $banned_pages = [
                 "bannedips" => "index",
             ];
+
+            $announcements_pages = [
+                "announcements" => "index",
+                "announcement-insert" => "insert",
+            ];
+
             
             $this->splitter(AdminDashboardController::class, $dashboard_pages, "Přehled");
             $this->splitter(AdminUsersController::class, $users_pages, "Uživatelé");
@@ -128,6 +135,7 @@ class AdminController extends Controller implements ModuleInterface
             $this->splitter(AdminSecurityController::class, $security_pages, "Zabezpečení");
             $this->splitter(AdminSchedulerController::class, $scheduler_pages, "Plánovač");
             $this->splitter(AdminBanController::class, $banned_pages, "Ban blacklist");
+            $this->splitter(AdminAnnouncementsController::class, $announcements_pages, "Announcements");
         }
 
 

@@ -111,6 +111,12 @@ function scrollToAnchor(element, speed = 500)
     }, speed);
 }
 
+
+function replaceVariables(string, data) 
+{
+    return string.replace(/\{(.*?)\}/g, (match, key) => data[key] || "");
+}
+
 /**
  * If selector is null|not null
  * @returns {Boolean}

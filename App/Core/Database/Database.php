@@ -378,16 +378,69 @@ class Database
      */
     public function selectLast($table, $id, $params = [])
     {
-        $return = $this->connect->prepare("SELECT $id FROM $table ORDER BY $id DESC");
+        $return = $this->connect->prepare("SELECT $id FROM `$table` ORDER BY $id DESC");
         $return->execute($params);
         return $return->fetch();
     }
     
-    public function selectRandom($table, $where, $limit, $params = [])
+    /**
+     * Select random rows from the database with the specified limit and WHERE clause
+     *
+     * @param [type] $table
+     * @param [type] $where
+     * @param [type] $limit
+     * @param array $params
+     * @return array|null
+     */
+    public function selectRandom($table, $where, $limit, $params = []): Array|Null
     {
-        $return = $this->connect->prepare("SELECT * FROM $table WHERE $where ORDER BY RAND() LIMIT $limit");
+        $return = $this->connect->prepare("SELECT * FROM `$table` WHERE $where ORDER BY RAND() LIMIT $limit");
         $return->execute($params);
 
+        if($limit == 1)
+        {
+            return $return->fetch();
+        }
+        else {
+            return $return->fetchAll();
+        }
+    }
+
+    /**
+     * Select a newest rows from the database with the specified limit and WHERE clause
+     *
+     * @param string $table
+     * @param string $where
+     * @param array $params
+     * @param integer $limit
+     * @return array|null
+     */
+    public function selectNewestRows(string $table, string $where, $params = [], $limit = 8): Array|Null
+    {
+        $return = $this->connect->prepare("SELECT * FROM `$table` WHERE $where ORDER BY `id` DESC LIMIT $limit");
+        $return->execute($params);
+        if($limit == 1)
+        {
+            return $return->fetch();
+        }
+        else {
+            return $return->fetchAll();
+        }
+    }
+
+    /**
+     * Select the oldest rows from the database with the specified limit and WHERE clause
+     *
+     * @param string $table
+     * @param string $where
+     * @param array $params
+     * @param integer $limit
+     * @return array|null
+     */
+    public function selectOldestRows(string $table, string $where, $params = [], $limit = 8): Array|Null
+    {
+        $return = $this->connect->prepare("SELECT * FROM `$table` WHERE $where ORDER BY `id` ASC LIMIT $limit");
+        $return->execute($params);
         if($limit == 1)
         {
             return $return->fetch();
@@ -405,7 +458,7 @@ class Database
     {
         //$getCountedRows = $this->connect->query("SELECT COUNT(*) FROM $table");
         //return $getCountedRows->fetch();
-        $selectID = $this->connect->query("SELECT $id FROM $table ORDER BY $id DESC LIMIT 1");
+        $selectID = $this->connect->query("SELECT $id FROM `$table` ORDER BY $id DESC LIMIT 1");
         return $selectID->fetch();
     }
 

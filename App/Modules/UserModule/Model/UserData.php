@@ -22,7 +22,6 @@ use App\Core\DI\DIContainer;
 class UserData extends User
 {
     protected $model_table = "users";
-    public array|null $model_data;
     protected $database;
 
     protected static $_instance;

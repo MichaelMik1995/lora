@@ -38,7 +38,11 @@ class AdminBanController extends AdminController
     public function index(AdminBan $ban) 
     {
         $patterns = $ban->pattern;
-        print_r($patterns);
+        
+        //*256.25
+        //25.50*
+        //192.168.10.25
+        //127.0
     }
 }
 

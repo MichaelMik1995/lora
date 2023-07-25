@@ -25,7 +25,6 @@ use App\Core\DI\DIContainer;
 class UserPassword extends User implements ModelDBInterface
 {
     protected $model_table = "UserPassword";
-    protected array|null $model_data;
     protected $database;
 
     public function __construct(DIContainer $container, Database $database) //Can expand to multiple arguments, first must be DIContainer

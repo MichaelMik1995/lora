@@ -23,4 +23,9 @@ class Token
     {
         return true;
     }
+
+    public function error(): array
+    {
+        return [];
+    }
 }

@@ -21,6 +21,11 @@ class FormToken
         return $this->isEqualToken();
     }
 
+    public function error()
+    {
+        return [];
+    }
+
     public function isEqualToken()
     {
         if(isset($_SESSION['token']))

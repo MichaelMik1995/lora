@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="cs">
     <head>
-    <title>{{ $page_title }} | {{ $WEB_TITLE }}</title>
+        <title>{{ $page_title }} | {{ $WEB_TITLE }}</title>
         <base href="{{$WEB_ADDRESS}}/">
         <link rel="icon" type="image/png" href="{{ asset('img/favicon/favicon.png') }}">
         
@@ -25,6 +25,7 @@
             @endforeach
         @endif
 
+        
             
         <!-- END stylesheets -->
         
@@ -50,6 +51,7 @@
         @endforeach
 
         @pluginload lora/easytext @ <!-- Load HTML for plugin in ./plugins/lora/easytext/html_loader/index.phtml -->
+        @pluginload lora/etext @
 
         <script src="https://kit.fontawesome.com/0b54168b2a.js" crossorigin="anonymous"></script>
         
@@ -134,4 +136,21 @@
         </div>
         
     </body>
+
+    <script>
+    function highlightSyntax() {
+      var codeBlock = $('.eTcode'); //.getElementById('#eTcode');
+      var code = codeBlock.text();
+
+      var highlightedCode = code
+        .replace(/class|function/g, '<span style="color: aqua;">$&</span>')
+        .replace(/const|let|var/g, '<span class="variable">$&</span>');
+
+        console.log(highlightedCode);
+      codeBlock.html(highlightedCode);
+    }
+
+    // Zavolej funkci po načtení stránky pro provedení zvýraznění syntaxe
+    window.onload = highlightSyntax;
+  </script>
 </html>

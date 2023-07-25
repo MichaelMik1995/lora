@@ -21,13 +21,11 @@ use App\Core\Model;
  */
 class Application
 {   
-    
-
     protected $container;
     protected array $url_request;
     protected array $registered_routes;
     protected array $request_data;
-    protected $middleware;
+    protected Middleware $middleware;
     protected $route;
 
     protected $url_method_request;
@@ -56,7 +54,7 @@ class Application
         }
 
         //Get ONE WAY SEC request method and check Middleware, if FALSE -> exit application
-        $this->checkDefaultMiddleware();
+        $this->layerOne();
 
         //Get Registered Routes
         $route = new Route();
@@ -82,15 +80,40 @@ class Application
         }
 
         //Get SECOND SEC WAY MIDDLEWARE Valid request via Middleware Groups
-        $this->checkRequestMiddleware();
-
-        //Create Variable Container
-        //$container = new Variable();
+        $this->layerTwo();
 
         //If Middleware all sets -> execute request
         $this->execute_request();
     }
 
+
+    /**
+     * LayerOne checks URL, connection
+     *
+     * @return void
+     */
+    private function layerOne()
+    {
+        //One WAY Middleware
+        if($this->middleware->ResponseOWSec() === false)
+        {
+            echo "<h1>One Way Secure FAILED!</h1>";
+            echo "<h3>Reason: ".$this->middleware->errors."</h3>";
+            header("HTTP/1.1 404 Not Found");
+            exit();
+        }
+    }
+
+    /**
+     * LayerTwo check policies
+     *
+     * @return void
+     */
+    private function layerTwo()
+    {
+        $policy = new Policy();
+        $this->checkRequestMiddleware($policy);
+    }
 
     private function checkDefaultMiddleware()
     {
@@ -98,7 +121,7 @@ class Application
         if($this->middleware->ResponseOWSec() === false)
         {
             echo "<h1>One Way Secure FAILED!</h1>";
-            echo "<h3>Reason: ".$this->middleware->error()."</h3>";
+            echo "<h3>Reason: ".$this->middleware->errors."</h3>";
             header("HTTP/1.1 404 Not Found");
             exit();
         }
@@ -109,15 +132,15 @@ class Application
         return $route->getValidRouteData($this->url_request);
     }
 
-    private function checkRequestMiddleware()
+    private function checkRequestMiddleware(Policy $policy)
     {
         //Check if user valids access request
-        Policy::$auth = $this->container->get(Auth::class);
-        Policy::$language = $this->container->get(Language::class);
+        $policy->auth = $this->container->get(Auth::class);
+        $policy->language = $this->container->get(Language::class);
 
         try{
             
-            if(!Policy::checkControllerAccess($this->register_access))
+            if(!$policy->checkControllerAccess($this->register_access))
             {
                $this->container->get(Redirect::class)->to();
                throw new LoraException("Cannot access to this page!");

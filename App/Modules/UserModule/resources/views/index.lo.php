@@ -35,6 +35,7 @@
             <div copy-element="user-menu-button" data="icon:user,title:Můj profil,redirect:user/app/user-profile,listen-url:user-profile,description:Informace o uživateli"></div>
             <div copy-element="user-menu-button" data="icon:key,title:Heslo,redirect:user/app/change-password,listen-url:change-password,description:Změnit heslo"></div>
             <div copy-element="user-menu-button" data="icon:images,title:Galerie,redirect:user/app/gallery,listen-url:gallery,description:Galerie obrázků uživatele"></div>
+            <div copy-element="user-menu-button" data="icon:cog,title:Nastavení,redirect:user/app/settings,listen-url:settings,description:Nastavení webu"></div>
         </div>
     </div>
 

@@ -11,7 +11,8 @@ use App\Middleware\Auth;
 use App\Core\Application\Redirect;
 use App\Core\DI\DIContainer;
 use App\Exception\LoraException;
-use App\Core\Lib\FormValidator;  
+use App\Core\Lib\FormValidator;
+use App\Modules\UserModule\Model\UserAnnouncement;
 
 use App\Modules\UserModule\Model\UserData;
 
@@ -62,14 +63,14 @@ class UserDashboardController extends UserController
      * Can use for viewing all tables (rows) in template
      * @return string
      */
-    public function dashboard(UserData $user) 
+    public function dashboard(UserData $user, UserAnnouncement $announcement) 
     {
-        $user->user = "MichaelMik";
-        /* $get_all = $model->getAll();
+        
+        $last_annoucenment = $announcement->getLastAnnouncement();
         
         $this->data = [
-            "all" => $get_all,
-        ]; */
+            "announcement" => $last_annoucenment,
+        ]; 
 
         return $this->view = $this->template_folder."index";
     }

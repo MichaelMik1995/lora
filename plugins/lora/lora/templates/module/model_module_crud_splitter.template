@@ -25,7 +25,6 @@ use App\Core\DI\DIContainer;
 class {Model_name} extends {Module_name} implements ModelDBInterface
 {
     protected $model_table = "{Model_name}";
-    protected array|null $model_data;
     protected $database;
 
     public function __construct(DIContainer $container, Database $database) //Can expand to multiple arguments, first must be DIContainer

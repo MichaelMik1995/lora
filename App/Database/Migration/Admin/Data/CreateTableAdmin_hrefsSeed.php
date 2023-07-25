@@ -42,6 +42,12 @@ class CreateTableAdmin_hrefsSeed
         ]);
 
         $factory->createSeed($this->table, [
+            "name" => "Oznámení",
+            "href" => "announcements",
+            "icon" => "bullhorn",
+        ]);
+
+        $factory->createSeed($this->table, [
             "name" => "Média",
             "href" => "media",
             "icon" => "photo-film",

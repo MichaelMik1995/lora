@@ -9,7 +9,7 @@ use App\Middleware\Token;
 use App\Middleware\Session;
 use App\Middleware\LayerOne\RouteValidator;
 
-trait MiddlewareGroup
+class MiddlewareGroup
 {
 
     public static function return(): Array
@@ -19,7 +19,6 @@ trait MiddlewareGroup
 
             //For all Headers with DEFAULT request
             "default" => [
-
                 //Banned,
                 RestrictedIps::class,
                 RouteValidator::class,

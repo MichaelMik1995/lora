@@ -1,0 +1,52 @@
+<div id="{uid}" class="etext-editor">
+
+    <!-- ETEXT Dialog Hidden-->
+    <div id="dialog-{uid}" class="etext-dialog display-0">
+        <div class="dialog-panel content-right pd-2">
+            <i onClick="$('#dialog-{uid}').hide(200)" class="fa fa-close header-4 cursor-point"></i>
+        </div>
+        <div class="dialog-header header-2 t-bolder pdy-2 content-center">{header}</div>
+        <div class="dialog-body pd-2 display-flex column-justify-center"></div>
+    </div>
+    
+    <!-- ETEXT Panel -->
+    <div class="panel bgr-dark-2 pd-1">
+        <div class="row cols-auto col-space-2">
+            <div class="column-shrink pd-1">
+                <button type="button" id="bold" editor-target="editor-{uid}" class="button button-dark-3 bd-round-3"><i class="fa fa-bold"></i></button>
+                <button type="button" id="italic" editor-target="editor-{uid}" copy-attr="bold:class" class="button button-dark-3 bd-round-3"><i class="fa fa-italic"></i></button>
+                <button type="button" id="strike" editor-target="editor-{uid}" class="button button-dark-3 bd-round-3"><i class="fa fa-strikethrough"></i></button>
+            </div>
+
+            <div class="column-shrink pd-1">
+                <button type="button" id="dialog-image" editor-target="editor-{uid}" class="button button-dark-3 bd-round-3"><i class="fa fa-images"></i></button>
+                <button type="button" id="resize-text" editor-target="editor-{uid}" class="button button-dark-3 bd-round-3"><i class="fa fa-text-height"></i></button>
+                <button type="button" id="dialog-alignment" class="button button-dark-3 bd-round-3"><i class="fa fa-align-center"></i></button>
+            </div>
+
+            <div class="column-shrink pd-1">
+                <button type="button" id="dialog-text-color" editor-target="editor-{uid}" class="button button-dark-3 bd-round-3"><i class="fa fa-palette"></i></button>
+                
+            </div>
+
+            <div class="column content-right pd-1">
+
+                <button type="button" id="view" class="button button-dark-2 bd-round-3"><i class="fa fa-play"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXTEX editable content -->
+    <div id="editor-{field_name}" validation="required" class="e-editor pd-2 bgr-light height-256p v-resy" contenteditable="true" target="editor-{uid}">{content}</div>
+    <textarea hidden type="text" id="{field_name}" class="editor-content" name="{field_name}" target="editor-{uid}">{content}</textarea>
+    <div valid-for="#editor-{field_name}" class="pd-1"></div>
+
+    <!-- ETEXT Footer -->
+    <div class="etext-footer pd-1">
+        <button type="button" class="button-send {button_class}" target="editor-{uid}"><i class="fa fa-send"></i> {send_button_text}</button>
+    </div>
+
+    <div id="result-block" class="display-0 mgy-4 bd-dark bd-2 bgr-dark-2 pd-2" target="editor-{uid}"></div>
+    <div id="result-html" class="display-0 mgy-4 bd-dark bd-2 bgr-dark-2 pd-2" target="editor-{uid}"></div>
+    
+</div>

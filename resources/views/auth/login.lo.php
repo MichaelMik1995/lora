@@ -1,7 +1,7 @@
 <div class="row row-center-lrg row-center-xlrg cols-3 cols-1-xsm">
     <div id="login-column" class="column"></div>
     
-    <div class="column bgr-dark-3 pd-2 bd-round-3 mgy-20">
+    <div class="column pd-2 bd-round-3 mgy-20">
         <div class="form-line header-2 header-3-xsm t-info t-bolder content-center">
             Přihlásit se
         </div>

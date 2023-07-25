@@ -1,0 +1,31 @@
+{
+        "tags_to_blocks": [
+            { "tag": "<b>(.*?)<\/b>", "block": "[B]$1[/B]" },
+            { "tag": "<i>(.*?)<\/i>", "block": "[i]$1[/i]" },
+            { "tag": "<u>(.*?)<\/u>", "block": "[U]$1[/U]" },
+            { "tag": "<strike>(.*?)<\\/strike>", "block": "[S]$1[/S]" },
+            { "tag": "<div align=\"left\">(.*?)<\/div>", "block": "[AL:left]$1[/AL]" },
+            { "tag": "<div class=\"content-center\">(.*?)<\/div>", "block": "[AL:center]$1[/AL]" },
+            { "tag": "<div class=\"header-(\\d+)\"(?:.*?)>(.*?)<\/div>", "block": "[H$1]$2[/H$1]" },
+            { "tag": "<span class=\"header-(\\d+)\"(?:.*?)>(.*?)<\/span>", "block": "[H$1]$2[/H$1]", "descrption": "insert block" },
+            { "tag": "<h(\\d+)>(.*?)<\/h(\\d+)>", "block": "[H$1]$2[/H$1]" },
+            { "tag": "<div align=\"right\">(.*?)<\\/div>", "block": "[AL:right]$1[/AL]" },
+            { "tag": "<img[^>]*src=\"([^\\']+)\"[^>]*>", "block": "[Img]$1[/Img]" },
+            { "tag": "<span style=\"font-size:(\\d+)em;\"(?:.*?)>(.*?)<\/span>", "block": "[Size-$1]$2[/Size]" },
+            { "tag": "<font color=\"#([0-9a-fA-F]{6})\">(.*?)<\/font>", "block": "[Color:$1]$2[/Color]" }
+        ],
+
+        "blocks_to_tags": [
+            { "block": "\\[B\\](.*?)\\[\\/B\\]", "tag": "<b>$1</b>" },
+            { "block": "\\[i\\](.*?)\\[\\/i\\]", "tag": "<i>$1</i>" },
+            { "block": "\\[U\\](.*?)\\[\\/U\\]", "tag": "<u>$1</u>" },
+            { "block": "\\[S\\](.*?)\\[\\/S\\]", "tag": "<strike>$1</strike>" },
+            { "block": "\\[AL:left\\](.*?)\\[\\/AL\\]", "tag": "<div class='content-left'>$1</div>" },
+            { "block": "\\[AL:center\\](.*?)\\[\\/AL\\]", "tag": "<div class='content-center'>$1</div>" },
+            { "block": "\\[AL:right\\](.*?)\\[\\/AL\\]", "tag": "<div class='content-right'>$1</div>" },
+            { "block": "\\[Img\\]([^\\[]+)\\[\\/Img\\]", "tag": "<img src='$1' alt='Obrázek'>" },
+            { "block": "\\[Size-(\\d+)\\]([\\s\\S]*?)\\[\\/Size\\]", "tag": "<span style='font-size:$1px;'>$2</span>" },
+            { "block": "\\[H(\\d+)\\]([\\s\\S]*?)\\[\\/H(\\d+)\\]", "tag": "<span class='header-$1'>$2</span>" },
+            { "block": "\\[Color:([0-9a-fA-F]{6})\\](.*?)\\[\/Color\\]", "tag": "<font color='#$1'>$2</font>" }
+        ]
+}

@@ -20,6 +20,11 @@ class RouteValidator
         return $this->response;
     }
 
+    public function error(): Array
+    {
+        return [];
+    }
+
     private function checkRequestAddress()
     {
 

@@ -26,7 +26,6 @@ use App\Core\DI\DIContainer;
 
 class UserGallery extends User implements ModelDBInterface
 {
-    protected array|null $model_data;
 
     public function __construct(DIContainer $container) //Can expand to multiple arguments, first must be DIContainer
     {

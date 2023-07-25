@@ -12,8 +12,6 @@ use Route\Middleware\MiddlewareGroup;
  */
 class Middleware 
 {
-
-    use MiddlewareGroup;
     //Must same as in App/Core/Constants.php
     const 
         DEFAULT = 0,
@@ -28,6 +26,8 @@ class Middleware
      */
     protected $middleware_request;
     protected bool $middleware_request_response;
+
+    public string $errors = "";
 
     public function __construct(array $url_request)
     {
@@ -87,21 +87,12 @@ class Middleware
         }
     }
 
-    public function error()
-    {
-
-    }
-
-    private function catchError()
-    {
-
-    }
-
     private function getResponseMiddlewareGroups(string $url_request): Bool
     {
         @$get_groups = MiddlewareGroup::return();
 
         $response = [];
+        $errors = [];
 
         foreach($get_groups as $key => $value)
         {
@@ -111,11 +102,23 @@ class Middleware
                 $middleware = str_replace("Route\Middleware", "", $middleware_class);
                 $middleware_instance = new $middleware();
                 $response[] = $middleware_instance->return(); 
+                $errors = $middleware_instance->error();
             }
         }
 
         if(in_array(false, $response))
         {
+            if(!empty($errors))
+            {
+                $error_message = "";
+                foreach ($errors as $error)
+                {
+                    $error_message .= $error."<br>";
+                }
+
+                $this->errors = $error_message;
+            }
+            
             return false;
         }
         else
