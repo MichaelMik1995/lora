@@ -76,9 +76,9 @@ class MediaUtils implements InstanceInterface
         $upload_path = $folder . '/' . $new_file_name;
 
         // Přesunutí souboru do určeného adresáře
-        if (!move_uploaded_file($file_tmp, $upload_path)) {
+        /*if (!move_uploaded_file($file_tmp, $upload_path)) {
             throw new Exception('Nepodařilo se uložit soubor');
-        }
+        }*/
 
         $this->createMetadata($new_image_name, $folder, $new_ext, $file_name);
 
@@ -115,9 +115,9 @@ class MediaUtils implements InstanceInterface
             $file_size = $files['size'][$i];
 
             // Kontrola, zda byl soubor úspěšně nahrán
-            if (!is_uploaded_file($file_tmp)) {
+            /*if (!is_uploaded_file($file_tmp)) {
                 throw new Exception('Neplatný soubor');
-            }
+            }*/
 
             // Získání původního rozšíření souboru
             $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));

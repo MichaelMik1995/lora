@@ -58,6 +58,13 @@ function env(string $environment_parameter, $echo = true)
 }
 
 
+/**
+ * Get translated string
+ *
+ * @param string $language_parameter
+ * @param boolean $echo
+ * @return void
+ */
 function lang(string $language_parameter, $echo = true)
 {
     if($echo === true)
@@ -68,6 +75,18 @@ function lang(string $language_parameter, $echo = true)
     {
         return call_user_func_array('\App\Core\Lib\Language::lang', [$language_parameter]);
     }
+}
+
+/**
+ * Paint icon
+ *
+ * @param string $icon_name
+ * @param string $icon_width
+ * @return void
+ */
+function icon(string $icon_name, string $icon_width = "32", $color="dark")
+{
+    echo "<img src=\"public/img/icon/base/$color/$icon_name.svg\" alt=\"$icon_name\" width=\"$icon_width\">";
 }
 
 /**
