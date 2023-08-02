@@ -139,7 +139,29 @@ class UserAnnouncement extends User implements ModelDBInterface
         {
             $content = $db_query["content"];
             
-            $db_query["_content"] = $this->easy_text->translateText($content);
+            $db_query["_content"] = $this->easy_text->translateText($content, "25%");
+            
+            return $db_query;
+        }
+        else
+        {
+            return [];
+        }
+    }
+
+    public function getNewestAnnouncements()
+    {
+        $db_query = $this->database->selectNewestRows($this->model_table, "id!=?", [0], 8);
+        if(!empty($db_query))
+        {
+            $i = 0;
+            foreach($db_query as $row)
+            {
+                $id = $i++;
+                $content = $row["content"];
+                
+                $db_query[$id]["_content"] = $this->easy_text->translateText($content);
+            }
             
             return $db_query;
         }

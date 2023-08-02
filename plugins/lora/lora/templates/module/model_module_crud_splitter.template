@@ -83,6 +83,7 @@ class {Model_name} extends {Module_name} implements ModelDBInterface
         
         if(!empty($db_query))
         {
+            $i = 0;
             foreach($db_query as $row)
             {
                 $id = $i++;

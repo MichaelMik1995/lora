@@ -67,9 +67,11 @@ class UserDashboardController extends UserController
     {
         
         $last_annoucenment = $announcement->getLastAnnouncement();
+        $newest_announcements = $announcement->getNewestAnnouncements();
         
         $this->data = [
             "announcement" => $last_annoucenment,
+            "newest_announcements" => $newest_announcements
         ]; 
 
         return $this->view = $this->template_folder."index";

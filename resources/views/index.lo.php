@@ -125,15 +125,15 @@
            
         </nav>
         
-        <div class="">
+        <main class="">
             <div class="">
                 {{$controll->loadView()}}
             </div>
-        </div>
+        </main>
         
-        <div class="display-0 bottom-fixed background-dark-2 bd-2 bd-top-dark width-100 pd-2">
+        <footer class="display-0 bottom-fixed background-dark-2 bd-2 bd-top-dark width-100 pd-2">
             Tato webová stránka je prezentací frameworku Lora verze 2.0
-        </div>
+        </footer>
         
     </body>
 

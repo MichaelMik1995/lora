@@ -386,13 +386,13 @@ class Database
     /**
      * Select random rows from the database with the specified limit and WHERE clause
      *
-     * @param [type] $table
-     * @param [type] $where
-     * @param [type] $limit
+     * @param string $table
+     * @param string $where
+     * @param int $limit
      * @param array $params
      * @return array|null
      */
-    public function selectRandom($table, $where, $limit, $params = []): Array|Null
+    public function selectRandom(string $table, string $where, int $limit, $params = []): Array|Null
     {
         $return = $this->connect->prepare("SELECT * FROM `$table` WHERE $where ORDER BY RAND() LIMIT $limit");
         $return->execute($params);
@@ -413,9 +413,9 @@ class Database
      * @param string $where
      * @param array $params
      * @param integer $limit
-     * @return array|null
+     * @return array|null|bool
      */
-    public function selectNewestRows(string $table, string $where, $params = [], $limit = 8): Array|Null
+    public function selectNewestRows(string $table, string $where, $params = [], $limit = 8): Array|Null|Bool
     {
         $return = $this->connect->prepare("SELECT * FROM `$table` WHERE $where ORDER BY `id` DESC LIMIT $limit");
         $return->execute($params);

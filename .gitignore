@@ -11,6 +11,9 @@ App/Modules/*
 
 App/Trash
 
+App/Database/Migration/Krimwr/*
+
+
 .storybook/
 .vscode/
 
@@ -31,3 +34,6 @@ public/img/avatar/*
 public/upload/images/*
 
 content/uploads/*
+
+resources/sql/*
+!do-not-erase

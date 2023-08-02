@@ -28,12 +28,12 @@ class UserData extends User
 
     protected static $_instance_id;
 
-    public function __construct(DIContainer $container, Database $database) //Can expand to multiple arguments, first must be DIContainer
+    public function __construct(DIContainer $container, Database $database) //Can expand to multiple arguments, first must be DIContainer object
     {
         parent::__construct($container);    //Only this one argument is needed
 
         $this->database = $database;
-        //$this->database->table = $this->model_table;      //Uncheck this, if table is different from controller name
+        $this->database->table = $this->model_table;      //Uncheck this, if table is different from controller-url name
     }
     
     /**

@@ -26,7 +26,7 @@ class PluginEText
 
         //Classes
         const LiveEditor = new liveEditor();
-        LiveEditor.constructEditor(element_to_replace, element_to_replace.html(), field_name);
+        return LiveEditor.constructEditor(element_to_replace, element_to_replace.html(), field_name, options);
     }
 }
 

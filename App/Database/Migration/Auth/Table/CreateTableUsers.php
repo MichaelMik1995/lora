@@ -45,6 +45,7 @@ class CreateTableUsers
         $status = $factory->createTableColumn("status", "int", 1, default: "0");
         $hidden = $factory->createTableColumn("hidden", "int", 1, default: "0");
         $session_key = $factory->createTableColumn("session_key", "varchar", 128, 1);
+        $rank = $factory->createTableColumn("rank", "varchar", 128, 1);
 
         //Save a complete folded table:
         $factory->tableSave([
@@ -67,6 +68,7 @@ class CreateTableUsers
             $status,
             $hidden,
             $session_key,
+            $rank,
         ]);
 
 

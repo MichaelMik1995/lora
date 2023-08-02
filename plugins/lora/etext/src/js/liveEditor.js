@@ -12,20 +12,20 @@ class liveEditor extends editorButtons
      * @param {*} element_to_replace 
      * @param {*} content 
      */
-    constructEditor(element_to_replace, content, content_field_name)
+    constructEditor(element_to_replace, content, content_field_name, options = {})
     {
-        this.loadTemplate(element_to_replace, content, content_field_name);
+        this.loadTemplate(element_to_replace, content, content_field_name, options);
     }
 
     /**
      * Load the template from file and send to process
      */
-    loadTemplate(element_to_replace, content, content_field_name)
+    loadTemplate(element_to_replace, content, content_field_name, options = {})
     {
         fetch('/plugins/lora/etext/src/template/editor.html')
         .then(response => response.text()) // getting content from template
         .then(data => {
-            this.processTemplate(data, element_to_replace, content, content_field_name);
+            return this.processTemplate(data, element_to_replace, content, content_field_name);
         })
         .catch(error => {
             console.error('Error loading template:', error);
@@ -40,7 +40,7 @@ class liveEditor extends editorButtons
         var compiled_content;
 
 
-        var block_to_tags = this.convertBlocktoTags(content);
+        var block_to_tags = this.convertBlocktoTags(content.replace(/\n/g,"<br>"));
 
         var data = 
         {
@@ -57,9 +57,11 @@ class liveEditor extends editorButtons
 
         this.initButtons();
 
-        $(".e-editor[target=editor-"+uid+"]").on("change", () => {
+        $(".e-editor[target=editor-"+uid+"]").on("keyup", () => {
             this.updateResult(uid);
         });
+
+        return this.editor_id;
         
     }
 
@@ -184,10 +186,10 @@ class liveEditor extends editorButtons
             var blockContent = this.convertTagsToBlocks(editorContent);
             var sanitizedContent = this.sanitize(blockContent);
 
-            resultBlockElement.toggle(200).text(blockContent);
+            //resultBlockElement.toggle(200).text(blockContent);
        
             var back_to_tags = this.convertBlocktoTags(blockContent);
-            resultElement.toggle(200).html(back_to_tags);
+            //resultElement.toggle(200).html(back_to_tags);
         }
 
         //Save to hidden field in editor
