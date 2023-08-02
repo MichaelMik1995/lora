@@ -1,2 +1,0 @@
-<button onClick="$('#hidden_comment_content_{id}').slideToggle(200); $('#block_comment_content_{id}').removeClass('t-warning'); $('.save-icon').remove()", '#comment_content_{{{id}')" class='button-small button-warning mgx-1'><i class="fa fa-edit"></i><span class="display-0-sm"> Upravit</span></button>
-<button onClick="GUIDialog.dialogConfirm('Opravdu chcete smazat tento komentář?', function(){$('#hidden_comment_delete_{id}').submit()})" class='button-small button-error'><i class="fa fa-trash"></i><span class="display-0-sm"> Smazat</span></button>

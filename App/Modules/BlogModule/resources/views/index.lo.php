@@ -1,1 +1,0 @@
-<h3>Module Blog installed!</h3>

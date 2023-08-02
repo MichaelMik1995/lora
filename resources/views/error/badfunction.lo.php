@@ -1,1 +1,0 @@
-<h1>Metoda, kterou se pokoušíte zavolat, neexistuje!</h1>
