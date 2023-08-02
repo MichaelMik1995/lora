@@ -35,5 +35,4 @@ public/upload/images/*
 
 content/uploads/*
 
-resources/sql/*
-!do-not-erase
+resources/sql/*.db
