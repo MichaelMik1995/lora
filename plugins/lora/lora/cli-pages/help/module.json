@@ -1,0 +1,42 @@
+{
+    "title": "Module help page",
+    "page": "module",
+    "usage": "php bin/module [action] (options)",
+    "description": "Additional plugin module for managing modules installed on web project",
+
+    "lines": {
+        "line1": {
+            "cmd": "php lora module:list",
+            "description": "Prints available and installed modules in project"
+        },
+        
+        "line2": {
+            "cmd": "php lora module:create [module-name] [--crud] ",
+            "option --crud": "Creates new CRUD main model in module",
+            "example": "php lora module:create eshop",
+            "description": "creates module EshopModule in App/Modules/"
+        },
+        
+        "line3": {
+            "cmd": "php lora splitter:create [Controller-name] [--module, --templates]",
+            "option --module": "Define module destination ex.: --module=Admin",
+            "option --templates": "Define templates folder ex.: --templates=security creates security folder in Module/resources/views/{}",
+            "example": "php lora splitter:create Security --module=Admin --template=security",
+            "description": "Creates new splitter AdminSecurityController for module Admin in /App/Modules/AdminModule/Splitter/AuthAdminController.php"
+        },
+        
+        "line4": {
+            "cmd": "php lora module:update [Module-name] [--addmodel, --crud]",
+            "option --addmodel": "Adds new model to module",
+            "option --crud": "Creates new CRUD main model in module (must be with --addmodel option)",
+            "example": "php lora module:update Admin --addmodel=Security --crud",
+            "description": "Creates new model named AdminSecurity for module Admin in /App/Modules/AdminModule/Module/Authmanager.php"
+        },
+
+        "line5": {
+            "cmd": "php lora module:delete [Module-name]",
+            "example": "php lora module:delete Admin",
+            "description": "Deletes module Admin"
+        }
+    }
+}

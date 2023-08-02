@@ -1,0 +1,31 @@
+<div class='container-md'>
+    <form method='POST' action='/user/do-register'>
+        @csrfgen
+        <div class='form-line'>
+            <label for='name'>Zadej své jméno:</label><br>
+            <input required class='ws-input-text f-input-25 pd-1' type='text' name='name' id='name' placeholder='Nepoužívej znaky typu @&|<> ...'>
+        </div>
+        
+        <div class='form-line'>
+            <label for='email'>Zadej svůj email:</label><br>
+            <input required class='ws-input-text f-input-50 pd-1' type='text' name='email' id='email' value='@'>
+        </div>
+        
+        <div class='form-line'>
+            <label for='password1'>Zadej heslo:</label><br>
+            <input required class='ws-input-text f-input-50 pd-1' type='password' name='password1' id='password1'>
+        </div>
+        
+        <div class='form-line'>
+            <label for='password2'>Zadej heslo znovu:</label><br>
+            <input required class='ws-input-text f-input-50 pd-1' type='password' name='password2' id='password2'>
+        </div>
+        
+        <div class='form-line'>
+            <label for='antispam'>Antispam (Zadej následující rok):</label><br>
+            <input required class='ws-input-text f-input-25 pd-1' type='number' name='antispam' id='antispam'>
+        </div>
+        
+        <button class='button-large button-create mrgn-1' type='submit'>Zaregistrovat</button>
+    </form>
+</div>   

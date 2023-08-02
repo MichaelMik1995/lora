@@ -1,0 +1,13 @@
+{
+    "title": "Lora help page",
+    "page": "model",
+    "usage": "php lora help [help-page]",
+    "description": "Welcome to Lora help page",
+
+    "lines": {
+        "line1": {
+            "cmd": "php lora help [help-name]",
+            "description": "Prints help page from argument"
+        }
+    }
+}

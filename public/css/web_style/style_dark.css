@@ -1,0 +1,277 @@
+/*
+This file was made for web page https://www.dxgamepro.cz
+Writed and checked by ©MichaelMik - 2019-2020
+If any problem, visit web page https://www.dxgamepro.cz
+or write your message to email: dxgamepro@email.cz
+*/
+/* 
+    Created on : 29. 1. 2021, 11:00:35
+    Author     : acer15
+
+    STYLE COLORS PREFABS:
+    
+    Body Background = #111010;
+    Body Dynamic Div Background = #1a1a1a;
+    Body Header = #1a1a1a;
+    Body Background Text = #BFBFBF;
+    Body Borders = #0d0d0d;
+
+    Body GUI Buttons = #bfbfbf;
+    Body GUI Buttons Hover = orange;
+
+    Post Background = #1a1a1a;
+    Post Header Background = #070A2B;
+    Post Header Spanned Color = #70B7CF;
+    Post Content Background = #1E2429;
+    Post Footer Background = ;
+    Post Content Color = #bfbfbf;
+
+    Post Content Background = #1E2429;
+    Post Content Header Background = #1a1a1a;
+    Post Content Body Background = #1E2429;
+    Post Content Footer Background = ;
+    Post Content Color = #bfbfbf;
+    Post Content Spanned Color = #70B7CF;
+
+    Comment Background = #1b1c23;
+    Comment Border Top = #583F26;
+
+    easyText Header = #1a1a1a;
+    easyText Block Background = #252525;
+    easyText Block Border = #1a1a1a;
+    easyText TextArea Background = #bfbfbf;
+    easyText eTcode Background = #1A2030;
+*/
+
+/* MAIN PAGE */
+body
+{
+    background: #111010;
+    color: #BFBFBF;
+}
+
+textarea
+{
+    background: #BFBFBF;
+}
+
+.ws-body_header
+{ 
+    background: #030101;
+}
+
+.ws-body_dynamic_content
+{
+    background: #111111;
+}
+
+/* BUTTONS */
+.ws-button
+{
+    color: #bfbfbf;
+    background: none;
+    border: none;
+    transition: color .3s;
+}
+
+.ws-button:hover
+{
+    cursor: pointer;
+    color: #007fff;
+}
+
+.ws-input-text
+{
+    color: black;
+    border: none;
+    border-radius: 0;
+    border-bottom: 2px solid #007fff;
+    background: #bfbfbf;
+}
+
+.ws-textarea
+{
+    background: #bfbfbf;
+    border: none;
+    border-radius: 0;
+    border-bottom: 2px solid orange;
+}
+
+.ws-submit
+{
+    font-size: 18px;
+    padding: 8px;
+    background: none;
+    border: none;
+    border-radius: 0;
+    border-bottom: 2px solid #bfbfbf;
+    color: #bfbfbf;
+}
+
+.ws-submit:hover
+{
+    cursor: pointer;
+    border-bottom: 2px solid #70B7CF;
+    color: #70B7CF;
+}
+
+/* EASY TEXT */
+.ws-easytext_header
+{
+    background: #252525;
+}
+
+.ws-easytext_block
+{
+    background: #252525;
+    border: 2px solid #1a1a1a;
+}
+
+.ws-easytext_block i
+{
+    cursor: pointer;
+    color: #bfbfbf;
+}
+
+.ws-easytext_block i:hover
+{
+    color: #70B7CF;
+}
+
+.ws-easytext_textarea
+{
+    background: #bfbfbf;
+}
+
+
+/* FOR HOMEPAGE */
+.ws-post_body_background
+{
+    background: #1a1a1a;
+    border: 4px solid #0d0d0d;
+}
+
+.ws-href
+{
+    text-decoration: none !important;
+}
+
+.ws-href:hover
+{
+    cursor: pointer;
+    color: orange;
+}
+
+.ws-href:active
+{
+    color: orange;
+}
+
+.ws-post_header_background
+{
+    background: #0d0d0d;
+    color: #bfbfbf;
+}
+
+.ws-post_content
+{
+    background: #1E2429;
+}
+
+.ws-main_post_header a
+{
+    color: #bfbfbf;
+    transition: color .5s;
+}
+
+.ws-main_post_header a:hover
+{
+    color: #70B7CF;
+}
+
+.ws-comment
+{
+    background: #1b1c23;
+    border-top: 2px solid #583F26;
+}
+
+.ws-comment-spanned
+{
+    color: #70B7CF;
+}
+
+.ws-post_content a, .ws-comment a
+{
+    color: orange;
+}
+
+.ws-post_content a:hover, .ws-comment a:hover
+{
+   color: orangered; 
+}
+
+.ws-highlighted
+{
+    color: orange;
+}
+
+.ws-highlighted_value
+{
+    color: limegreen;
+}
+
+.ws-inactive_div
+{
+    background: #858585;
+    color: #1A2030;
+}
+
+.task_button_user_green
+{
+    color: lime;
+    border-bottom: 2px solid lime;
+}
+
+.eTcode
+{
+    background: #1A2030;
+    border-left: 2px solid #bfbfbf; 
+    color: #bfbfbf;
+}
+
+
+/* Existing divs */
+.quick-nav-table
+{
+    border: 1px solid #007fff;
+}
+
+.quick-nav-table tr td:first-child
+{
+    background: #007fff;
+}
+
+.quick-nav-table tr td:hover
+{
+    background: #007fff;
+    cursor: pointer;
+}
+
+.trigger_upload_file
+{
+    color: #007fff;
+    background: none;
+}
+
+.trigger_upload_file:hover
+{
+    color: #bfbfbf;
+    background: #007fff;
+}
+
+
+.product-download:hover
+{
+    color: #bfbfbf;
+    cursor: pointer;
+}

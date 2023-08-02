@@ -1,0 +1,14 @@
+{
+    "title": "Routes help page",
+    "page": "route",
+    "usage": "php lora help route",
+    "description": "Setting up new register route url",
+
+    "lines": {
+        "line1": {
+            "cmd": "php lora route:list",
+            "description": "Print all registered routes"
+        }
+    }
+
+}

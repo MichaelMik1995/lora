@@ -1,0 +1,16 @@
+<div class="container form-line border border-1 border-primary rounded-2 pdx-4 pdy-4">
+    <form method="POST" action="/user/do-login">
+        @csrfgen
+        <div class="form-line">
+            <label for="name">Zadej své jméno:</label><br>
+            <input required class="ws-input-text w-25 form-control" type="text" name="name" id="name" placeholder="Nepožívej znaky typu @&|<> ...">
+        </div>
+        
+        <div class="form-line">
+            <label for="password">Zadej heslo:</label><br>
+            <input required class="ws-input-text w-25 form-control" type="password" name="password" id="password">
+        </div>
+        
+        <button class="btn btn-lg btn-primary" type="submit">Přihlásit se</button>
+    </form>
+</div>

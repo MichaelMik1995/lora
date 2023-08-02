@@ -1,0 +1,22 @@
+{
+    "hrefs":
+    {
+        "security":
+        {
+            "icon": "fa fa-shield",
+            "href": "admin/app/security"
+        }
+    },
+
+    "language": 
+    {
+        "cz": 
+        {
+            "security": "Zabezpečení"
+        },
+        "en": 
+        {
+            "security": "Security"
+        }
+    }
+}

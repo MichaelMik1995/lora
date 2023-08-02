@@ -1,0 +1,107 @@
+<?php
+declare (strict_types=1);
+
+namespace App\Model;
+
+use App\Core\Model;
+use App\Core\Database\Database;
+use App\Middleware\Auth;
+
+class {Model_name} extends Model
+{
+
+    protected $database;
+    protected $table = "{model_name}";
+    protected $table_comments = "{model_name}-comments";
+    
+    public function __construct($injected_classes)
+    {
+        $this->database = $injected_classes["Database"];
+    }
+    
+    /**
+     * 
+     * @param string $order_by <p>Order tables in rows (ex.: id ASC)</p>
+     * @return object <p>Returns all rows from table {model_name}</p>
+     */
+    public function getAll(string $order_by = "id ASC"): Array
+    {
+
+        $db_query = $this->database->tableAllData($order_by);
+        if(!empty($db_query))
+        {
+            $returnArray = [];
+            $i = 0;
+            foreach($db_query as $row)
+            {
+                $id = $i++;
+                $content = $row["content"];
+                
+                $db_query[$id]["_content"] = $this->easy_text->translateText($content);
+            }
+            
+            return $db_query;
+        }
+        else
+        {
+            return [];
+        }
+    }
+    
+    
+    /**
+     * 
+     * @return object <p>Returns one row from table depends on URL key</p>
+     * @see Database()->tableRowByRoute()
+     */
+    public function get(string $route_key="url")
+    {
+        // Get one row
+        return $this->database->tableRowByRoute($route_key);
+    }
+    
+    public function insert(array $insert_values)
+    {
+        // Insert new row
+        return $this->database->tableInsert($this->table, $insert_values);
+    }
+    
+    public function update(array $set)
+    {
+        // update row
+        return $this->database->tableUpdateByRoute($set);
+    }
+    
+    public function delete()
+    {
+        // delete row
+        return $this->database->tableDeleteByRoute();
+    }
+    
+    ###################     CRUD functions for COMMENTS     ###################
+    
+    public function getComments(string $where_column, $where_value, $order = "id ASC")
+    {
+        // Get one row
+        return $this->database->select($this->table_comments, "$where_column=? ORDER BY $order", [$where_value]);
+    }
+    
+    public function insertComment(array $insert)
+    {
+        // Insert comment
+        return $this->database->tableInsert($this->table_comments, $insert);
+    }
+    
+    public function updateComment(array $set)
+    {
+        // Update current comment
+        return $this->database->tableUpdate($this->table_comments, $set);
+    }
+    
+    public function deleteComment($id)
+    {
+        // Delete current comment
+        return $this->database->delete($this->table_comments, "id=?", [$id]);
+    }
+}
+?>

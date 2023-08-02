@@ -1,0 +1,10 @@
+ "variable1": {
+    "type" => "string",
+    "value" => "hello world"
+ },
+
+ "container" : {
+    "type" => "mixed",
+    "value" => "$crypted$",
+ }
+

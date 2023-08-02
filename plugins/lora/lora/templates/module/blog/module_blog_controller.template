@@ -1,0 +1,95 @@
+<?php
+declare (strict_types=1);
+
+use App\Core\Module\SplitterRegistry;
+use App\Core\View\Template;
+use App\Middleware\Auth;
+use App\Middleware\Validation;
+//Module Model
+use App\Modules\{Model_name}Module\Model\{Model_name};    
+
+
+class {Model_name}Controller extends Controller 
+{
+    protected $container;
+
+    public function __construct($container)
+    {
+        $this->container = $container;
+    }
+    
+    public function index($url) 
+    {
+        //it is a module: {model_name}
+        $this->module = "{model_name}";
+        
+        ${model_name} = new {Model_name}();
+        $action = @$url[1];
+        $route_param = @$url[2];
+        
+        $splitter = new SplitterRegistry($this->module, $url, $this->container);
+        $this->data = $splitter->getSplittersData();
+        $this->view = $splitter->getSplittersView();
+        
+        $array_utils = $this->container["ArrayUtils"];  
+        $container = $array_utils->setLowerCaseVars($this->container);
+        
+        extract($container);
+        
+        switch($action)
+        {
+            default: $this->redirect("error"); break;
+            
+            case "":
+                $this->header["title"] = "{Model_name}";        //set dynamic web title
+                $this->data = [];
+                
+                
+                $this->view = "index"; 
+                break;
+            
+            case "show":
+                $this->header["title"] = "{Model_name}";        //set dynamic web title
+                $this->data = [];
+                
+                
+                $this->view = "index"; 
+                break;
+            
+            case "create":
+                $this->header["title"] = "{Model_name}";        //set dynamic web title
+                $this->data = [];
+                
+                
+                $this->view = "index"; 
+                break;
+            
+            case "edit":
+                $this->header["title"] = "{Model_name}";        //set dynamic web title
+                $this->data = [];
+                
+                
+                $this->view = "index"; 
+                break;
+            
+            case "update":
+                $this->header["title"] = "{Model_name}";        //set dynamic web title
+                $this->data = [];
+                
+                
+                $this->view = "index"; 
+                break;
+            
+            case "delete":
+                $this->header["title"] = "{Model_name}";        //set dynamic web title
+                $this->data = [];
+                
+                
+                $this->view = "index"; 
+                break;
+        }
+        
+    }
+}
+?>
+

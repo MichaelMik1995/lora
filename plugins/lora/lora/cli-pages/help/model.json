@@ -1,0 +1,20 @@
+{
+    "title": "Model help page",
+    "page": "model",
+    "usage": "php lora model:help",
+    "description": "Sample description",
+
+    "lines": {
+        "line1": {
+            "cmd": "php lora model:create [Model-name] [options: --crud,--controller]",
+            "description": "Create model in /App/Model",
+            "option: --crud": "model is CRUD ready, params is transfered by route key",
+            "option: --controller": ""
+        },
+        "line2": {
+            "cmd": "php lora ",
+            "description": ""
+        }
+    }
+
+}

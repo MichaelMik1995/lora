@@ -1,0 +1,138 @@
+/*
+Copyright 2023 acer15.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+/* 
+    Created on : 9.7.2019, 20:30:19
+    Author     : acer15
+*/
+
+
+/* #### BEGIN CUSTOM CSS PAGE #### /*
+
+/* ####################################### EASYText -> Editor View  ####################################### */  
+
+.easyText-Dialog_block
+{
+    background-color: #1a1a1a;
+}
+
+/* Dialog body content */
+.easyText-Dialog_inner
+{
+    padding: 1.2em;
+}
+
+.easyText_textarea, .ex_easyText_textarea
+{
+    color: black;
+}
+
+#easyText_area::selection
+{
+    background: #1a1a1a;
+    color: #70B7CF;
+}
+
+.button_colorChooser
+{
+    border: 1px solid #1a1a1a;
+    border-radius: 50%;
+}
+
+.button_colorChooser:hover
+{
+    border: 1px solid #bfbfbf;
+}
+
+.image_thumb:hover
+{
+    opacity: 0.7;
+    border-radius: 3px;
+}
+
+.emoji-dialog-emoticon
+{
+    width: 35px;
+    height: 35px;
+}
+
+
+/* ####################################### EASYText -> Document View  ####################################### */  
+
+.quote
+{
+    border-left: 3px solid #1a1a1a;
+    text-shadow: 0px 0px 2px #bfbfbf;
+    background-color: rgba(0,0,0,0.4);
+    line-height: 1.3em;
+}
+
+.et_ul
+{
+    margin-left: 2em;
+}
+
+.eT_href
+{
+    color: orange;
+}
+
+.eT_href:hover
+{
+    color: orangered;
+}
+
+.eTcode
+{
+    background: #212529;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: .5em;
+    padding-bottom: .5em;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    border-radius: 5px;
+    border-left: 3px solid #0E4261;
+    overflow: auto;
+    font-family:'Courier New';
+}
+
+.input-easystyle
+{
+    background-color: #1a1a1a;
+    color: whitesmoke;
+}
+
+.button-easytext
+{
+    background-color: #70B7CF;
+    color: black;
+    border: 2px solid #70B7CF;
+    border-radius: 4px;
+}
+
+.button-easytext:hover
+{
+    background: none;
+    color: #70B7CF;
+    cursor: pointer;
+}
+
+.esHidden
+{
+    background: #0d0d0d;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
