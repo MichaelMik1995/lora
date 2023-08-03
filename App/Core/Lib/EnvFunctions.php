@@ -81,10 +81,10 @@ function lang(string $language_parameter, $echo = true)
  * Paint icon
  *
  * @param string $icon_name
- * @param string $icon_width
+ * @param string|int $icon_width
  * @return void
  */
-function icon(string $icon_name, string $icon_width = "32", $color="dark")
+function icon(string $icon_name, $color="dark", string|int $icon_width = "32")
 {
     echo "<img src=\"public/img/icon/base/$color/$icon_name.svg\" alt=\"$icon_name\" width=\"$icon_width\">";
 }

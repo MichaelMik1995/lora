@@ -9,6 +9,6 @@ namespace App\Core\Interface;
  */
 interface InstanceInterface 
 {
-    public static function instance();
+    //public static function instance();
     public function getInstanceId();
 }

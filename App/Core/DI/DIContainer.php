@@ -159,6 +159,25 @@ class DIContainer implements InstanceInterface
             
             if(method_exists($requested_object, "instance")) //$requested_object = ex.: App\Middleware\Auth
             {
+                if(method_exists($requested_object, "__constructor"))
+                {
+                    $constructor = new \ReflectionMethod($requested_object, "__constructor");
+                    $parameters = $constructor->getParameters();
+
+                    $args = [];
+                    foreach($parameters as $parameter)
+                    {
+                        $type = $parameter->getType();
+                        $name = $type->getName();
+
+                        $args[] = $this->get($name);
+                        
+                    }
+                    $object = $requested_object::instance();
+                    $constructor->invokeArgs($object, $args);
+
+                }
+
                 return $requested_object::instance();
             }
             else

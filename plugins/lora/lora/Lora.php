@@ -14,6 +14,7 @@ use Lora\Lora\Core\Commander\GUICommander;
 use Lora\Lora\Core\Commander\ModelCommander;
 use Lora\Lora\Core\Commander\RouteCommander;
 use Lora\Lora\Core\Commander\ServerCommander;
+use Lora\Lora\Core\Commander\UtilsCommander;
 
 class Lora
 {
@@ -27,6 +28,7 @@ class Lora
     use RouteCommander;
     use PluginCommander;
     use ModuleCommander;
+    use UtilsCommander;
 
     public function __construct() 
     {
@@ -64,6 +66,7 @@ class Lora
             ServerCommander::SendCommand($command, $argument, $options);
             PluginCommander::SendCommand($command, $argument, $options);
             ModuleCommander::SendCommand($command, $argument, $options);
+            UtilsCommander::SendCommand($command, $argument, $options);
         }
         else
         {

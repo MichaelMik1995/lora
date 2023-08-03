@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace App\Core\Lib\Utils;
 use App\Core\Interface\InstanceInterface;
+use App\Exception\LoraException;
 use Exception;
+use App\Core\Lib\Logger;
+use App\Core\DI\DIContainer;
 
 /**
  * MediaUtils fo managing files, images, audio, 
@@ -15,7 +18,17 @@ class MediaUtils implements InstanceInterface
     private static $_instance;
     private static int $_instance_id;
 
-    private function __construct(){}
+    private Logger $log;
+
+    public function __construct(){}
+
+    /**
+     * Arguments will be inserted via DI
+     */
+    public function __constructor(Logger $log)
+    {
+        $this->log = $log;
+    }
 
     public static function instance()
     {
@@ -38,7 +51,15 @@ class MediaUtils implements InstanceInterface
     
     /* Images */
     
-    
+    /**
+     * Upload one image to the specified folder
+     *
+     * @param string $folder            <p>Path to upload image</p>
+     * @param string $post_field_name   <p>NAME attribute value from POST form</p>
+     * @param string $new_image_name    <p>If defined -> sets specific name of new image</p>
+     * @param string $new_ext           <p>If defined -> rewrites image extension (for example "png")</p>
+     * @return string|null              <p>returns full path of uploaded image with name and extension</p>
+     */
     public function uploadOneImage(string $folder, string $post_field_name = "image", string $new_image_name = "", string $new_ext = "none")
     {
         // Collecting information from uploaded image
@@ -184,6 +205,10 @@ class MediaUtils implements InstanceInterface
     */
     public function resizeImage($source_image, $image_destination, mixed $new_image_name, $target_width = 256, $target_height = 128, $percent_scale = 0): Bool
     {
+        if(!file_exists($source_image))
+        {
+            throw new LoraException("Obrázek: ".$source_image." nelze najít");
+        }
         // get image extension
         $image_extension = pathinfo($source_image, PATHINFO_EXTENSION);
 
@@ -244,7 +269,7 @@ class MediaUtils implements InstanceInterface
             "gif" => imagecreatefromgif($source_image),
             "webp" => imagecreatefromwebp($source_image),
             "bmp" => imagecreatefrombmp($source_image),
-            "tiff" => imagecreatefromtiff($source_image),
+            //"tiff" => imagecreatefromtiff($source_image),
             "default" => null,
         };
 
@@ -259,7 +284,7 @@ class MediaUtils implements InstanceInterface
             "gif" => imagegif($new_image, $image_destination . '/' . $new_image_name. ".gif"),
             "webp" => imagewebp($new_image, $image_destination . '/' . $new_image_name. ".webp"),
             "bmp" => imagebmp($new_image, $image_destination . '/' . $new_image_name. ".bmp"),
-            "tiff" => imagetiff($new_image, $image_destination . '/' . $new_image_name. ".tiff"),
+            //"tiff" => imagetiff($new_image, $image_destination . '/' . $new_image_name. ".tiff"),
             "default" => null,
         };
 
