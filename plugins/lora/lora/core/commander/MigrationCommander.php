@@ -16,7 +16,7 @@ trait MigrationCommander
     {
         switch($command)
         {
-            case "migrate":
+            case "dbtable:write":
                 $migration = new MigrationFactory();
 
                 if($argument != "")
@@ -25,12 +25,12 @@ trait MigrationCommander
                 }
                 else
                 {
-                    LoraOutput::output("Usage: php lora migration [Caller_name]", "error");
+                    LoraOutput::output("Usage: php lora dbtable:write [Caller_name]", "error");
                 }
                 
                 break;
 
-            case "migrate:create":
+            case "dbtable:create":
                 if($argument != "")
                 {
                     if(!empty($options))
@@ -47,7 +47,7 @@ trait MigrationCommander
                             $page = "";
                         }
 
-                        if(in_array("--table", $options))
+                        if(in_array("--onlytable", $options))
                         {
                             LoraUI::generateMigrationTable($argument, $page);
                         }
@@ -77,7 +77,7 @@ trait MigrationCommander
                 }
                 else
                 {
-                    LoraOutput::output("Usage: php lora migration:create [new table name] [--data, --caller]", "error");
+                    LoraOutput::output("Usage: php lora dbtable:create [new table name] [--data, --onlydata, --onlytable, --caller]", "error");
                 }
                 break;            
         }

@@ -96,10 +96,10 @@ class MediaUtils implements InstanceInterface
         // Cesta k adresáři pro upload
         $upload_path = $folder . '/' . $new_file_name;
 
-        // Přesunutí souboru do určeného adresáře
-        /*if (!move_uploaded_file($file_tmp, $upload_path)) {
+        //Přesunutí souboru do určeného adresáře
+        if (!move_uploaded_file($file_tmp, $upload_path)) {
             throw new Exception('Nepodařilo se uložit soubor');
-        }*/
+        }
 
         $this->createMetadata($new_image_name, $folder, $new_ext, $file_name);
 
@@ -152,7 +152,8 @@ class MediaUtils implements InstanceInterface
 
             // Přesunutí souboru do určeného adresáře
             if (!move_uploaded_file($file_tmp, $upload_path)) {
-                throw new Exception('Nepodařilo se uložit soubor');
+            
+                throw new Exception('Nepodařilo se uložit soubor'.$file_tmp);
             }
 
             // Přidání cesty k uploadovanému souboru do pole
@@ -209,6 +210,7 @@ class MediaUtils implements InstanceInterface
         {
             throw new LoraException("Obrázek: ".$source_image." nelze najít");
         }
+
         // get image extension
         $image_extension = pathinfo($source_image, PATHINFO_EXTENSION);
 
@@ -275,6 +277,8 @@ class MediaUtils implements InstanceInterface
 
         // change resolution of loaded image and copy data to $new_image
         imagecopyresampled($new_image, $source_image_resource, 0, 0, 0, 0, intval($width), intval($height), $source_width, $source_height);
+
+        echo $image_destination . '/' . $new_image_name;
         
         //save new image
         match($image_extension) {
@@ -305,5 +309,41 @@ class MediaUtils implements InstanceInterface
             );
             fclose($file);
         }
+    }
+
+    /**
+     * Get ONE image per name ()
+     *
+     * @param string $folder
+     * @param string $name
+     * @param int $limit
+     * @return string|null|array
+     */
+    public function getImagesByName(string $folder, string $name, int $limit = 1): String|Null|Array
+    {
+        
+        $folderPath = $folder . '/';
+        $mainImagePath = $folderPath . $name . '.*';
+
+        $matchingFiles = glob($mainImagePath);
+
+        if (!empty($matchingFiles)) 
+        {
+            // Pokud je limit nastaven na 1 a byl nalezen alespoň jeden soubor
+            if ($limit === 1) {
+                return $matchingFiles[0]; // Vrátíme první nalezený soubor
+            }
+            // Pokud je limit větší než 1 nebo roven -1
+            elseif ($limit > 1 || $limit === -1) {
+                // Omezení počtu výsledků podle limitu nebo zobrazení všech výsledků, pokud je limit -1
+                if ($limit === -1 || $limit > count($matchingFiles)) {
+                    return $matchingFiles; // Vrátíme všechny nalezené soubory
+                } else {
+                    return array_slice($matchingFiles, 0, $limit); // Vrátíme prvních $limit souborů
+                }
+            }
+        }
+
+        return null; // Pokud žádný soubor nebyl nalezen
     }
 }

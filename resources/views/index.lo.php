@@ -25,6 +25,13 @@
             @endforeach
         @endif
 
+        <!-- FONT Awesome FREE -->
+        @foreach $css as $st @
+            @foreach glob("./public/font_awesome_free/css/*.css") as $fa_css @
+                <link rel="stylesheet" href="{{ $fa_css }}">
+            @endforeach
+        @endforeach
+
         
             
         <!-- END stylesheets -->
@@ -53,7 +60,7 @@
         @pluginload lora/easytext @ <!-- Load HTML for plugin in ./plugins/lora/easytext/html_loader/index.phtml -->
         @pluginload lora/etext @
 
-        <script src="https://kit.fontawesome.com/0b54168b2a.js" crossorigin="anonymous"></script>
+        <!-- <script src="https://kit.fontawesome.com/0b54168b2a.js" crossorigin="anonymous"></script>-->
         
 
         <!-- END Javascripts -->
@@ -110,7 +117,7 @@
                                 </button>  
                             @endauth
                             <button redirect="auth/logout" class="button-circle width-32p height-32p button-warning">
-                                <i class="fa fa-close"></i>
+                                <i class="far fa-window-close"></i>
                             </button>  
                         @else
                             <button redirect="auth/login" class="button-circle width-32p height-32p button-warning">
