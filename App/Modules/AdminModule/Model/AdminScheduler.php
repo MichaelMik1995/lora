@@ -25,7 +25,7 @@ use App\Core\DI\DIContainer;
 class AdminScheduler extends Admin implements ModelDBInterface
 {
     protected $model_table = "AdminScheduler";
-    protected array|null $model_data;
+    public array $model_data;
     protected $database;
 
     public function __construct(DIContainer $container, Database $database) //Can expand to multiple arguments, first must be DIContainer

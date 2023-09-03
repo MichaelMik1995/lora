@@ -10,11 +10,11 @@
 
 <hr>
 
-<div class="content-center pdy-1 header-5">
+<div class="content-center pdy-2 header-5">
     <span class="t-info t-bolder">{{ $folder_data["count"] }}/{{ env("max_uploaded_images") }}</span> obrázků | <span class="t-info t-bolder">{{ $folder_data["folder_size"] }}</span> prostoru
 </div>
 
-<div class="row row-center-lrg row-center-xlrg row-center-xsm cols-auto cols-7-lrg cols-7-xlrg cols-2-xsm">
+<div class="row row-center-lrg row-center-xlrg row-center-xsm cols-auto">
     @foreach $gallery as $image @
         @php $image_full_name = str_replace("./content/uploads/$upload_folder/images/thumb/", "", $image) @
         @php $image_exploded = explode(".", $image_full_name); $image_name = $image_exploded[0]; $image_ext = $image_exploded[1] @

@@ -77,7 +77,6 @@ class AdminAnnouncementsController extends AdminController
         $this->data = [
             "all" => $get_all,
             "pages" => $model->getavaliablePages(10),
-            "editor" => $easytext->form("content", ""),
         ];
 
         return $this->view = $this->template_folder."index";
@@ -136,7 +135,7 @@ class AdminAnnouncementsController extends AdminController
                 "title" => $post["title"],
                 "url" => $url,
                 "author" => $auth->user_uid,
-                "content" => $post["content"],
+                "content" => str_replace(["\n", "\r", "\n\r", "\r\n"], "[Br]", $post["content"]),
                 "created_at" => time(),
                 "updated_at" => time(),
             ]);

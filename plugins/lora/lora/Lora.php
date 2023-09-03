@@ -7,7 +7,7 @@ use Lora\Lora\Core\Commander\ModuleCommander;
 use Lora\Lora\Core\Commander\PluginCommander;
 use Lora\Lora\Core\loranCore;
 use Lora\Lora\Core\loranModule;
-use Lora\Lora\Core\Commander\MigrationCommander;
+use Lora\Lora\Core\Commander\DatabaseCommander;
 use Lora\Lora\Core\LoraOutput;
 use Lora\Lora\Core\Commander\HelpCommander;
 use Lora\Lora\Core\Commander\GUICommander;
@@ -19,7 +19,7 @@ use Lora\Lora\Core\Commander\UtilsCommander;
 class Lora
 {
     use LoraOutput;
-    use MigrationCommander;
+    use DatabaseCommander;
     use HelpCommander;
     use GUICommander;
     use CLICommander;
@@ -47,7 +47,7 @@ class Lora
         $this->switchCommander($command, $argument, $options);
     }
 
-    public function SendCommand($command, $argument="", $option1, $option2 ): Void//$option1, $option2)
+    public function SendCommand($command, $argument="", $option1, $option2 ): Void//$option1, $option2) //Deprecated
     {       
         
     }
@@ -56,7 +56,7 @@ class Lora
     {
         if($command != null)
         {
-            MigrationCommander::SendCommand($command, $argument, $options);
+            DatabaseCommander::SendCommand($command, $argument, $options);
             HelpCommander::SendCommand($command, $argument, $options);
             GUICommander::SendCommand($command, $argument, $options);
             CLICommander::SendCommand($command, $argument, $options);

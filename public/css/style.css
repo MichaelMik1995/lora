@@ -86,6 +86,10 @@ details > *{margin-bottom: .5em;}
     background-color: #F8F8F8;
 }
 
+ul, ol
+{
+    margin-left: 15px;
+}
 
 /* @media (prefers-color-scheme: light) {
     html {

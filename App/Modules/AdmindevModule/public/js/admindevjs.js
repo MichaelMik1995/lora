@@ -17,33 +17,33 @@ $(document).ready(() => {
     });
 
     //Check if creates Migration data
-    $('#check-migration-data').click(() => {
-        if($('#check-migration-data').hasClass("button-info"))
+    $('#check-database-data').click(() => {
+        if($('#check-database-data').hasClass("button-info"))
         {
-            $('#check-migration-data').removeClass("button-info").addClass("button-success");
-            $('#check-migration-data i').removeClass("fa-close").addClass("fa-check");
-            $('#if-migration-data').val("1");
+            $('#check-database-data').removeClass("button-info").addClass("button-success");
+            $('#check-database-data i').removeClass("fa-close").addClass("fa-check");
+            $('#if-database-data').val("1");
         }
         else
         {
-            $('#check-migration-data').removeClass("button-success").addClass("button-info");
-            $('#check-migration-data i').removeClass("fa-check").addClass("fa-close");
-            $('#if-migration-data').val("0");
+            $('#check-database-data').removeClass("button-success").addClass("button-info");
+            $('#check-database-data i').removeClass("fa-check").addClass("fa-close");
+            $('#if-database-data').val("0");
         }
     });
 
-    $('#check-migration-table').click(() => {
-        if($('#check-migration-table').hasClass("button-info"))
+    $('#check-database-table').click(() => {
+        if($('#check-database-table').hasClass("button-info"))
         {
-            $('#check-migration-table').removeClass("button-info").addClass("button-success");
-            $('#check-migration-table i').removeClass("fa-close").addClass("fa-check");
-            $('#if-migration-table').val("1");
+            $('#check-database-table').removeClass("button-info").addClass("button-success");
+            $('#check-database-table i').removeClass("fa-close").addClass("fa-check");
+            $('#if-database-table').val("1");
         }
         else
         {
-            $('#check-migration-table').removeClass("button-success").addClass("button-info");
-            $('#check-migration-table i').removeClass("fa-check").addClass("fa-close");
-            $('#if-migration-table').val("0");
+            $('#check-database-table').removeClass("button-success").addClass("button-info");
+            $('#check-database-table i').removeClass("fa-check").addClass("fa-close");
+            $('#if-database-table').val("0");
         }
     });
 

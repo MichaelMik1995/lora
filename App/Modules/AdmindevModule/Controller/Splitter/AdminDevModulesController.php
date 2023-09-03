@@ -71,8 +71,8 @@ class AdminDevModulesController extends AdmindevController
         $this->input("name", ["required", "maxchars64"])
             ->input("model")
             ->input("splitter")
-            ->input("migration-tables", "0:1")
-            ->input("migration-data", "0:1")
+            ->input("database-tables", "0:1")
+            ->input("database-data", "0:1")
             ->input("check-templates", "0:1")
             ->input("template-folder-name", "maxchars64")
             ->input("version", "maxchars11")
@@ -92,7 +92,7 @@ class AdminDevModulesController extends AdmindevController
             $module_model->createSplitters($module_name, $post["splitter"], $post["template-folder-name"]);
             $module_model->createModels($module_name, $post["model"]);
 
-            $module_model->migrationFiles($module_name, intval($post["migration-tables"]), intval($post["migration-data"]));
+            $module_model->databaseFiles($module_name, intval($post["database-tables"]), intval($post["database-data"]));
             $module_model->createConfigFile($module_name, $post["version"], $post["category"], $post["short-description"], $post["icon"]);
             $module_model->createReadmeFile($module_name, $post["description"]);
 

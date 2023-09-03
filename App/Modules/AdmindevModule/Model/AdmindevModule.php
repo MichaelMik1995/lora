@@ -104,14 +104,14 @@ class AdmindevModule extends Admindev
         }
     }
 
-    public function migrationFiles(string $module_name, int $migration_table, int $migration_data)
+    public function databaseFiles(string $module_name, int $database_table, int $database_data)
     {
 
 
         $table = strtolower($module_name);
-        if($migration_table == 1)
+        if($database_table == 1)
         {
-            if($migration_data == 1)
+            if($database_data == 1)
             {
                 $this->output[] = shell_exec("php lora migrate:create $table --data --caller");
             }

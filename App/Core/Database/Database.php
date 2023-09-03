@@ -69,12 +69,12 @@ class Database
 
     /**
      * 
-     * @param string $db_driver         <p>Choose database driver: sqlite|mysql|none, default: env("db_driver"); if migration factory -> set driver</p>
+     * @param string $db_driver         <p>Choose database driver: sqlite|mysql|none, default: env("db_driver"); if database factory -> set driver</p>
      * @param string $db_host           <p>Database host (eg: localhost)</p>
      * @param string $db_name           <p>Database name (eg: test)</p>
      * @param string $db_user           <p>Database user (eg: root)</p>
      * @param string $db_password       <p>Database password (eg: mypassword)</p>
-     * @param bool $is_factory          <p>Choose TRUE if migration factory calls this instance</p>
+     * @param bool $is_factory          <p>Choose TRUE if database factory calls this instance</p>
      * @return self                     <p>Return self class</p>
      */
     public static function instance($db_driver = null, $db_host = null, $db_name = null, $db_user = null, $db_password = null, bool $is_factory = false)
@@ -135,6 +135,11 @@ class Database
         }
         
         $this->db_driver = $db_driver;
+
+        if(!isset($is_factory))
+        {
+            $is_factory = false;
+        }
         
         //Select connection method
         match($db_driver)

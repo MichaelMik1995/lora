@@ -18,7 +18,7 @@ class DotEnv implements InstanceInterface
      * 
      */
 
-    private function __construct()
+    public function __construct()
     {
         $this->constructEnvData(".env");
     }

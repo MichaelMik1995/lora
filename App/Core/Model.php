@@ -24,7 +24,7 @@ abstract class Model
 
     protected array $model_data = [];
     
-    private function __construct(){}
+    public function __construct(){}
 
     public function init(DIContainer $container)
     {

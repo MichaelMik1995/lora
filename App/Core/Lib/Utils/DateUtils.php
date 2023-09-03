@@ -18,7 +18,7 @@ class DateUtils
     private static $_instance;
     private static int $_instance_id;
 
-    private function __construct(){ 
+    public function __construct(){ 
         self::$main_config = parse_ini_file("./config/public.ini");
         self::$language = self::$main_config["LANGUAGE"]; 
         self::$date_config = parse_ini_file("./lang/".self::$language."/Date.ini");

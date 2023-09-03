@@ -32,7 +32,7 @@
                         <img title="{{ $image_alt_text }}" id="admin-image-{{ $image_name }}" src="{{ $image }}" alt="{{ $image_alt_text }}" rel="easySlider" loading="lazy" class="bd-round-3 height-128p">
                     </div>
                     <div class="content-right content-center-xsm pd-1 header-6">
-                        <i redirect="admin/app/media-picture-show/{{ $image_name }}@{{ $image_ext }}" class="fa fa-eye mgx-1 cursor-point"></i>
+                        <i redirect="admin/app/media-picture-show/{{ $image_name }}@{{ $image_ext }}" class="fas fa-eye mgx-1 cursor-point"></i>
                         <i redirect="admin/app/media-pictures-delete/{{ $image_name }}@{{ $image_ext }}" class="fa fa-trash mgx-1 t-error cursor-point"></i>
                     </div>
                 </div>

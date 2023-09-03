@@ -23,7 +23,5 @@ class BlogPost extends Blog
     {
         parent::__construct($container);
     }
-
-
 } 
 

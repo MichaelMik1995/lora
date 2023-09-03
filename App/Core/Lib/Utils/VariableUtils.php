@@ -13,7 +13,7 @@ class VariableUtils
    private static $_instance;
     private static int $_instance_id;
 
-    private function __construct(){}
+    public function __construct(){}
 
     public static function instance()
     {

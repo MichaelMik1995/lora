@@ -1,0 +1,33 @@
+<div class="content-center">
+
+    <input id="etext-dialog-image-url" type="text" placeholder="https://" class="input-dark width-75 width-100-xsm pd-2">
+    <button type="button" class="button button-easytext" id="etext-dialog-insert-image">Vložit</button><br><br>
+
+    <div class="pd-1 bgr-dark-3 bd-round-5">
+        <div class="pdy-1 t-bolder">Velikost obrázku: </div>
+        <div class="mgy-2 row row-center-lrg cols-auto">
+            <div class="column">
+                <button data-scale="25" type="button" class="button button-bd-info etext-dialog-image-button scale-11-hover anim-all-fast">25%</button>
+                <button data-scale="50" type="button" class="button button-info etext-dialog-image-button scale-11-hover anim-all-fast">50%</button>
+                <button data-scale="75" type="button" class="button button-bd-info etext-dialog-image-button scale-11-hover anim-all-fast">75%</button>
+                <button data-scale="100" type="button" class="button button-bd-info etext-dialog-image-button scale-11-hover anim-all-fast">100%</button>
+            </div>
+        </div>
+    </div>
+    <input hidden id="etext-image-data-scale" type="text" value="50">
+
+    <span style="font-size: 10px; ">* Na obrázky se mohou vztahovat autorská práva. Za sdílení obrázků neneseme žádnou odpovědnost.</span>
+</div>
+
+<script>
+    $(document).ready(function()
+    {
+        $(".etext-dialog-image-button").on("click", function(e)
+        {
+            var clicked_button = $(e.currentTarget);
+            $("#etext-image-data-scale").val(clicked_button.attr("data-scale"));
+            $(".etext-dialog-image-button").removeClass("button-info").addClass("button-bd-info");
+            $(e.currentTarget).removeClass("button-bd-info").addClass("button-info");
+        });
+});
+</script>

@@ -2,23 +2,23 @@
     "title": "Migration help page",
     "page": "migrate",
     "usage": "php lora dbtable(:action) (argument) (options)",
-    "description": "Create migration tables, test data and more",
+    "description": "Create database tables, test data and more",
 
     "lines": {
         "line1": {
             "cmd": "php lora dbtable:create [argument = table-name] (--table, --data, --caller, --onlydata, --folder=foldername)",
-            "description": "Creates table structure creator stored in /App/Database/Migration/",
-            "option: --onlytable": "Creates ONLY table structure for [table-name] stored in /App/Database/Migration/[Table_name]/Table",
-            "option: --data": "Creates table structure and data filler for [table-name] stored in /App/Database/Migration/[Table_name]",
-            "option: --onlydata": "Creates ONLY data filler for [table-name] stored in /App/Database/Migration/[Table_name]/Data",
-            "option: --caller": "Creates table caller for [table-name] stored in /App/Database/Migration/[Table_name]",
+            "description": "Creates table structure creator stored in /App/Database/Tables/",
+            "option: --onlytable": "Creates ONLY table structure for [table-name] stored in /App/Database/Tables/[Table_name]/Table",
+            "option: --data": "Creates table structure and data filler for [table-name] stored in /App/Database/Tables/[Table_name]",
+            "option: --onlydata": "Creates ONLY data filler for [table-name] stored in /App/Database/Tables/[Table_name]/Data",
+            "option: --caller": "Creates table caller for [table-name] stored in /App/Database/Tables/[Table_name]",
             "example": "\t php lora dbtable:create my-table --data \t php lora migrate:create auth --caller \n \t\t\t php lora migrate:create news_users --data folder=news"
         },
         "line2": {
             "cmd": "php lora dbtable:write (argument = --clear, {caller-name})",
             "description": "Migrate defined tables (createOrUpdate)",
             "argument: --clear": "If argument is --clear -> migrate with truncating tables first",
-            "argument: {caller-name}": "Call own migration caller {caller-name}"
+            "argument: {caller-name}": "Call own database caller {caller-name}"
         }
     }
 }

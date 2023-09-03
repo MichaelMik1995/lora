@@ -1,12 +1,14 @@
 #!/usr/bin/php -q
 <?php
+    error_reporting(E_ERROR);
     require ("App/Core/Autoload/Autoload.php");
     
     $autoload = new Autoload();
     $autoload->loadClass();
     
-    $loran = new {Company}\{Name}\Bin\{name}();
-    $loran->sendCommand(@htmlentities($argv[1]), @htmlentities($argv[2]), @htmlentities($argv[3]), @htmlentities($argv[4]));
+    $lora = new {Company}\{Name}\Bin\{name}();
+    $implode_cmds = implode(" ", $argv);
+    $lora->prepareCommand($implode_cmds);
 ?>
 
 

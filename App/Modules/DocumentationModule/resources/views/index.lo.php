@@ -46,6 +46,7 @@
 <script>
     $(document).ready(() => {
         generateSheet("vitejte-ve-framworku");
+
     });
     
     function generateSheet(sheet_url)
@@ -83,7 +84,7 @@
                 <div class='pd-2 pd-1-xsm'> \
                        "+admin_panel+" \
                     <div class='content-center header-3 t-bolder pdy-3 pdy-1-xsm'>"+jsonObject.title+"</div>\
-                    <div class=''>"+jsonObject.content+"</div>\
+                    <div id='document-sheet' class=''>"+jsonObject.content+"</div>\
                 </div> \
                 ";
               

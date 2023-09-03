@@ -25,7 +25,8 @@ class AdminBan extends Admin implements ClassInterface
     private string $blacklist_file = ".blacklist";
 
     private string $remote_address;
-    private array $blacklist;
+
+    public array $model_data;
 
     public function __construct(DIContainer $container)
     {
@@ -64,10 +65,10 @@ class AdminBan extends Admin implements ClassInterface
         foreach($lines as $line) 
         {
             $count += 1;
-            $this->model_data["pattern"][] = $line;
-            $this->blacklist[] = $line;
+            $this->model_data["blacklist"][] = $line;
         }
 
+        
         $this->model_data["count"] = $count;
         
     }

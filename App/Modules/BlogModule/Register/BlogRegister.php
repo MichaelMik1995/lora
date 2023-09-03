@@ -39,7 +39,7 @@ class BlogRegister
                 "url" => $url_name,
                 "controller" => $class,
                 "template" => "index",
-                "route" => $route_name.".initiliaze@default",
+                "route" => $route_name.".index@default",
                 "classes" => [],
                 "access" => "any"
             ],
@@ -76,7 +76,7 @@ class BlogRegister
                 "access" => "admin,editor"
             ],
             [
-                "url" => $url_name."/update",
+                "url" => $url_name."/update/:url",
                 "controller" => $class,
                 "template" => "",
                 "route" => $route_name.".update@update",

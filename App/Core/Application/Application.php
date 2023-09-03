@@ -11,6 +11,7 @@ use App\Core\Application\Request;
 use App\Core\Application\Redirect;
 use App\Core\Application\Config;
 use App\Core\Lib\Language;
+use App\Core\DI\DIContainer;
 
 use App\Core\Model;
 
@@ -35,7 +36,7 @@ class Application
     protected string $register_access;
     
 
-    public function constructor($container)
+    public function constructor(DIContainer $container)
     {
         $this->container = $container;
         $this->url_request = UrlUtils::urlParse();

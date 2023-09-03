@@ -12,7 +12,6 @@ use App\Model\AuthManager;
 
 class AdminDevUtilsController extends AdmindevController 
 {
-    use Redirect;
     use FormValidator;
     
     /**
@@ -35,8 +34,6 @@ class AdminDevUtilsController extends AdmindevController
         
         $this->module = "Admindev";
         $this->container = $container;
-
-        $this->auth_manager = new AuthManager($container);
     }
     
     
@@ -55,12 +52,12 @@ class AdminDevUtilsController extends AdmindevController
         return $this->view = $this->template_folder."index";
     }
 
-    public function generatePassword()
+    public function generatePassword(AuthManager $auth_manager)
     {
         $post = $this->input("gen-password", "required,maxchars1024", "Heslo")->returnFields();
         $this->data = [
             "original_password" => $post["gen-password"],
-            "hash" => $this->auth_manager->password_hash($post["gen-password"]),
+            "hash" => $auth_manager->password_hash($post["gen-password"]),
         ];
         return $this->view = $this->template_folder."/password/generated_password";
     }

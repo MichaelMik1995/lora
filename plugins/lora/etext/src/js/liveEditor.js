@@ -12,27 +12,27 @@ class liveEditor extends editorButtons
      * @param {*} element_to_replace 
      * @param {*} content 
      */
-    constructEditor(element_to_replace, content, content_field_name, options = {})
+    constructEditor(element_to_replace, content, options = {}, callback = null)
     {
-        this.loadTemplate(element_to_replace, content, content_field_name, options);
+        this.loadTemplate(element_to_replace, content, options, callback);
     }
 
     /**
      * Load the template from file and send to process
      */
-    loadTemplate(element_to_replace, content, content_field_name, options = {})
+    loadTemplate(element_to_replace, content, options, callback)
     {
         fetch('/plugins/lora/etext/src/template/editor.html')
         .then(response => response.text()) // getting content from template
         .then(data => {
-            return this.processTemplate(data, element_to_replace, content, content_field_name);
+            return this.processTemplate(data, element_to_replace, content, options, callback);
         })
         .catch(error => {
             console.error('Error loading template:', error);
         });
     }
 
-    processTemplate(template_content, element_to_replace, content, content_field_name)
+    processTemplate(template_content, element_to_replace, content, options, callback)
     {
         var uid = randomInt(100,999999);
         this.editor_id = uid;
@@ -41,6 +41,114 @@ class liveEditor extends editorButtons
 
         var content_to_block = this.convertTagsToBlocks(content);
 
+        //############### OPTIONS
+
+        //General options
+        var option_etext_name = "content";
+        var option_debug = "0";
+
+        //buttons
+        var option_display_text_color = "1";
+        var option_display_background_color = "1";
+        var option_display_text_size = "1";
+        var option_display_list = "1";
+        var option_display_image = "1";
+        var option_display_alignment = "1";
+        var option_display_table = "1";
+        var option_display_style = "1";
+
+        //Visual settings of the editor
+        var option_additional_editor_classes = "";
+        var option_editor_width = "100";
+        var option_editor_height = "256p";
+        var option_editor_background = "#212529";
+        var option_editor_panel_background = "#212529";
+        var option_editor_border_color = "#1f2f46";
+        var option_editor_text_color = "grey";
+
+        // If option not NULL
+        if(options !== null)
+        {
+            for (const [key, value] of Object.entries(options)) 
+            {
+                switch(`${key}`)
+                {       
+                    //General settings             
+                    case "name":
+                        option_etext_name = `${value}`;
+                        break;
+
+                    case "debug":
+                        if(value == true || value === "true")
+                        {
+                            option_debug = "1";
+                        }
+                        else
+                        {
+                            option_debug = "0";
+                        }
+                        //option_debug = `${value}`;
+                        break;
+
+                    //Visual settings of the editor
+                    case "width":
+                        option_editor_width = `${value}`;
+                    break;
+
+                    case "height":
+                        option_editor_height = `${value}`;
+                    break;
+
+                    case "editor-background":
+                        option_editor_background = `${value}`;
+                    break;
+
+                    case "editor-panel-background":
+                        option_editor_panel_background = `${value}`;
+                    break;
+
+                    case "editor-border":
+                        option_editor_border_color = `${value}`;
+                    break;
+
+                    case "editor-text":
+                        option_editor_text_color = `${value}`;
+                    break;
+
+                    case "editor-classes":
+                        option_additional_editor_classes = `${value}`;
+                    break;
+
+                    case "button-groups":
+                        option_display_text_color = "0";
+                        option_display_background_color = "0";
+                        option_display_text_size = "0";
+                        option_display_list = "0";
+                        option_display_image = "0";
+                        option_display_alignment = "0";
+                        option_display_table = "0";
+                        option_display_style = "0";
+
+                        console.log(value);
+
+                        var options_array = value.replace(" ", "").split(",");
+
+                        if(options_array.includes("text-color")){option_display_text_color = "1";}
+                        if(options_array.includes("background-color")){option_display_background_color = "1";}
+                        if(options_array.includes("text-size")){option_display_text_size = "1"}
+                        if(options_array.includes("list")){option_display_list = "1"}
+                        if(options_array.includes("image")){option_display_image = "1"}
+                        if(options_array.includes("alignment")){option_display_alignment = "1"}
+                        if(options_array.includes("table")){option_display_table = "1"}
+                        if(options_array.includes("style")){option_display_style = "1"}
+                        else{}
+                    break;
+
+                }
+            }
+        }
+
+
         var data = 
         {
             uid: uid,
@@ -48,7 +156,30 @@ class liveEditor extends editorButtons
             blocked_content: content_to_block,
             send_button_text: "Odeslat",
             button_class: "button button-dark-3",
-            field_name: content_field_name,
+            field_name: option_etext_name,
+            debug: option_debug,
+
+            //buttons
+            display_text_color: option_display_text_color,
+            display_background_color: option_display_background_color,
+            display_text_size: option_display_text_size,
+            display_list: option_display_list,
+            display_image: option_display_image,
+            display_alignment: option_display_alignment,
+            display_table: option_display_table,
+            display_style: option_display_style,
+            
+
+            //Visual settings of the editor
+            editor_width: option_editor_width,
+            editor_height: option_editor_height,
+            editor_additional_classes: option_additional_editor_classes,
+            editor_background: option_editor_background,
+            editor_panel_background: option_editor_panel_background,
+            editor_border_color: option_editor_border_color,
+            editor_text_color: option_editor_text_color,
+
+
         };
 
         compiled_content = replaceVariables(template_content, data);  
@@ -61,13 +192,35 @@ class liveEditor extends editorButtons
             this.updateResult(uid);
         });*/
 
-        var editableContent = document.getElementById("editor-"+content_field_name);
+        var editableContent = document.getElementById("editor-"+option_etext_name);
 
         editableContent.addEventListener('input', (event) => {
                 this.updateResult(uid);
           });
 
+        editableContent.addEventListener("paste", (event) => {
+            this.handleKeyDown(event);
+            this.countChars(event);
+          });
+        editableContent.addEventListener("keydown", (event) => {
+            
+            if (event.key === "Tab" && !event.shiftKey) {
+                event.preventDefault();
+                document.execCommand("indent", false, null);
+                this.countChars(event);
+            }
 
+            if (event.key === "Tab" && event.shiftKey) {
+                event.preventDefault();
+                document.execCommand("outdent", false, null);
+                this.countChars(event);
+            }
+        });
+
+        if(callback != null)
+        {
+            callback();
+        }
 
         return this.editor_id;
         
@@ -82,22 +235,31 @@ class liveEditor extends editorButtons
         this.buttonBold("bold");
         this.buttonItalic("italic");
         this.buttonStrike("strike");
-        this.buttonOpenDialogAlignment("dialog-alignment");
-        this.buttonOpenDialogImage("dialog-image");
-        this.buttonOpenDialogResizeText("resize-text");
-        this.buttonOpenDialogTextColor("dialog-text-color");
-        this.buttonView("view");
-        this.buttonSend();
-        // this.buttonAlignLeft();
+        this.buttonUnderline("underline");
+        this.buttonLink("link");
+
+        this.buttonList("etext-insert-list");
+        this.buttonImage("etext-insert-image");
+        this.buttonTextSize("resize-text");
+
+        this.buttonAlignLeft("align-left");
+        this.buttonAlignCenter("align-center");
+        this.buttonAlignRight("align-right");
+        this.buttonAlignJustify("align-justify");
+
+        this.buttonChangeColor("dialog-text-color");
+        this.buttonChangeBackgroundColor("dialog-text-bcolor");
+
+        this.buttonInsertRow("etext-insert-row");
+        this.buttonChangeStyle("etext-change-style");
+        
     }
 
     initDialogButton()
     {
-        this.buttonHeader();
-        this.buttonTextColorChange();
+        
+        
     }
-
-    
 
     buttonOpenDialog(button, template, header_text = "")
     {
@@ -164,15 +326,30 @@ class liveEditor extends editorButtons
         return converted_text;
     }
 
-    compileContent(element)
+    compileContent(element, is_string)
     {
-        var content = element.text();
+        if(is_string === false)
+        {
+            var content = element.text();//atob(element.text());
+            var pre_compile = this.convertTagsToBlocks(content);
+            var new_content = this.convertBlocktoTags(pre_compile);
+            return element.html(new_content);
+        }
+        else
+        {
+            var content = element;//atob(element);
+            var pre_compile = this.convertTagsToBlocks(content);
+            var new_content = this.convertBlocktoTags(pre_compile);
+            return new_content;
+        }
         
-        var new_content = this.convertBlocktoTags(content);
-
-        element.html(new_content);
     }
 
+    /**
+     * 
+     * @param {String} input 
+     * @returns 
+     */
     sanitize(input) 
     {
         const sanitizedContent = input.replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -189,31 +366,47 @@ class liveEditor extends editorButtons
         return secureUrlContent;
     }
 
+
     updateResult(uid, only_content = false) 
     {
         var editorContent = $(".e-editor[target=editor-"+uid+"]").html();
 
         if (only_content === false)
         {
-            
-
             var resultElement = $('#result-html[target=editor-'+uid+']');
             var resultBlockElement = $("#result-block[target=editor-"+uid+"]");
 
             var blockContent = this.convertTagsToBlocks(editorContent);
-            var sanitizedContent = this.sanitize(blockContent);
-
-            //resultBlockElement.toggle(200).text(blockContent);
-       
-            var back_to_tags = this.convertBlocktoTags(blockContent);
-            //resultElement.toggle(200).html(back_to_tags);
+            var sanitizedContent = this.sanitize(blockContent); 
         }
 
         //Save to hidden field in editor
         var hiddenFieldContent = $(".editor-content[target=editor-"+uid+"]");
         var block_fieldContent = this.convertTagsToBlocks(editorContent);
-        hiddenFieldContent.text(block_fieldContent);
+
+        //console.log("SANITIZED: ", sanitizedContent);
+        var encode_text = block_fieldContent;//btoa(block_fieldContent);
+        hiddenFieldContent.text(encode_text);
+
+
+        var counter_span = $("#count-chars[target=editor-"+uid+"]");
+        var counter_span_editor = $("#count-chars-editor[target=editor-"+uid+"]");
+        counter_span.text(hiddenFieldContent.text().length);
+        counter_span_editor.text($(".e-editor[target=editor-"+uid+"]").text().length)
             
     }
 
+    /**
+     * 
+     * @param {*} event 
+     */
+    handleKeyDown(event) {
+        // Zachytit Ctrl+V událost
+            event.preventDefault(); // Zabránit výchozímu chování (vložení obsahu schránky)
+            var clipboard = (event.clipboardData || window.clipboardData);
+            var text = clipboard.getData('text/plain');
+
+            document.execCommand('insertText', false, text);
+
+    }
 }

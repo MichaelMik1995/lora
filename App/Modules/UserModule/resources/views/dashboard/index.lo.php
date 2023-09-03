@@ -26,12 +26,13 @@
         <script>
             $("#announ-href-{{ $na['url'] }}").click((e) => {
                 e.preventDefault();
+                
                 $("#announcement-block").hide(300, function()
                 {
                     $("#a-header").text('{{ $na['title'] }}');
                     $("#a-author").attr("src", '{{ asset('img/avatar/32/'.$na['author'].'.png') }}');
                     $("#a-date").text('{{ real_date($na['updated_at']) }}');
-                    $("#a-content").html('{{ $na['_content'] }}');
+                    $("#a-content").html('{{ str_replace(["'", '"', "[Br]"], ['\"', '\"', '<br>'], $na['_content']) }}');
                 }).show(200, function(){
                     $(".announcement-href").removeClass("t-info").addClass("t-dark");
                     $("#announ-href-{{ $na['url'] }}").removeClass("t-dark").addClass("t-info");

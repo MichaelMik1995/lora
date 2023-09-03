@@ -8,7 +8,7 @@
 
         "line1": {
             "cmd": "php lora migrate:create [table-name] [options: --seed]",
-            "description": "Creates file for creating new table data for migration in App/Database/Migration/",
+            "description": "Creates file for creating new table data for database in App/Database/Tables/",
             "option: --seed": "with --seed option creates seed data for table [table-name] in App/Database/Seed/"
         },
 
@@ -24,7 +24,7 @@
 
         "line4": {
             "cmd": "php lora migrate:clear",
-            "description": "Drops migration tables and migrate"
+            "description": "Drops database tables and migrate"
         }
     }
 }

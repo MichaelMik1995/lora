@@ -10,7 +10,11 @@
         </div>
 
         <div class="form-line">
-            {{ $editor }}
+            <div id="announ-editor" etext-event="load" etext-options="{'button-groups': 'list,text-color,style,alignment'}"></div>
+        </div>
+
+        <div class="form-line">
+            <button class="button button-info"><i class="fa fa-plus-circle"></i> Přidat</button>
         </div>
     </form>
 </div>
@@ -31,9 +35,7 @@
                 <div class="bgr-dark-2 bd-dark bd-1 bd-round-3 pd-2">
                     <div class="t-bolder header-6 t-info"><i class="fa fa-bullhorn mgx-1"></i> {{ $announ['title'] }}</div>
                     <div class="pdx-1 subheader-3"><i class="fa fa-calendar"></i> {{ real_date($announ["created_at"]) }}</div>
-                    <div class="pdx-1 pdy-2">
-                        {{ $announ["_content"] }}
-                    </div>
+                    <div etext-event="compile" class="pdx-1 pdy-2">{{ $announ["content"] }}</div>
                 </div>
             </div>
         @endforeach

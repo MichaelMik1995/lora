@@ -21,14 +21,14 @@ trait UtilsCommander
     {
         switch($command)
         {
-            case "utils:create":
+            case "util:create":
                 if($argument != "")
                 {
                     LoraUtils::createUtility($argument);
                 }
                 else
                 {
-                    LoraOutput::output("usage: php lora utils:create [utilName]", "warning");
+                    LoraOutput::output("usage: php lora util:create [utilName]", "warning");
                 }
                 break;
         }

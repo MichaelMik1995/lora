@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "es6",
+    "outDir": "./plugins/lora/gengine/src/js/"
+  },
+  "include": ["plugins/lora/gengine/src/tsc/**/*.ts"]
+}

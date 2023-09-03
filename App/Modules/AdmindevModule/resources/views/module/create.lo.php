@@ -55,11 +55,11 @@
                         <div class="background-dark-2 bd-round-4 pd-2">
                             <div class="header-6 t-bold">Vytvořit migrační tabulku?</div>
                             <div content-height-auto="description-item-column" class="pdy-1 subheader-3 t-italic">
-                                    Migrační data tabulky jsou uložená v ./App/Database/Migration/
+                                    Migrační data tabulky jsou uložená v ./App/Database/Tables/
                             </div>
                             <div class="pdy-1  content-center-xsm">
-                                <button type="button" id="check-migration-table" class="button-circle width-32p height-32p button-info"><i class="fa fa-close"></i></button>
-                                <input hidden id="if-migration-table" name="migration-tables" type="text" value="0">
+                                <button type="button" id="check-database-table" class="button-circle width-32p height-32p button-info"><i class="fa fa-close"></i></button>
+                                <input hidden id="if-database-table" name="database-tables" type="text" value="0">
                             </div>
                         </div>
                     </div>
@@ -72,8 +72,8 @@
                                     Testovací data tabulky jsou uložená v .App/Database/Seed/
                             </div>
                             <div class="pdy-1 content-center-xsm">
-                                <button id="check-migration-data" type="button" id="" class="button-circle width-32p height-32p button-info"><i class="fa fa-close"></i></button>
-                                <input hidden id="if-migration-data" type="text" name="migration-data" value="0">
+                                <button id="check-database-data" type="button" id="" class="button-circle width-32p height-32p button-info"><i class="fa fa-close"></i></button>
+                                <input hidden id="if-database-data" type="text" name="database-data" value="0">
                             
                             </div>
                         </div>

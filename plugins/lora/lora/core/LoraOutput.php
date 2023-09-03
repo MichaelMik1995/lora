@@ -5,7 +5,12 @@ namespace Lora\Lora\Core;
 
 trait LoraOutput
 {
-    public static function output(string $message, string $type = "basic")
+    /**
+     * @param string $message       <p>Message to be displayed</p>
+     * @param string $type          <p>Type of message [info|success|warning|error]</p>
+     * @return void                 <p>Print output message to CLI</p>
+     */
+    public static function output(string $message, string $type = "basic"): Void
     {
         switch($type)
         {

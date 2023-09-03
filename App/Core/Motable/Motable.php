@@ -12,7 +12,7 @@ class Motable
     private static $_instance_id;
     private static Database $database;
 
-    private function __construct(){}
+    public function __construct(){}
 
     public static function instance(Database $database)
     {

@@ -10,7 +10,7 @@ class Archiver implements InstanceInterface
     private static $_instance = null;
     private static $_instance_id;
 
-    private function __construct(
+    public function __construct(
         private ZipArchive $zipper = new ZipArchive()
         ){}
 

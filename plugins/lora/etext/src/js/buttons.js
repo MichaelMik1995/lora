@@ -9,11 +9,16 @@ class editorButtons
     {
         enableEditing(this.editor_id);
     }
-
     
+    /* ################################# BUTTONS ################################# */
+
+    /**
+     * 
+     * @param {String} button_id 
+     */
     buttonBold(button_id)
     {
-        var button = $("div[id="+this.editor_id+"]  > div > div > div > button[id="+button_id+"]");
+        var button = $("div[id="+this.editor_id+"]  > div > div > div > div > button[id="+button_id+"]");
         button.click( () => {
             
             this.focusOnEditor();
@@ -27,9 +32,13 @@ class editorButtons
         });
     }
 
+    /**
+     * 
+     * @param {String} button_id 
+     */
     buttonItalic(button_id)
     {
-        var button = $("div[id="+this.editor_id+"]  > div > div > div > button[id="+button_id+"]");
+        var button = $("div[id="+this.editor_id+"]  > div > div > div > div > button[id="+button_id+"]");
         button.click( () => {
             
             this.focusOnEditor();
@@ -41,233 +50,355 @@ class editorButtons
         });
     }
 
+    /**
+     * 
+     * @param {String} button_id 
+     */
     buttonStrike(button_id)
     {
-        var button = $("div[id="+this.editor_id+"]  > div > div > div > button[id="+button_id+"]");
+        var button = $("div[id="+this.editor_id+"]  > div > div > div > div > button[id="+button_id+"]");
+        button.click( () => {
+            
+            this.focusOnEditor();
+
+            // TODO:
+            //this.insertBlock("<span class='t-striked'>","</span>");
+            //this.insertBlock("[i]","[/i]");
+            document.execCommand("strikeThrough");
+            
+        });
+    }
+
+    /**
+     * 
+     * @param {String} button_id 
+     */
+    buttonUnderline(button_id)
+    {
+        var button = $("div[id="+this.editor_id+"]  > div > div > div > div > button[id="+button_id+"]");
         button.click( () => {
             
             this.focusOnEditor();
 
             // TODO:
             //this.insertBlock("t-striked", "span", "class");
-            document.execCommand("strikeThrough");
+            document.execCommand("underline");
             
         });
     }
 
-    buttonView(button_id)
+    /**
+     * 
+     * @param {String} button_id 
+     */
+    buttonLink(button_id)
     {
-        var button = $("div[id="+this.editor_id+"]  > div > div > div > button[id="+button_id+"]");
-        button.click( () => {
+        var button = $("div[id="+this.editor_id+"]  > div > div > div > div > button[id="+button_id+"]");
+        button.on("click", () => {
             
             this.focusOnEditor();
+            var linkElement = $('<a/>', {
+                'text': document.getSelection()
+            }).addClass("t-italic t-basic t-underline").attr('href', document.getSelection()).attr('target', '_blank').prop('outerHTML');
 
             // TODO:
-            this.updateResult(this.editor_id);
+            document.execCommand("insertHTML", false, linkElement);
             
         });
     }
 
-    buttonSend()
-    {
-        var button = $('.button-send[target=editor-'+this.editor_id+']');
-        button.click( (e) => {
-            e.preventDefault();
-            var form = button.closest("form");
-
-            this.updateResult(this.editor_id, true);
-
-            form.submit();
-        });
-    }
-
-    buttonOpenDialogAlignment(button_id)
-    {
-        var button = $("div[id="+this.editor_id+"]  > div > div > div > button[id="+button_id+"]");
-        button.click( () => {
-            
-            this.focusOnEditor();
-
-            // TODO:
-            this.buttonOpenDialog(button, "contentAlign", "Zarovnání textu");
-            
-        });
-    }
-
-    buttonOpenDialogImage(button_id)
-    {
-        var button = $("div[id="+this.editor_id+"]  > div > div > div > button[id="+button_id+"]");
-        button.click( () => {
-            
-            this.focusOnEditor();
-
-            // TODO:
-            this.buttonOpenDialog(button, "image", "Vložit obrázek");
-            
-        });
-    }
-
-    buttonOpenDialogResizeText(button_id)
-    {
-        var button = $("div[id="+this.editor_id+"]  > div > div > div > button[id="+button_id+"]");
-        button.click( () => {
-            
-            this.focusOnEditor();
-
-            // TODO:
-            this.buttonOpenDialog(button, "resizeText", "Změnit velikost písma");
-            
-        });
-    }
-
-    buttonOpenDialogTextColor(button_id)
-    {
-        var button = $("div[id="+this.editor_id+"]  > div > div > div > button[id="+button_id+"]");
-        button.click( () => {
-            
-            this.focusOnEditor();
-
-            // TODO:
-            this.buttonOpenDialog(button, "textColor", "Změnit barvu písma");
-            
-        });
-    }
-
+        /**
+     * 
+     * @param {String} button_id 
+     */
+        buttonChangeColor(button_id)
+        {
+            //var buttons = $(".etext-color");
+            var button = $("div[id="+this.editor_id+"]  > div > div > div > div > button[id="+button_id+"]");
     
 
-    buttonAlignLeft()
+            button.siblings("#dialog-text-color-input").change(() => {
+                button.trigger("click");
+            });
+
+            button.on("click", () => {
+                this.focusOnEditor();
+                var color_hex = button.siblings("#dialog-text-color-input").val(); //#bfbfbf
+                document.execCommand('foreColor', false, color_hex);
+            });
+        }
+    
+        /**
+         * 
+         * @param {String} button_id 
+         */
+        buttonChangeBackgroundColor(button_id)
+        {
+            //var buttons = $(".etext-color");
+            var button = $("div[id="+this.editor_id+"]  > div > div > div > div > button[id="+button_id+"]");
+    
+            button.siblings("#dialog-text-bcolor-input").change(() => {
+                button.trigger("click");
+            });
+
+            button.on("click", () => {
+                this.focusOnEditor();
+                var color_hex = button.siblings("#dialog-text-bcolor-input").val(); //#bfbfbf
+                document.execCommand('backColor', false, color_hex);
+                
+            });
+        }
+
+    /**
+     * 
+     * @param {String} button_id 
+     */
+    buttonList(button_id)
     {
+        var button = $("div[id="+this.editor_id+"]  > div > div > div > div > button[id="+button_id+"]");
 
-    }
-
-    buttonAlignCenter()
-    {
-
-    }
-
-    buttonAlignRight()
-    {
-
-    }
-
-    buttonTextColorChange()
-    {
-        var buttons = $(".etext-color");
-        
-        buttons.click((event) => {
-            var color_hex = $(event.currentTarget).attr("data-color"); //#bfbfbf
-
-            this.focusOnEditor();
-
-            document.execCommand('foreColor', false, color_hex);
-            //this.insertBlock("color: "+color_hex+"", "span", "style");
+        button.on("click", () => {
+            var listStyle = button.siblings("#etext-list-selector");
+            var splitList = listStyle.val().split(":");
             
-            $("#dialog-"+this.editor_id).hide();
-            
+            var parent;
+            if (splitList[0] === "ul") {
+                parent = "ul";
+            } else {
+                parent = "ol";
+            }
+    
+            var ul = document.createElement(parent);
+            var li = document.createElement("li");
+            ul.appendChild(li);
+    
+            ul.style.listStyleType = splitList[1];
+    
+            var range = window.getSelection().getRangeAt(0);
+            range.deleteContents();
+            range.insertNode(ul);
+    
+            // Posunout kurzor k první položce
+            var newRange = document.createRange();
+            newRange.setStart(li, 0);
+            newRange.collapse(true);
+            var selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(newRange);
         });
     }
 
-
-    /* DIALOG BUTTONS AND OPERATIONS */
-    buttonHeader()
+    /**
+     * 
+     * @param {String} button_id 
+     */
+    buttonImage(button_id)
     {
-        var buttons = $(".edialog");
-        buttons.click((event) => {
-            const class_header = $(event.currentTarget).attr("data");
+        var button = $("div[id="+this.editor_id+"]  > div > div > div > div > button[id="+button_id+"]");
+
+        button.on("click", () => {
+            //this.focusOnEditor();
+            //var img = "<img class='width-"+ $("#etext-image-data-scale").val() +"' src='" + $("#image-url-input").val() + "'>";
+            var imageElement = $('<img>', {
+                'src': button.siblings("#image-url-input").val()
+            }).addClass("width-"+button.siblings("#etext-image-data-scale").val()).prop('outerHTML');
+            document.execCommand('insertHTML', false, imageElement);
+            
+            $("#dialog-"+this.editor_id).hide();
+            this.updateResult(this.editor_id);
+        });
+    }
+
+    /**
+     * 
+     * @param {String} button_id 
+     */
+    buttonTextSize(button_id)
+    {
+        var button = $("div[id="+this.editor_id+"]  > div > div > div > div > button[id="+button_id+"]");
+        button.on("click", () => {
+
+            
+            var class_header = button.siblings("#etext-resize-text-input").val();
 
             var splitter = class_header.split("-");
-            //this.focusOnEditor($(event.currentTarget));
+            this.focusOnEditor($(event.currentTarget));
 
             // TODO:
-            //this.insertBlock(class_header, "span");
-            document.execCommand('formatBlock', false, '<h'+splitter[1]+'>');
+            if(splitter[0] === "header")
+            {
+                var spanString = $('<span/>', {
+                    'text': document.getSelection()
+                }).addClass('header-'+splitter[1]).prop('outerHTML');
 
+                document.execCommand('insertHTML', false, spanString);
+            }
+            else if(splitter[0] == "size")
+            {
+                var spanString = $('<span/>', {
+                    'text': document.getSelection()
+                }).css('font-size', splitter[1]).prop('outerHTML');
             
-            $("#dialog-"+this.editor_id).hide();
+                document.execCommand('insertHTML', false, spanString);
+            }
+            
+            //$("#dialog-"+this.editor_id).hide();
+            // TODO:
+            //this.buttonOpenDialog(button, "resizeText", "Změnit velikost písma");
             
         });
     }
 
-    insertBlock(element_style, element_type = "div", element_style_type = "class") {
-        // Získáme textový výběr uživatele
-        const selection = window.getSelection();
-    
-        // Pokud není nic vybráno, nic se nevykoná
-        if (selection.toString().length === 0) return;
-    
-        // Vytvoříme nový dokumentový fragment se svým vlastním HTML obsahem
-        const sizeBlock = $("<" + element_type + "></" + element_type + ">");
-    
-        if (element_style_type === "class") 
-        {
-            sizeBlock.addClass(element_style);
+    /**
+     * 
+     * @param {String} button_id 
+     */
+    buttonAlignLeft(button_id)
+    {
+        var button = $("div[id="+this.editor_id+"]  > div > div > div > div > button[id="+button_id+"]");
+        button.on("click", () => {
             
-        } 
-        else if (element_style_type === "style") 
-        {
-            sizeBlock.attr("style", element_style);
-        }
-    
-        sizeBlock.text(selection.toString()); // Přidáme text do elementu
-    
-        // Získáme rozsah (Range) selekce
-        const range = selection.getRangeAt(0);
-    
-        // Smazat původní výběr
-        range.deleteContents();
-    
-        // Vložit nový element s textem do rozsahu
-        range.insertNode(sizeBlock[0]);
-    
-        // Vytvořit nový rozsah obsahující nový element s textem
-        const newRange = document.createRange();
-        newRange.setStartBefore(sizeBlock[0]);
-        newRange.setEndAfter(sizeBlock[0]);
-    
-        // Obnovit označení nového elementu s textem
-        selection.removeAllRanges();
-        selection.addRange(newRange);
+            this.focusOnEditor();
+
+            // TODO:
+            document.execCommand("justifyLeft");
+            
+        });
     }
+
+    /**
+     * 
+     * @param {String} button_id 
+     */
+    buttonAlignCenter(button_id)
+    {
+        var button = $("div[id="+this.editor_id+"]  > div > div > div > div > button[id="+button_id+"]");
+        button.on("click", () => {
+            
+            this.focusOnEditor();
+            var new_element = $('<div/>', {
+                'text': document.getSelection()
+            }).addClass("content-center").prop('outerHTML');
+
+            // TODO:
+            document.execCommand("insertHTML", false, new_element);
+            
+        });
+    }
+
+    /**
+     * 
+     * @param {String} button_id 
+     */
+    buttonAlignRight(button_id)
+    {
+        var button = $("div[id="+this.editor_id+"]  > div > div > div > div > button[id="+button_id+"]");
+        button.on("click", () => {
+            
+            this.focusOnEditor();
+
+            // TODO:
+            document.execCommand("justifyRight");
+            
+        });
+    }
+
+    /**
+     * 
+     * @param {String} button_id 
+     */
+    buttonAlignJustify(button_id)
+    {
+        var button = $("div[id="+this.editor_id+"]  > div > div > div > div > button[id="+button_id+"]");
+        button.on("click", () => {
+            
+            this.focusOnEditor();
+
+            // TODO:
+            document.execCommand("justifyFull");
+            
+        });
+    }
+
+    buttonInsertRow(button_id) {
+        var button = $(`div[id=${this.editor_id}]  > div > div > div > div > button[id=${button_id}]`);
+        button.on("click", () => {
+            this.focusOnEditor();
+            var rows = button.siblings("#etext-rows-input").val();
+            var cols = button.siblings("#etext-cols-input").val();
+
+            if(rows == "")
+            {
+                rows = 2;
+            }
+            if(cols == "" || (cols <= 0 && cols > 10 ))
+            {
+                cols = 2;
+            }
+
+            var table = "";
+            
+            // Generate Rows
+            var new_row = $('<div/>').addClass("row cols-"+cols);
+            //var new_col = $('<div/>').text("Vložte obsah").addClass("column-shrink pd-1 bd-dark bd-1");
+
+            // Cols
+            for (var i = 0; i < parseInt(rows)*parseInt(cols); i++) 
+            {
+                if (i < 100) 
+                {
+                    new_row.append($('<div/>').text("Vložte obsah").addClass("column-shrink pd-1 bd-dark bd-1"));
+                }
+            }
+
+            console.log(new_row);
+            table = new_row.prop("outerHTML");
+
     
+            // Use execCommand to insert the generated HTML
+            document.execCommand("insertHTML", false, table);
+            //Generate new LINE
+            var editor_content = $(".e-editor[target=editor-"+this.editor_id+"]").html();
+            $(".e-editor[target=editor-"+this.editor_id+"]").html(editor_content+ "<div><br></div>");
+        });
+    }
+
+    buttonChangeStyle(button_id)
+    {
+        var button = $("div[id="+this.editor_id+"]  > div > div > div > div > button[id="+button_id+"]");
+        button.on("click", () => {
+            this.focusOnEditor();
+            var editor_content = $(".e-editor[target=editor-"+this.editor_id+"]").html();
+            var select_element = button.siblings("#etext-styles-input");
+            var seletcted_option = select_element.val();
+
+            var split_value = seletcted_option.split(":");  //0 - block|span -> 1 - style
+            var etext_class = "etext-"+split_value[0]+"-style-"+split_value[1];
+
+            var new_element;
+            if(split_value[0] === "block")
+            {
+                var new_element = $('<div/>', {
+                    'text': document.getSelection()
+                }).addClass(etext_class).prop('outerHTML');
+            }
+            else
+            {
+                var new_element = $('<span/>', {
+                    'text': document.getSelection()
+                }).addClass(etext_class).prop('outerHTML');
+            }
+
+            document.execCommand('insertHTML', false, new_element);
+
+            //Generate new LINE
+            var editor_content = $(".e-editor[target=editor-"+this.editor_id+"]").html();
+            $(".e-editor[target=editor-"+this.editor_id+"]").html(editor_content+ "<div><br></div>");
+
+            //this.focusOnEditor();
+            /*var color_hex = $("#dialog-text-bcolor-input").val(); //#bfbfbf
+            document.execCommand('backColor', false, color_hex);*/
+            
+        });
+    }
 }
-
-/*
-$('#colorBtn').click(function() {
-        const color = $('#colorPicker').val();
-        document.execCommand('foreColor', false, color);
-        
-      });
-
-      $('#save').click(function() {
-        updateResult();
-      });
-
-      $('#alignBtn[data-align]').click(function() {
-        const align = $(this).data('align'); // Získáme hodnotu data-align atributu
-
-        // Zkontrolujeme, zda je vybrán nějaký text
-        const selection = window.getSelection().toString().trim();
-        if (selection !== '') {
-          // Pro vybraný text vložíme odpovídající blok s alignmentem
-          const alignBlock = `<div class="content-${align}">${selection}</div>`;
-          document.execCommand('insertHTML', false, alignBlock);
-        }
-      });
-
-      $('#insertImage').click(function() {
-        const imageUrl = prompt('Zadejte URL obrázku:', "16");
-        if (imageUrl) {
-          const imgTag = `<img src="${imageUrl}" class="height-256p" alt="Obrázek">`;
-          document.execCommand('insertHTML', false, imgTag);
-        }
-      });
-
-      $('#changeFontSize').click(function() {
-        const selection = window.getSelection().toString();
-        const fontSize = prompt('Zadejte velikost fontu (v pixelech):');
-        if (fontSize) {
-          const sizeBlock = `<span style="font-size: ${fontSize}px;">${selection}</span>`;
-          document.execCommand('insertHTML', false, sizeBlock);
-        }
-      });
-      */

@@ -87,11 +87,9 @@ class {Model_name} extends {Module_name} implements ModelDBInterface
             foreach($db_query as $row)
             {
                 $id = $i++;
-                $content = $row["content"];
-                $tags = $row["tags"];
+                $url = $row['url'];
                 
-                $db_query[$id]["_content"] = $this->easy_text->translateText($content);
-                //$db_query[$id]["_tags"] = ArrayUtils::charStringToArray($tags);
+                $db_query[$id] = $this->get{Model_name}($url);
             }
             
             return $db_query;

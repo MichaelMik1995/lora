@@ -64,11 +64,11 @@ class BlogController extends Controller implements ModuleInterface
      */
     public function index(Blog $blog) 
     {
-        /* $get_all = $blog->getAll();
+        $get_all = $blog->getAll();
         
         return $this->data = [
-            "all" => $get_all,
-        ]; */
+            "posts" => $get_all,
+        ];
     }
 
     /**
@@ -139,12 +139,12 @@ class BlogController extends Controller implements ModuleInterface
     {
         //$auth->access(["admin"]);
 
-        $param = $this->u["param"];
+        $param = $this->u["url"];
 
         $get = $blog->get($param);
 
         return $this->data = [
-            "get" => $get,
+            "post" => $get,
             "form" => $easy_text->form("content", "", ["hide_submit" => 1])
         ];
     }
@@ -167,8 +167,8 @@ class BlogController extends Controller implements ModuleInterface
                 "content" => $post["content"],
                 "updated_at" => time(),
             ]);
-            $lora_exception->successMessage("Webová stránka přidána!");
-            $redirect->to();
+            $lora_exception->successMessage("Příspěvek byl upraven!");
+            $redirect->to("blog");
             
         }catch(LoraException $ex)
         {

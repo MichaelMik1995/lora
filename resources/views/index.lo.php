@@ -26,11 +26,9 @@
         @endif
 
         <!-- FONT Awesome FREE -->
-        @foreach $css as $st @
-            @foreach glob("./public/font_awesome_free/css/*.css") as $fa_css @
+            @foreach glob("./public/font_awesome/".env("font_awesome",false)."/css/*.css") as $fa_css @
                 <link rel="stylesheet" href="{{ $fa_css }}">
             @endforeach
-        @endforeach
 
         
             
@@ -50,7 +48,7 @@
         </script>
 
         <script src="./lang/{{$LANGUAGE}}/stylize_lang.js"></script>
-        <script src="{{asset('js/jquery/jquery.js')}}"></script>
+        <script src="{{asset('js/jquery/jquery_3_7_0.js')}}"></script>
         <script src="{{asset('js/jquery/jquery-ui/jquery-ui.js')}}"></script>
 
         @foreach glob("./public/js/lib/autoload/*.js") as $autoload_js @
@@ -59,6 +57,7 @@
 
         @pluginload lora/easytext @ <!-- Load HTML for plugin in ./plugins/lora/easytext/html_loader/index.phtml -->
         @pluginload lora/etext @
+        @pluginload lora/gengine @
 
         <!-- <script src="https://kit.fontawesome.com/0b54168b2a.js" crossorigin="anonymous"></script>-->
         
@@ -117,7 +116,7 @@
                                 </button>  
                             @endauth
                             <button redirect="auth/logout" class="button-circle width-32p height-32p button-warning">
-                                <i class="far fa-window-close"></i>
+                                <i class="fa fa-close"></i>
                             </button>  
                         @else
                             <button redirect="auth/login" class="button-circle width-32p height-32p button-warning">

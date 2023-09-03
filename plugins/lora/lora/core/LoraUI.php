@@ -208,32 +208,32 @@ trait LoraUI
     {
         $table = str_replace(["-"," ",".",","], "_", $table);
         
-        $template_file = self::$path_to_templates."database/create_table_migration.template";
+        $template_file = self::$path_to_templates."database/create_table_database.template";
 
         if($folder == "")
         {
-            $migration_dir = "App/Database/Migration/".ucfirst($table);
-            $table_dir = "App/Database/Migration/".ucfirst($table)."/Table";
-            $data_dir = "App/Database/Migration/".ucfirst($table)."/Data";
+            $database_dir = "App/Database/Tables/".ucfirst($table);
+            $table_dir = "App/Database/Tables/".ucfirst($table)."/Table";
+            $data_dir = "App/Database/Tables/".ucfirst($table)."/Data";
             
 
             //Create TableName/Table, Data in Migration directory -> if not exists!
-            if(!is_dir($migration_dir))
+            if(!is_dir($database_dir))
             {
-                mkdir($migration_dir);
+                mkdir($database_dir);
                 mkdir($table_dir);
                 mkdir($data_dir);
             }
 
-            $create_file = "App/Database/Migration/".ucfirst($table)."/Table/CreateTable".ucfirst($table).".php";
+            $create_file = "App/Database/Tables/".ucfirst($table)."/Table/CreateTable".ucfirst($table).".php";
         }
         else
         {
-            $migration_dir = "App/Database/Migration/".ucfirst($folder);
-            $table_dir = "App/Database/Migration/".ucfirst($folder)."/Table";
-            $data_dir = "App/Database/Migration/".ucfirst($folder)."/Data";
+            $database_dir = "App/Database/Tables/".ucfirst($folder);
+            $table_dir = "App/Database/Tables/".ucfirst($folder)."/Table";
+            $data_dir = "App/Database/Tables/".ucfirst($folder)."/Data";
 
-            $create_file = "App/Database/Migration/".ucfirst($folder)."/Table/CreateTable".ucfirst($table).".php";
+            $create_file = "App/Database/Tables/".ucfirst($folder)."/Table/CreateTable".ucfirst($table).".php";
         }
 
         
@@ -259,15 +259,15 @@ trait LoraUI
     {
         $table = str_replace(["-"," ",".",","], "_", $table);
         
-        $template_file = self::$path_to_templates."database/create_table_migration_seed.template";
+        $template_file = self::$path_to_templates."database/create_table_database_seed.template";
 
         if($folder == "")
         {
-            $create_file = "App/Database/Migration/".ucfirst($table)."/Data/CreateTable".ucfirst($table)."Seed.php";
+            $create_file = "App/Database/Tables/".ucfirst($table)."/Data/CreateTable".ucfirst($table)."Seed.php";
         }
         else
         {
-            $create_file = "App/Database/Migration/".ucfirst($folder)."/Data/CreateTable".ucfirst($table)."Seed.php";
+            $create_file = "App/Database/Tables/".ucfirst($folder)."/Data/CreateTable".ucfirst($table)."Seed.php";
         }
         
         

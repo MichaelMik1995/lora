@@ -16,6 +16,17 @@ class {name}
     {
         $this->loran_core = new loranCore();
     }
+
+    public function prepareCommand(string $command_line)
+    {
+        $explode_command = explode(" ", $command_line);
+        $command = $explode_command[1];
+        $argument = @$explode_command[2];
+
+        $options = array_splice($explode_command, 3);   
+        
+        $this->sendCommand($command, $argument, $options);
+    }
     
     public function sendCommand($command, $argument="", $option1="", $option2="")
     {

@@ -11,7 +11,7 @@ App/Modules/*
 
 App/Trash
 
-App/Database/Migration/Krimwr/*
+App/Database/Tables/Krimwr/*
 
 
 .storybook/
@@ -36,3 +36,6 @@ public/upload/images/*
 content/uploads/*
 
 resources/sql/*.db
+
+public/font_awesome/pro/*
+!do-not-erase
