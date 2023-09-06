@@ -5,7 +5,7 @@
     <div class="t-italic subheader-3 pdx-3">
         <img id="a-author" src="{{ asset('img/avatar/32/'.$announcement['author'].'.png') }}"> <i class="fa fa-calendar"></i> <span id='a-date'>{{ real_date($announcement['updated_at']) }}</span>
     </div>
-    <div id="a-content" class="pdy-3 pdx-3">
+    <div id="a-content" etext-event="compile" class="pdy-3 pdx-3">
         {{ $announcement['_content'] }}
     </div>
     <div class="pdy-2 pdx-3 bgr-dark">
@@ -24,6 +24,7 @@
             class="fa fa-circle t-dark header-5 mgx-1 t-light-hover cursor-point announcement-href" >
         </i>
         <script>
+            
             $("#announ-href-{{ $na['url'] }}").click((e) => {
                 e.preventDefault();
                 
@@ -32,7 +33,9 @@
                     $("#a-header").text('{{ $na['title'] }}');
                     $("#a-author").attr("src", '{{ asset('img/avatar/32/'.$na['author'].'.png') }}');
                     $("#a-date").text('{{ real_date($na['updated_at']) }}');
-                    $("#a-content").html('{{ str_replace(["'", '"', "[Br]"], ['\"', '\"', '<br>'], $na['_content']) }}');
+                    
+                    $("#a-content").html('{{ str_replace(["'", '"', "[Br]"], ['\"', '\"', '<br>'], $na['content']) }}');
+                    EText.compile($("#a-content"));
                 }).show(200, function(){
                     $(".announcement-href").removeClass("t-info").addClass("t-dark");
                     $("#announ-href-{{ $na['url'] }}").removeClass("t-dark").addClass("t-info");

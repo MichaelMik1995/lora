@@ -13,14 +13,19 @@ class Logger implements InstanceInterface
 {
     /**
      * 
-     * @var string $log_path <p>Path to log file (ex.: ./log/)</p>
+     * @var string $default_log_path <p>Path to log file (ex.: ./log/)</p>
      */
-    private static string $log_path = "./log/";
+    public string $log_path = "./log/";
     
-    private static string $file_content;
+    private string $file_content;
 
     private static self $_instance;
     private static int $_instance_id;
+
+    public function __construct()
+    {
+        $this->log_path = env("log_folder", false);
+    }
 
     public static function instance()
     {
@@ -37,14 +42,27 @@ class Logger implements InstanceInterface
     }
     
     /**
-     * 
-     * @param string $message
-     * @param string $message_type
+     * Writes log message to defined log file
+     *
+     * @param string $message               <p>Message string</p>
+     * @param string $message_type          <p>INFO|WARNING|ERROR|SUCCESS</p>
+     * @param string $log_file              <p>Filename of log file (without extension)</p>
+     * @param string|null $log_path         <p>Defines target Log path (default: ./log/)</p>
+     * @return void
      */
-    public static function log(string $message, string $message_type="message", string $log_file="application")
+    public function log(string $message, string $message_type="message", string $log_file="application", string $log_path = null)
     {
-        $log_path = env("log_folder", false);
-        $file = self::$log_path.$log_file.".log";
+        if($log_path == null) 
+        {
+            $log_path = $this->log_path;
+        }
+        else
+        {
+            $this->log_path = $log_path;
+        }
+
+        
+        $file = $log_path.$log_file.".log";
 
         if(!is_writable($file))
         {
@@ -52,13 +70,26 @@ class Logger implements InstanceInterface
         }
         
         $file_open = fopen($file, "a+");
-        fwrite($file_open, self::messageConstruct($message, $message_type));
+        fwrite($file_open, $this->messageConstruct($message, $message_type));
         fclose($file_open);
     }
     
-    public static function getLog($log_file="application", int $max_lines = 128)
+    /**
+     * Get Array of lines from log file (one line = one index of returned array)
+     *
+     * @param string $log_file          <p>Filename of required log file</p>
+     * @param integer $max_lines        <p>How much lines of log file will gather</p>
+     * @param string $log_folder        <p>Where required log file is stored</p>
+     * @return array|null               <p>Returns array of lines with keys: DATE,TYPE,MESSAGE</p>
+     */
+    public function getLog(string $log_file="application", int $max_lines = 128, string $log_folder = null): Array|Null
     {
-        $file_path = "./log/";
+        if($log_folder == null)
+        {
+            $log_folder = $this->log_path;
+        }
+
+        $file_path = $log_folder;
         $file_ext = ".log";
         
         $log = file($file_path.$log_file.$file_ext);
@@ -82,15 +113,19 @@ class Logger implements InstanceInterface
         return $return;
     }
     
-    private static function messageConstruct(string $message, string $message_type): String
+    /**
+     * Construct message via construct convention
+     *
+     * @param string $message           Message to construct
+     * @param string $message_type      Type of message (INFO|WARNING|ERROR|SUCCESS)
+     * @return string                   Returns raw message string
+     */
+    private function messageConstruct(string $message, string $message_type): String
     {
         $date = time();
         $exception = strtoupper($message_type);
-
-        //Construct DATA
         
         //Construct sentence
-        //$sentence = "$date." [Type: ".$exception."] -> ".$message. "\n";
         $write_raw = "!?:$date!?:$exception!?:$message\n";
         
         return $write_raw;

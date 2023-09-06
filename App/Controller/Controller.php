@@ -97,6 +97,9 @@ abstract class Controller
             $file = $template->view($file_path . $this->view . ".lo.php", $this->module);       
             
             require_once($file);
+
+            //if cache is created 
+            $this->deleteViewCache($file);
             
         }
     }
@@ -165,6 +168,26 @@ abstract class Controller
                 $this->title = $this->splitter_controll->splitter_title;
             }
             
+        }
+    }
+
+    /**
+     * Deletes cache file
+     *
+     * @param  string $cache_file
+     * @return void
+     */
+    private function deleteViewCache(string $cache_file): Void
+    {
+        $date = filemtime($cache_file);     //timestamp format
+
+        $lifetime = env("view_cache_lifetime", false);  //Lifetime in days
+
+        $day_to_delete = strtotime("+".$lifetime." day", $date);        //Time, where to delete cache file
+
+        if(!is_dir($cache_file) && file_exists($cache_file) && time() > $day_to_delete)
+        {
+            unlink($cache_file);
         }
     }
 }

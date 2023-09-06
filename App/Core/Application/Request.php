@@ -194,11 +194,11 @@ class Request extends Controller
         
         if($this->message != "")
         {
-            Logger::log("IP: ".$_SERVER['REMOTE_ADDR']." CLASS: $class_name -> METHOD: $request_function(); URL: ".$_SERVER['REQUEST_URI']." => ".$this->message_type." -> MESSAGE: ".$this->message);
+            Logger::instance()->log("IP: ".$_SERVER['REMOTE_ADDR']." CLASS: $class_name -> METHOD: $request_function(); URL: ".$_SERVER['REQUEST_URI']." => ".$this->message_type." -> MESSAGE: ".$this->message);
         }
         else
         {
-            Logger::log("IP: ".$_SERVER['REMOTE_ADDR']." CLASS: $class_name -> METHOD: $request_function(); URL: ".$_SERVER['REQUEST_URI']." => ".$this->message_type);
+            Logger::instance()->log("IP: ".$_SERVER['REMOTE_ADDR']." CLASS: $class_name -> METHOD: $request_function(); URL: ".$_SERVER['REQUEST_URI']." => ".$this->message_type);
         }
         
         //Automatic LOG system
