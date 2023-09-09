@@ -19,8 +19,6 @@ use App\Core\Interface\ModelDBInterface;
 use App\Core\Lib\Utils\StringUtils;
 use App\Core\DI\DIContainer;
 use App\Exception\LoraException;
-use App\Core\Database\Database;
-use App\Middleware\Auth;
 
 class AdminUsers extends Admin implements ModelDBInterface
 {

@@ -48,28 +48,37 @@ class Logger implements InstanceInterface
      * @param string $message_type          <p>INFO|WARNING|ERROR|SUCCESS</p>
      * @param string $log_file              <p>Filename of log file (without extension)</p>
      * @param string|null $log_path         <p>Defines target Log path (default: ./log/)</p>
+     * @param bool $can_create_new_log      If application can create new log file
      * @return void
      */
-    public function log(string $message, string $message_type="message", string $log_file="application", string $log_path = null)
+    public function log(string $message, string $message_type="message", string $log_file = null, bool $can_create_new_log = false)
     {
-        if($log_path == null) 
+        if($log_file == null) 
         {
             $log_path = $this->log_path;
         }
         else
         {
-            $this->log_path = $log_path;
+            $this->log_path = $log_file;
         }
 
         
         $file = $log_path.$log_file.".log";
 
-        if(!is_writable($file))
+        if($can_create_new_log == false)
         {
-            echo ("Log file $file is not writtable! Change permission");
+            if(!is_writable($file))
+            {
+                echo ("Log file $file is not writtable! Change permission");
+            }
+
+            $file_open = fopen($file, "a+");
+        }
+        else
+        {
+            $file_open = fopen($file, "w+");
         }
         
-        $file_open = fopen($file, "a+");
         fwrite($file_open, $this->messageConstruct($message, $message_type));
         fclose($file_open);
     }

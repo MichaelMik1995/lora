@@ -122,7 +122,7 @@ class AuthManager
                         echo "<script>localStorage.setItem('user_name','".$user_name."');</script>";
                         $this->database->update($this->table, ["session_key"=>$session_key], "uid=?", [$uid]);
                         //LOG event
-                        $this->logger->log("User ".$user_name." [uid].".$uid."[/uid]logged in with session key ".$session_key, log_file: "users");
+                        $this->logger->log("User ".$user_name." [uid].".$uid."[/uid]logged in with session key ".$session_key, log_file: "./private/logs/users/".$uid, can_create_new_log: true);
                         //unset attempt test session
                     }
                 }
@@ -142,6 +142,8 @@ class AuthManager
     public function logout(): Bool
     {
         session_regenerate_id(true);
+        $this->logger->log("User ".$this->container->get(Auth::class)->user_name." [uid].".$this->container->get(Auth::class)->user_uid."[/uid] logout from application", 
+        log_file: "./private/logs/users/".$this->container->get(Auth::class)->user_uid, can_create_new_log: true);
 
         if(isset($_SESSION[$this->container->get(Auth::class)->session_instance]))
         {
@@ -272,11 +274,11 @@ class AuthManager
         copy("./public/img/avatar/default_$gender.png", "./public/img/avatar/$uid.png");
 
         
-        $media->resizeImage("public/img/avatar/$uid.png", "public/img/avatar/512", $uid, target_width: "512", target_height: null);
-        $media->resizeImage("public/img/avatar/$uid.png", "public/img/avatar/256", $uid, target_width: "256", target_height: null);
-        $media->resizeImage("public/img/avatar/$uid.png", "public/img/avatar/128", $uid, target_width: "128", target_height: null);
-        $media->resizeImage("public/img/avatar/$uid.png", "public/img/avatar/64", $uid, target_width: "64", target_height: null);
-        $media->resizeImage("public/img/avatar/$uid.png", "public/img/avatar/32", $uid, target_width: "32", target_height: null);
+        $media->resizeImage("public/img/avatar/$uid.png", "public/img/avatar/512", strval($uid), target_width: "512", target_height: null);
+        $media->resizeImage("public/img/avatar/$uid.png", "public/img/avatar/256", strval($uid), target_width: "256", target_height: null);
+        $media->resizeImage("public/img/avatar/$uid.png", "public/img/avatar/128", strval($uid), target_width: "128", target_height: null);
+        $media->resizeImage("public/img/avatar/$uid.png", "public/img/avatar/64", strval($uid), target_width: "64", target_height: null);
+        $media->resizeImage("public/img/avatar/$uid.png", "public/img/avatar/32", strval($uid), target_width: "32", target_height: null);
         
         unlink("public/img/avatar/$uid.png");
         

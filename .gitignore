@@ -29,6 +29,9 @@ log/*
 temp/cache/*
 !do-not-erase
 
+private/logs/users/*
+!do-not-erase
+
 public/img/avatar/*
 
 public/upload/images/*

@@ -1,0 +1,14 @@
+#!/usr/bin/php -q
+<?php
+    error_reporting(E_ERROR);
+    require ("App/Core/Autoload/Autoload.php");
+    
+    $autoload = new Autoload();
+    $autoload->loadClass();
+    
+    $lora = new Lora\Analytic\Bin\analytic();
+    $implode_cmds = implode(" ", $argv);
+    $lora->prepareCommand($implode_cmds);
+?>
+
+

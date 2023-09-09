@@ -63,13 +63,14 @@ function env(string $environment_parameter, $echo = true)
  *
  * @param string $language_parameter
  * @param boolean $echo
- * @return void
+ * @return string
  */
-function lang(string $language_parameter, $echo = true)
+function lang(string $language_parameter, $echo = true): string
 {
     if($echo === true)
     {
         echo call_user_func_array('\App\Core\Lib\Language::lang', [$language_parameter]);
+        return "";
     }
     else
     {
