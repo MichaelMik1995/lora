@@ -54,7 +54,7 @@ class AdminController extends Controller implements ModuleInterface
         parent::__construct($container, u: $this->u, model: $this->model); 
 
         //Check if user is admin and authorized
-        if(!$container->get(Auth::class)->isAuth(["admin"]))
+        if(!$container->get(Auth::class)->isAuth(["admin", "developer"]))
         {
             $container->get(LoraException::class)->errorMessage("You are not authorized to access this page.");
             $container->get(Redirect::class)->to();
@@ -84,7 +84,8 @@ class AdminController extends Controller implements ModuleInterface
                 "user-password-reset" => "userPasswordReset",
                 "user-password-force-reset" => "userPasswordForceReset",
                 "user-remove" => "userRemove",
-                "user-log" => "userLog"
+                "user-log" => "userLog",
+                
             ];
 
             $cli_pages = [
@@ -113,7 +114,8 @@ class AdminController extends Controller implements ModuleInterface
             ];
 
             $scheduler_pages = [
-                "scheduler" => "index"
+                "scheduler" => "index",
+                "scheduler-force-archive-log" => "forceArchiveLog",
             ];
 
             $banned_pages = [

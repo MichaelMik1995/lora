@@ -50,8 +50,6 @@ class AdminSchedulerController extends AdminController
      */
     protected string $splitter_title = "";
 
-    protected AdminScheduler $scheduler;
-
     
     public function __construct(DIContainer $container)
     {
@@ -59,7 +57,6 @@ class AdminSchedulerController extends AdminController
         
         $this->module = "Admin";
         
-        $this->scheduler = $this->container->get(AdminScheduler::class);
     }
     
     
@@ -67,15 +64,25 @@ class AdminSchedulerController extends AdminController
      * Can use for viewing all tables (rows) in template
      * @return string
      */
-    public function index(AdminScheduler $model) 
+    public function index(AdminScheduler $scheduler) 
     {
-        /* $get_all = $model->getAll();
-        
         $this->data = [
-            "all" => $get_all,
-        ]; */
-
+            "arch_data" => $scheduler->getSchedulerLogData(),
+        ];
         return $this->view = $this->template_folder."index";
+    }
+
+    public function forceArchiveLog(AdminScheduler $scheduler, LoraException $exception, Redirect $redirect)
+    {
+        try{
+            $scheduler->backupLogs(true);
+            $exception->successMessage("Zálohování úspěšně dokončeno");
+        }catch(LoraException $e)
+        {
+            $exception->errorMessage($e->getMessage());
+        }
+
+        $redirect->to("admin/app/scheduler");
     }
 
     /**

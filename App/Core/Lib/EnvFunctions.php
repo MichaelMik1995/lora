@@ -52,7 +52,7 @@ function env(string $environment_parameter, $echo = true)
     }
     else
     {
-        echo "Unknown environment parameter";
+        echo "Unknown environment parameter: ".$environment_parameter;
         return 1;
     }
 }

@@ -15,7 +15,7 @@ class Logger implements InstanceInterface
      * 
      * @var string $default_log_path <p>Path to log file (ex.: ./log/)</p>
      */
-    public string $log_path = "./log/";
+    public string $log_file;
     
     private string $file_content;
 
@@ -24,7 +24,7 @@ class Logger implements InstanceInterface
 
     public function __construct()
     {
-        $this->log_path = env("log_folder", false);
+        $this->log_file = env("default_log_file", false);
     }
 
     public static function instance()
@@ -48,22 +48,22 @@ class Logger implements InstanceInterface
      * @param string $message_type          <p>INFO|WARNING|ERROR|SUCCESS</p>
      * @param string $log_file              <p>Filename of log file (without extension)</p>
      * @param string|null $log_path         <p>Defines target Log path (default: ./log/)</p>
-     * @param bool $can_create_new_log      If application can create new log file
+     * @param bool $can_create_new_log      If application can create new log file (default: true)
      * @return void
      */
-    public function log(string $message, string $message_type="message", string $log_file = null, bool $can_create_new_log = false)
+    public function log(string $message, string $message_type="message", string $log_file = null, bool $can_create_new_log = true)
     {
         if($log_file == null) 
         {
-            $log_path = $this->log_path;
+            $log = $this->log_file;
         }
         else
         {
-            $this->log_path = $log_file;
+            $log = $log_file;
+            $this->log_file = $log_file;
         }
-
         
-        $file = $log_path.$log_file.".log";
+        $file = $log.".log";
 
         if($can_create_new_log == false)
         {
@@ -76,7 +76,7 @@ class Logger implements InstanceInterface
         }
         else
         {
-            $file_open = fopen($file, "w+");
+            $file_open = fopen($file, "a+");
         }
         
         fwrite($file_open, $this->messageConstruct($message, $message_type));
@@ -86,22 +86,25 @@ class Logger implements InstanceInterface
     /**
      * Get Array of lines from log file (one line = one index of returned array)
      *
-     * @param string $log_file          <p>Filename of required log file</p>
+     * @param string $log_file          <p>Filename of log file (if empty -> get default log file from .env)</p>
      * @param integer $max_lines        <p>How much lines of log file will gather</p>
-     * @param string $log_folder        <p>Where required log file is stored</p>
      * @return array|null               <p>Returns array of lines with keys: DATE,TYPE,MESSAGE</p>
      */
-    public function getLog(string $log_file="application", int $max_lines = 128, string $log_folder = null): Array|Null
+    public function getLog(string $log_file = null, int $max_lines = 128): Array|Null
     {
-        if($log_folder == null)
+        
+        if($log_file == null)
         {
-            $log_folder = $this->log_path;
+            $logger_file = $this->log_file;
+        }
+        else
+        {
+            $logger_file = $log_file;
         }
 
-        $file_path = $log_folder;
         $file_ext = ".log";
         
-        $log = file($file_path.$log_file.$file_ext);
+        $log = file($logger_file.$file_ext);
         
         $return = [];
         

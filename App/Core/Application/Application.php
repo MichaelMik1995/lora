@@ -14,6 +14,7 @@ use App\Core\Lib\Language;
 use App\Core\DI\DIContainer;
 
 use App\Core\Model;
+use App\Modules\AdminModule\Model\AdminScheduler;
 
 /**
  * Description of Application
@@ -79,6 +80,8 @@ class Application
         {
             $this->register_access = "any";
         }
+
+        $this->container->get(AdminScheduler::class)->backupLogs();
 
         //Get SECOND SEC WAY MIDDLEWARE Valid request via Middleware Groups
         $this->layerTwo();
