@@ -8,6 +8,7 @@ use App\Modules\AdminModule\Controller\AdminController;
 
 //Core
 use App\Middleware\Auth;
+use App\Core\Application\DotEnv;
 use App\Core\Application\Redirect;
 use App\Core\DI\DIContainer;
 use App\Exception\LoraException;
@@ -77,6 +78,21 @@ class AdminSchedulerController extends AdminController
         try{
             $scheduler->backupLogs(true);
             $exception->successMessage("Zálohování úspěšně dokončeno");
+        }catch(LoraException $e)
+        {
+            $exception->errorMessage($e->getMessage());
+        }
+
+        $redirect->to("admin/app/scheduler");
+    }
+
+    public function changeArchiveLogInterval(AdminScheduler $scheduler, LoraException $exception, Redirect $redirect, DotEnv $env)
+    {
+        $post = $this->input("new-interval")->returnFields();
+        $new_interval = $post["new-interval"];
+        try {
+            $env->setEnvData("backup_log_days", strval($new_interval));
+            $exception->successMessage("Změna intervalu úspěšná");
         }catch(LoraException $e)
         {
             $exception->errorMessage($e->getMessage());

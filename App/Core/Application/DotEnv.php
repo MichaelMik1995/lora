@@ -108,9 +108,49 @@ class DotEnv implements InstanceInterface
         return $this->tmp_env;
     }
 
+    public function setEnvData(string $env_param, mixed $value)
+    {
+        // Kontrola, zda klíč existuje v dočasném poli tmp_env
+        if (array_key_exists($env_param, $this->tmp_env)) {
+            // Aktualizace hodnoty v tmp_env
+            $this->tmp_env[$env_param] = $value;
+
+            // Pokud hodnota neobsahuje uvozovky, přidejte je
+            if (!preg_match('/^"(.*)"$/s', $value)) {
+                $value = '"' . $value . '"';
+            }
+
+            // Aktualizace hodnoty v aktuálním prostředí
+            putenv("$env_param=$value");
+            $_ENV[$env_param] = str_replace('"', '', $value);
+
+            // Uložení změn zpět do souboru .env
+            $this->saveEnvToFile();
+        } else {
+            throw new ErrorException("Key '$env_param' not found in .env");
+        }
+    }
+
+
+
     public function get(string $key)
     {
         return $this->tmp_env[$key];
+    }
+
+    private function saveEnvToFile()
+    {
+        // Otevření souboru .env pro zápis
+        $file = fopen($this->path, 'w');
+        if ($file) {
+            foreach ($this->tmp_env as $name => $value) {
+                $new_value = str_replace('"', '', $value);
+                fwrite($file, "$name=\"$new_value\"\n");
+            }
+            fclose($file);
+        } else {
+            throw new ErrorException("Failed to open .env file for writing.");
+        }
     }
 }
 ?>

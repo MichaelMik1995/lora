@@ -20,7 +20,18 @@
             </div>
             <div class="column-10 content-center pdy-2">
                 <button redirect="admin/app/scheduler-force-archive-log" class="button button-info"><i class="fa fa-rotate"></i> Archivovat nyní</button>
-                <button class="button button-bd-info"><i class="fa fa-pen"></i> Změnit interval</button>
+                <button type="button" onClick="$('#archivation-chng-interval').slideToggle(200)" class="button button-bd-info"><i class="fa fa-pen"></i> Změnit interval</button>
+                <div id="archivation-chng-interval" class="display-0 pd-1 content-center">
+                    <form method="post" action="admin/app/scheduler-change-interval">
+                        @csrfgen
+                        @request(update)
+
+                        <div class="element-group element-group-medium">
+                            <input type="number" name="new-interval" min="1" max="365" value="{{ env('backup_log_days') }}">
+                            <button type="submit" class="button button-info"><i class="fa fa-save"></i></button>
+                        </div>
+                    </form>
+                </div>
             </div>
 
             <div class="column-10 pdy-2 bd-top-dark">

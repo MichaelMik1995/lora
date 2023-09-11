@@ -116,6 +116,7 @@ class AdminController extends Controller implements ModuleInterface
             $scheduler_pages = [
                 "scheduler" => "index",
                 "scheduler-force-archive-log" => "forceArchiveLog",
+                "scheduler-change-interval" => "changeArchiveLogInterval",
             ];
 
             $banned_pages = [
