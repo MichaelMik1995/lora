@@ -10,7 +10,7 @@
 
                 <div class="mgy-2">
                     <label for="user-name" class="t-first-upper">{{ lang('user_name') }}</label><br>
-                    <input type="text" id="user-name" name="user-name" class="input-dark pd-2 width-15 width-75-xsm" validation="required,maxchars64">
+                    <input required type="text" id="user-name" name="user-name" class="input-dark pd-2 width-15 width-75-xsm" validation="required,maxchars64">
                     <div class="pd-1" valid-for="#user-name"></div>
                 </div>
 
@@ -43,7 +43,7 @@
 
                 <div class="mgy-2">
                     <label for="user-email" class="t-first-upper">{{ lang('user_email') }}</label><br>
-                    <input type="text" id="user-email" name="user-email" class="input-dark pd-2 width-30 width-75-xsm" validation="required,maxchars64,email" placeholder="example@gmail.com">
+                    <input required type="email" id="user-email" name="user-email" class="input-dark pd-2 width-30 width-75-xsm" validation="required,maxchars64,email" placeholder="example@gmail.com">
                     <div class="pd-1" valid-for="#user-email"></div>
                 </div>
 
