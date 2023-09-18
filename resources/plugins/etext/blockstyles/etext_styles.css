@@ -1,5 +1,33 @@
 
 /* BLOCKS */
+
+/* Paddings */
+
+.etext-block-style-padding-xsmall
+{
+    padding: 1px;
+}
+
+.etext-block-style-padding-small
+{
+    padding: 2.5px;
+}
+
+.etext-block-style-padding-medium
+{
+    padding: 5px;
+}
+
+.etext-block-style-padding-large
+{
+    padding: 8px;
+}
+
+.etext-block-style-padding-xlarge
+{
+    padding: 15px;
+}
+
 .etext-block-style-blue
 {
     background: linear-gradient(to top, #299CE1 30%, #4294C5);
@@ -82,13 +110,13 @@
 
 .etext-block-style-articleheader
 {
-    color: #18275a;
+    color: #6bace1;
     padding: 5px;
     border: none;
-    border-left: 3px solid #18275a;
-    font-size: 1.8em;
+    border-left: 3px solid #6bace1;
+    font-size: 1.5em;
     padding-left: .5em;
-    margin-top: 1em;
+    margin-top: 0.2em;
 }
 
 .etext-block-style-design-blue
@@ -110,6 +138,19 @@
     margin-bottom: 1.25em;
     line-height: 28px;
     font-size: 16px;
+}
+
+.etext-block-style-code
+{
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    color: #f4f4f4;
+    padding: 10px;
+    border: 1px solid #1a1a1a; 
+    border-radius: 5px;
+    
+    overflow-x: auto;
+    background-color: #333;
 }
 
 /* SPANS */

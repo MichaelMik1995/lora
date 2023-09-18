@@ -39,7 +39,8 @@
         
         <div class="form-line">
             <label for="content" class="form-label mgx-1">{{ lang("blog_content") }}</label><br>
-            {{ $form }}
+            <!--{{ $form }}-->
+            <div id="content" etext-event="load"></div>
         </div>
         
         <div class="form-line">

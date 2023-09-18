@@ -6,15 +6,15 @@
         { "tag": "<i>(.*?)<\/i>", "block": "[i]$1[/i]" },
         { "tag": "<u>(.*?)<\/u>", "block": "[U]$1[/U]" },
         { "tag": "<div>(.*?)<\/div>", "block": "[Div]$1[/Div]" },
-        { "tag": "<blockquote(.*?)\">(.*?)<\/blockquote>", "block": "[Tab]$2[/Tab]" },
+        { "tag": "<blockquote(.*?)>(.*?)<\/blockquote>", "block": "[Tab]$2[/Tab]" },
         { "tag": "<strike>(.*?)<\\/strike>", "block": "[S]$1[/S]" },
         { "tag": "<ul style=\"list-style-type: (.*?);\">(.*?)<\\/ul>", "block": "[Ul-$1]$2[/Ul]" },
         { "tag": "<ol style=\"list-style-type: (.*?);\">(.*?)<\\/ol>", "block": "[Ol-$1]$2[/Ol]" },
         { "tag": "<li>(.*?)<\/li>", "block": "[Li]$1[/Li]" },
-        { "tag": "<h(\\d+)>(.*?)<\/h(\\d+)>", "block": "[H$1]$2[/H$1]" },
+        { "tag": "<span class=\"header-(\\d+)\">(.*?)<\/span>", "block": "[H$1]$2[/H$1]" },
         { "tag": "<div class=\"etext-block-style-(.*?)\">(.*?)</div>", "block": "[BLOCK-$1]$2[/BLOCK]" },
-        { "tag": "<div class=\"column-shrink pd-1 bd-dark bd-1\">(.*?)</div>", "block": "[COL]$1[/COL]" },
-        { "tag": "<div class=\"row cols-(\\d+)\">(.*?)</div>", "block": "[ROW-$1]$2[/ROW]" },
+        { "tag": "<div class=\"column-shrink pd-1\">(.*?)</div>", "block": "[COL]$1[/COL]" },
+        { "tag": "<div class=\"row cols-(\\d+) row-style-(.*?) width-(\\d+)\">(.*?)</div>", "block": "[ROW-$1-$3-$2]$4[/ROW]" },
         { "tag": "<span class=\"etext-span-style-(.*?)\">(.*?)</span>", "block": "[STYLE-$1]$2[/STYLE]" },
         { "tag": "<span class=\"header-(\\d+)\">(.*?)<\/span>", "block": "[H$1]$2[/H$1]" },
         { "tag": "<div class=\"content-(.*?)\">(.*?)<\\/div>", "block": "[AL:$1]$2[/AL]" },
@@ -22,7 +22,6 @@
         { "tag": "<a class=\"t-italic t-basic t-underline\" href=\"(.*?)\" target=\"_blank\">(.*?)<\\/a>", "block": "[Href]$1[/Href]" },
         { "tag": "style=\"font-size: 0.98rem;\"", "block": "" },
         { "tag": "<img src=\"(.*?)\" class=\"width-(\\d+)\">", "block": "[Img-$2]$1[/Img]" },
-        { "tag": "<span style=\"font-size:(\\d+)em;\"(?:.*?)>(.*?)<\/span>", "block": "[Size-$1]$2[/Size]" },
         { "tag": "<font color=\"#([0-9a-fA-F]{6})\">(.*?)<\/font>", "block": "[col:#$1]$2[/col]" },
         { "tag": "<span style=\"background-color:\\s*rgb\\((\\d+)\\s*,\\s*(\\d+)\\s*,\\s*(\\d+)\\s*\\);\">([^<]+)<\/span>", "block": "[span-rgb($1, $2, $3)]$4[/span]" }
     ],
@@ -35,7 +34,7 @@
         { "block": "\\[Li\\](.*?)\\[\\/Li\\]", "tag": "<li>$1</li>" },
         { "block": "\\[Href\\](.*?)\\[\\/Href\\]", "tag": "<a class='t-italic t-basic t-underline' href='$1' target='_blank'>$1</a>" },
         { "block": "\\[Div\\](.*?)\\[\\/Div\\]", "tag": "<div class='pdy-1'>$1</div>" },
-        { "block": "\\[Tab\\](.*?)\\[\\/Tab\\]", "tag": "<blockquote style='margin: 0 0 0 40px; border: none; padding: 0px;'>$1</blockquote>" },
+        { "block": "\\[Tab\\](.*?)\\[\\/Tab\\]", "tag": "<blockquote style=\"margin: 0 0 0 40px; border: none; padding: 0px;\">$1</blockquote>" },
         { "block": "\\[S\\](.*?)\\[\\/S\\]", "tag": "<strike>$1</strike>" },
         { "block": "\\[AL:(.*?)\\](.*?)\\[\\/AL\\]", "tag": "<div class='content-$1'>$2</div>" },
         { "block": "\\[Img-(\\d+)\\](.*?)\\[\\/Img\\]", "tag": "<img src='$2' class='width-$1'>" },
@@ -47,8 +46,8 @@
         { "block": "\\[span-rgb\\((\\d+),\\s*(\\d+),\\s*(\\d+)\\)\\]([^\\[]+)\\[\/span\\]", "tag": "<span style='background-color: rgb($1, $2, $3)'>$4</span>" },
         { "block": "\\[BLOCK-(.*?)\\](.*?)\\[\\/BLOCK\\]", "tag": "<div class='etext-block-style-$1'>$2</div>" },
         { "block": "\\[STYLE-(.*?)\\](.*?)\\[\\/STYLE\\]", "tag": "<span class='etext-span-style-$1'>$2</span>" },
-        { "block": "\\[COL\\](.*?)\\[\\/COL\\]", "tag": "<div class='column-shrink pd-1 bd-dark bd-1'>$1</div>" },
-        { "block": "\\[ROW-(\\d+)\\](.*?)\\[\\/ROW\\]", "tag": "<div class='row cols-$1'>$2</div>" }
+        { "block": "\\[COL\\](.*?)\\[\\/COL\\]", "tag": "<div class='column-shrink pd-1'>$1</div>" },
+        { "block": "\\[ROW-(\\d+)-(\\d+)-(.*?)\\](.*?)\\[\\/ROW\\]", "tag": "<div class='row cols-$1 row-style-$3 width-$2'>$4</div>" }
     ]
 }
 

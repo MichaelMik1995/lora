@@ -12,7 +12,13 @@
         "black",
         "articleheader",
         "design-blue",
-        "text-blog"
+        "code",
+        "text-blog",
+        "padding-xsmall",
+        "padding-small",
+        "padding-medium",
+        "padding-large",
+        "padding-xlarge"
 
     ],
 

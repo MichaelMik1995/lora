@@ -70,7 +70,7 @@ class DocumentationController extends Controller
         $get_one = $documentation->get($url);
 
         echo json_encode([
-            "content" => $get_one["_content"], 
+            "content" => $get_one["content"], 
             "title" => $get_one["title"],
             "version" => $get_one["version"],
             "category" => $get_one["category"],

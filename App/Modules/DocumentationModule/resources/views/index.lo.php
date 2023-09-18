@@ -80,11 +80,13 @@
                   admin_panel = "<div class='content-right pd-1'><button onClick=\"document.location='/documentation/edit/"+sheet_url+"'\" class='button button-warning bd-round-3'>Upravit</button> <button class='button button-error bd-round-3' onClick=\"document.location='/documentation/delete/"+sheet_url+"'\">Smazat</button></div>";
               }
               
+              var compiled = EText.compile(jsonObject.content, true);
+              
               var sheet_cnt = "\
                 <div class='pd-2 pd-1-xsm'> \
                        "+admin_panel+" \
                     <div class='content-center header-3 t-bolder pdy-3 pdy-1-xsm'>"+jsonObject.title+"</div>\
-                    <div id='document-sheet' class=''>"+jsonObject.content+"</div>\
+                    <div id='document-sheet' class=''>"+compiled+"</div>\
                 </div> \
                 ";
               

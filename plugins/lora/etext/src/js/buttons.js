@@ -97,8 +97,9 @@ class editorButtons
         button.on("click", () => {
             
             this.focusOnEditor();
+            //this.openPopUpWindow(button, "href");   
             var linkElement = $('<a/>', {
-                'text': document.getSelection()
+                'text': document.getSelection(),
             }).addClass("t-italic t-basic t-underline").attr('href', document.getSelection()).attr('target', '_blank').prop('outerHTML');
 
             // TODO:
@@ -197,7 +198,7 @@ class editorButtons
         var button = $("div[id="+this.editor_id+"]  > div > div > div > div > button[id="+button_id+"]");
 
         button.on("click", () => {
-            //this.focusOnEditor();
+            this.focusOnEditor();
             //var img = "<img class='width-"+ $("#etext-image-data-scale").val() +"' src='" + $("#image-url-input").val() + "'>";
             var imageElement = $('<img>', {
                 'src': button.siblings("#image-url-input").val()
@@ -320,12 +321,15 @@ class editorButtons
         });
     }
 
-    buttonInsertRow(button_id) {
+    buttonInsertRow(button_id) 
+    {
         var button = $(`div[id=${this.editor_id}]  > div > div > div > div > button[id=${button_id}]`);
         button.on("click", () => {
             this.focusOnEditor();
             var rows = button.siblings("#etext-rows-input").val();
             var cols = button.siblings("#etext-cols-input").val();
+            var style = button.siblings("#etext-table-style").val();
+            var row_width = button.siblings("#etext-table-width").val();    // 50
 
             if(rows == "")
             {
@@ -339,7 +343,7 @@ class editorButtons
             var table = "";
             
             // Generate Rows
-            var new_row = $('<div/>').addClass("row cols-"+cols);
+            var new_row = $('<div/>').addClass("row cols-"+cols+" row-style-"+style+" width-"+row_width).attr("id", randomInt(1111,9999));
             //var new_col = $('<div/>').text("Vložte obsah").addClass("column-shrink pd-1 bd-dark bd-1");
 
             // Cols
@@ -347,12 +351,12 @@ class editorButtons
             {
                 if (i < 100) 
                 {
-                    new_row.append($('<div/>').text("Vložte obsah").addClass("column-shrink pd-1 bd-dark bd-1"));
+                    new_row.append($('<div/>').text("#").addClass("column-shrink"));
                 }
             }
 
             console.log(new_row);
-            table = new_row.prop("outerHTML");
+            table = "<br>"+new_row.prop("outerHTML")+"<br>";
 
     
             // Use execCommand to insert the generated HTML
@@ -363,42 +367,139 @@ class editorButtons
         });
     }
 
-    buttonChangeStyle(button_id)
-    {
-        var button = $("div[id="+this.editor_id+"]  > div > div > div > div > button[id="+button_id+"]");
+    buttonChangeStyle(button_id) {
+        var button = $(`div[id=${this.editor_id}] > div > div > div > div > button[id=${button_id}]`);
+    
         button.on("click", () => {
             this.focusOnEditor();
-            var editor_content = $(".e-editor[target=editor-"+this.editor_id+"]").html();
+    
+            var editor_content = $(`.e-editor[target=editor-${this.editor_id}]`);
             var select_element = button.siblings("#etext-styles-input");
-            var seletcted_option = select_element.val();
-
-            var split_value = seletcted_option.split(":");  //0 - block|span -> 1 - style
-            var etext_class = "etext-"+split_value[0]+"-style-"+split_value[1];
-
+            var selected_option = select_element.val();
+    
+            var split_value = selected_option.split(":");  // 0 - block|span -> 1 - style
+            var etext_class = `etext-${split_value[0]}-style-${split_value[1]}`;
+    
+            var selectedText = document.getSelection();
             var new_element;
-            if(split_value[0] === "block")
-            {
-                var new_element = $('<div/>', {
-                    'text': document.getSelection()
+            
+            if (split_value[0] === "block") {
+                if (split_value[1] === "code") {
+                    // Pokud je vybraný HTML obsah, zkopírujeme ho uvnitř bloku
+                    if (selectedText.rangeCount > 0) {
+                        var range = selectedText.getRangeAt(0);
+                        var clonedContent = range.cloneContents();
+                        new_element = $('<pre/>').addClass(etext_class);
+                        new_element.append(clonedContent);
+                        highlightCode(new_element);
+                    } else {
+                        new_element = $('<pre/>', {
+                            'html': selectedText.toString().replace(/\n/g, '<br>')
+                        }).addClass(etext_class);
+                        highlightCode(new_element);
+                    }
+                } else {
+                    // Pokud je vybraný HTML obsah, zkopírujeme ho uvnitř bloku
+                    if (selectedText.rangeCount > 0) {
+                        var range = selectedText.getRangeAt(0);
+                        var clonedContent = range.cloneContents();
+                        new_element = $('<div/>').addClass(etext_class);
+                        new_element.append(clonedContent);
+                    } else {
+                        new_element = $('<div/>', {
+                            'html': selectedText.toString().replace(/\n/g, '<br>')
+                        }).addClass(etext_class);
+                    }
+                }
+            } else if (split_value[0] === "span") {
+                // Pokud je vybraný HTML obsah, zkopírujeme ho uvnitř spanu
+                if (selectedText.rangeCount > 0) {
+                    var range = selectedText.getRangeAt(0);
+                    var clonedContent = range.cloneContents();
+                    new_element = $('<span/>').addClass(etext_class);
+                    new_element.append(clonedContent);
+                } else {
+                    new_element = $('<span/>', {
+                        'html': selectedText.toString().replace(/\n/g, '<br>')
+                    }).addClass(etext_class);
+                }
+            } else {
+                new_element = $('<span/>', {
+                    'text': selectedText
                 }).addClass(etext_class).prop('outerHTML');
+            }
+    
+            document.execCommand('insertHTML', false, "<br>"+new_element.prop('outerHTML')+"<br>");
+
+    
+            // this.focusOnEditor();  // Zda-li je tato řádka potřebná, záleží na celkovém chování aplikace
+        });
+    
+        function highlightCode(element) {
+            // Regulární výrazy pro zvýraznění syntaxe
+            var keywordsRegex = /\b(var|function|if|else|for|while|return|const|let)\b/g;
+            //var commentsRegex = /\/\/(.*)|\/\*([\s\S]*?)\*\//g;
+            var commentsRegex = /\/\*[\s\S]*?\*\/|\/\/.*/g;
+            var functionsRegex = /\bfunction\b\s+([A-Za-z_][A-Za-z0-9_]*)/g;
+            var classesRegex = /\bclass\b\s+([A-Za-z_][A-Za-z0-9_]*)/g;
+            var selectorsRegex = /[#.][A-Za-z_][A-Za-z0-9_\-]*/g;
+            var stringRegex = /"([^"\\]*(\\.[^"\\]*)*)"|'([^'\\]*(\\.[^'\\]*)*)'/g; // Zvýraznění řetězců
+            var numberRegex = /\b(\d+\.\d+|\d+)\b/g; // Zvýraznění čísel
+            
+            // Nahradit klíčová slova začínající a končící <span> tagy pro zvýraznění
+            element.html(function (index, oldHtml) {
+                // Klíčová slova
+                oldHtml = oldHtml.replace(keywordsRegex, '<span class="t-info">$&</span>');
+                // Komentáře
+                //oldHtml = oldHtml.replace(commentsRegex, '<span class="t-success">$&</span>');
+                // Funkce
+                oldHtml = oldHtml.replace(functionsRegex, '<span class="t-basic">$&</span>');
+                // Třídy
+                oldHtml = oldHtml.replace(classesRegex, '<span class="t-yellow">$&</span>');
+                // Selektory
+                oldHtml = oldHtml.replace(selectorsRegex, '<span class="t-red">$&</span>');
+
+                return oldHtml;
+            });
+        }
+    }
+
+    buttonInsertIcon(button_id)
+    {
+        var button = $(`div[id=${this.editor_id}] > div > div > div > div > button[id=${button_id}]`);
+    
+        button.on("click", () => {
+            this.focusOnEditor();
+
+            var icon_input = button.siblings("#etext-icon-input").val();
+            
+            var new_element = $('<i/>', {
+            }).addClass(icon_input).prop('outerHTML');
+
+            document.execCommand('insertHTML', false, "<span>"+new_element+"</span>");
+        });
+    }
+
+    /**    POPUP Buttons     */
+    popupHref(button_id)
+    {
+        $(button_id).on("click", () => {
+            this.focusOnEditor();
+            if(document.getSelection() !== undefined)
+            {
+                var linkElement = $('<a/>', {
+                    'text': document.getSelection(),
+                }).addClass("t-italic t-basic t-underline").attr('href', document.getSelection()).attr('target', '_blank').prop('outerHTML');
+
+                // TODO:
+                document.execCommand("insertHTML", false, linkElement);
             }
             else
             {
-                var new_element = $('<span/>', {
-                    'text': document.getSelection()
-                }).addClass(etext_class).prop('outerHTML');
+                alert("Nelze");
+                return 0;
             }
-
-            document.execCommand('insertHTML', false, new_element);
-
-            //Generate new LINE
-            var editor_content = $(".e-editor[target=editor-"+this.editor_id+"]").html();
-            $(".e-editor[target=editor-"+this.editor_id+"]").html(editor_content+ "<div><br></div>");
-
-            //this.focusOnEditor();
-            /*var color_hex = $("#dialog-text-bcolor-input").val(); //#bfbfbf
-            document.execCommand('backColor', false, color_hex);*/
-            
         });
+        
     }
 }

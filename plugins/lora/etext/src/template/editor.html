@@ -9,6 +9,11 @@
             <div class="dialog-header header-2 t-bolder pdy-2 content-center">{header}</div>
             <div class="dialog-body pd-2 display-flex column-justify-center"></div>
         </div>
+
+        <!-- ETEXT PopUp window hidden-->
+        <div id="popup-{uid}" class="display-0 bd-bottom-dark bgr-dark-2 bd-1 pd-1">
+            
+        </div>
         
         <!-- ETEXT Panel -->
         <div class="panel pd-1 bd-round-top-3" style="background: {editor_panel_background};">
@@ -29,8 +34,8 @@
                 <div class="display-{display_text_color} column-shrink pd-1">
                     <div class="bd-left-light bd-2 pdx-2">
                         <div class="subheader-3 t-light pdy-1"><i class="fa fa-palette"></i> Text</div>
-                        <input type="color" id="dialog-text-color-input" editor-target="editor-{uid}" class="width-64p bd-round-3 bd-dark-3 bd-5 pd-0 cursor-point">
-                        <button hidden type="button" id="dialog-text-color" editor-target="editor-{uid}" class=""><i class="fa fa-chevron-right"></i></button>
+                        <input type="color" id="dialog-text-color-input" editor-target="editor-{uid}" class="bd-round-3 bd-dark-3 bd-5 pd-0 cursor-point">
+                        <button type="button" id="dialog-text-color" editor-target="editor-{uid}" class="button button-dark-3 bd-dark-3 bd-2 bd-round-3"><i class="fa fa-chevron-right"></i></button>
                     </div>
                 </div>
 
@@ -38,8 +43,8 @@
                 <div class="display-{display_background_color} column-shrink pd-1">
                     <div class="bd-left-light bd-2 pdx-2">
                         <div class="subheader-3 t-light pdy-1"><i class="fa fa-fill-drip"></i> Pozadí</div>
-                        <input type="color" id="dialog-text-bcolor-input" editor-target="editor-{uid}" class="width-100 bd-round-3 bd-dark-3 bd-5 pd-0 cursor-point">
-                        <button hidden type="button" id="dialog-text-bcolor" editor-target="editor-{uid}" class=""><i class="fa fa-chevron-right"></i></button>
+                        <input type="color" id="dialog-text-bcolor-input" editor-target="editor-{uid}" class="bd-round-3 bd-dark-3 bd-5 pd-0 cursor-point">
+                        <button type="button" id="dialog-text-bcolor" editor-target="editor-{uid}" class="button button-dark-3 bd-dark-3 bd-2 bd-round-3"><i class="fa fa-chevron-right"></i></button>
                     </div>
                 </div>
 
@@ -62,7 +67,6 @@
                             <option value="size-30px">30px</option>
                         </optgroup>
                         <optgroup label="Nadpisy">
-                            <option value="header-1">Nadpis 1</option>
                             <option value="header-1">Nadpis 1</option>
                             <option value="header-2">Nadpis 2</option>
                             <option value="header-3">Nadpis 3</option>
@@ -114,11 +118,11 @@
                                 <option value="10">10%</option>
                                 <option value="15">15%</option>
                                 <option value="25">25%</option>
-                                <option value="50" selected>50%</option>
+                                <option value="50">50%</option>
                                 <option value="60">60%</option>
                                 <option value="75">75%</option>
                                 <option value="80">80%</option>
-                                <option value="100">100%</option>
+                                <option value="100" selected>100%</option>
                             </optgroup>
                         </select>
                         <button type="button" id="etext-insert-image" editor-target="editor-{uid}" class="button button-dark-3 bd-dark-3 bd-2 bd-round-3"><i class="fa fa-images"></i></button> 
@@ -145,14 +149,8 @@
                         <div class="subheader-3 t-light pdy-1"><i class="fa fa-border-all"></i> Tabulka</div>
                         <input type="number" id="etext-rows-input" class="width-72p bgr-dark-3" min="0" placeholder="Řádky">
                         <input type="number" id="etext-cols-input"class="width-72p bgr-dark-3" min="0" placeholder="Buňky">
-                        <select class="bd-none pd-1 pdx-4 bgr-dark-3">
-                            <optgroup label="Zarovnání">
-                                <option value="left">Vlevo</option>
-                                <option value="center">Uprostřed</option>
-                                <option value="right">Vpravo</option>
-                            </optgroup>
-                        </select>
-                        <select class="bd-none pd-1 pdx-4 bgr-dark-3">
+                        
+                        <select id="etext-table-width" class="bd-none pd-1 pdx-4 bgr-dark-3">
                             <optgroup label="Šířka">
                                 <option value="10">10%</option>
                                 <option value="20">20%</option>
@@ -165,6 +163,23 @@
                                 <option value="80">80%</option>
                                 <option value="90">90%</option>
                                 <option value="100" selected>100%</option>
+                            </optgroup>
+                        </select>
+                        <select id="etext-table-style" class="bd-none pd-1 pdx-4 bgr-dark-3">
+                            <optgroup label="Styl">
+                                <option class="bgr-default" value="default" selected>Výchozí</option>
+                                <option class="bgr-dark" value="dark">Tmavý</option>
+                                <option class="bgr-dark" value="dark row-filled">Tmavý-vyplněný</option>
+                                <option class="bgr-light" value="light">Světlý</option>
+                                <option class="bgr-light" value="light row-filled">Světlý-vyplněný</option>
+                                <option class="bgr-info" value="info">Světle modrý</option>
+                                <option class="bgr-info" value="info row-filled">Světle modrý-vyplněný</option>
+                                <option class="bgr-success" value="success">Světle Zelený</option>
+                                <option class="bgr-success" value="success row-filled">Světle Zelený-vyplněný</option>
+                                <option class="bgr-warning" value="warning">Oranžový</option>
+                                <option class="bgr-warning" value="warning row-filled">Oranžový-vyplněný</option>
+                                <option class="bgr-error" value="error">Červený</option>
+                                <option class="bgr-error" value="error row-filled">Červený-vyplněný</option>
                             </optgroup>
                         </select>
                         <button title="Vložit tabulku (Pokud jsou hodnoty prázdné - rozměr: 2x2)" type="button" id="etext-insert-row" editor-target="editor-{uid}" class="button button-dark-3 bd-dark-3 bd-2 bd-round-3"><i class="fa fa-chevron-right"></i></button>
@@ -186,11 +201,20 @@
                         <button type="button" id="etext-change-style" editor-target="editor-{uid}" class="button button-dark-3 bd-dark-3 bd-2 bd-round-3"><i class="fas fa-chevron-right"></i></button>
                     </div>
                 </div>
+
+                <!-- FONT ICONS -->
+                <div class="display-{display_icons} column-shrink pd-1">
+                    <div class="bd-left-light bd-2 pdx-2">
+                        <div title="Lze použít pouze FREE ikony verze 5.15.4" class="subheader-3 t-light pdy-1 cursor-help"><i class="fa fa-icons"></i> Ikony</div>
+                        <input type="text" id="etext-icon-input" editor-target="editor-{uid}" class="bd-dark-3 bgr-dark-3 bd-5 pd-0" placeholder="fa fa-icon" value="fa fa-">
+                        <button type="button" id="etext-icon-button" editor-target="editor-{uid}" class="button button-dark-3 bd-dark-3 bd-2 bd-round-3"><i class="fa fa-chevron-right"></i></button>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- EXTEX editable content -->
-        <div id="editor-{field_name}" validation="required" class="e-editor pd-2 bgr-light height-{editor_height} v-resy overflow-auto" contenteditable="true" target="editor-{uid}">{content}</div>
+        <div id="editor-{field_name}" validation="required" class="e-editor pd-2 bgr-light height-{editor_height} v-resy overflow-auto" contenteditable="true" target="editor-{uid}" style="user-select: all;">{content}</div>
         <textarea type="text" id="{field_name}" class="display-{debug} editor-content width-100 height-128p" name="{field_name}" target="editor-{uid}">{blocked_content}</textarea>
         <!-- ETEXT Footer -->
         <div class="etext-footer pd-2">
@@ -203,6 +227,7 @@
                     </div>
 
                     <div class="column content-right">
+                        <i id="toggleEditorBgr" target="editor-{uid}" title="Aktuální počet napsaných znaků" class="fa fa-adjust mgx-2 cursor-point t-info"></i>
                         <i class="fa fa-pen mgx-2"></i><span title="Aktuální počet napsaných znaků" id="count-chars-editor" target="editor-{uid}" class="cursor-help">0</span>
                         <i class="fa fa-upload mgx-2"></i><span title="Aktuální počet znaků pro upload" id="count-chars" target="editor-{uid}" class="cursor-help">0</span>
                     </div>
@@ -218,6 +243,7 @@
 </div>
 
 <script>
+
     $("#etext-font-color-trigger[editor-target=editor-{uid}]").click(() => {
         $("#dialog-text-color-input[editor-target=editor-{uid}]").trigger("click");
 
@@ -238,6 +264,20 @@
             $("#etext-text-bcolor-presentation[editor-target=editor-{uid}]").css("color", color_hex);
         });
         
+    });
+
+    $("#toggleEditorBgr[target=editor-{uid}]").on("click", () => {
+        var editor_area = $("#editor-{field_name}[target=editor-{uid}]");
+
+        $("#toggleEditorBgr[target=editor-{uid}]").toggleClass("t-info","t-warning");
+        if(editor_area.hasClass("bgr-{editor_sec_color}"))
+        {
+            editor_area.removeClass("bgr-{editor_sec_color}").addClass("bgr-light");
+        }
+        else
+        {
+            editor_area.removeClass("bgr-light").addClass("bgr-{editor_sec_color}");
+        }
     });
 
     $(document).ready(() => {

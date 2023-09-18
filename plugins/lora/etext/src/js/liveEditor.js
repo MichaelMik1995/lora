@@ -56,6 +56,7 @@ class liveEditor extends editorButtons
         var option_display_alignment = "1";
         var option_display_table = "1";
         var option_display_style = "1";
+        var option_display_icons = "1";
 
         //Visual settings of the editor
         var option_additional_editor_classes = "";
@@ -65,6 +66,7 @@ class liveEditor extends editorButtons
         var option_editor_panel_background = "#212529";
         var option_editor_border_color = "#1f2f46";
         var option_editor_text_color = "grey";
+        var option_editor_sec_color = "dark-3";
 
         // If option not NULL
         if(options !== null)
@@ -128,6 +130,7 @@ class liveEditor extends editorButtons
                         option_display_alignment = "0";
                         option_display_table = "0";
                         option_display_style = "0";
+                        option_display_icons = "0";
 
                         console.log(value);
 
@@ -141,6 +144,7 @@ class liveEditor extends editorButtons
                         if(options_array.includes("alignment")){option_display_alignment = "1"}
                         if(options_array.includes("table")){option_display_table = "1"}
                         if(options_array.includes("style")){option_display_style = "1"}
+                        if(options_array.includes("icons")){option_display_icons = "1"}
                         else{}
                     break;
 
@@ -152,7 +156,7 @@ class liveEditor extends editorButtons
         var data = 
         {
             uid: uid,
-            content: this.convertBlocktoTags(content),
+            content: decodeURIComponent(escape(window.atob(content))),//this.convertBlocktoTags(content),
             blocked_content: content_to_block,
             send_button_text: "Odeslat",
             button_class: "button button-dark-3",
@@ -168,6 +172,7 @@ class liveEditor extends editorButtons
             display_alignment: option_display_alignment,
             display_table: option_display_table,
             display_style: option_display_style,
+            display_icons: option_display_icons,
             
 
             //Visual settings of the editor
@@ -178,6 +183,7 @@ class liveEditor extends editorButtons
             editor_panel_background: option_editor_panel_background,
             editor_border_color: option_editor_border_color,
             editor_text_color: option_editor_text_color,
+            editor_sec_color: option_editor_sec_color,
 
 
         };
@@ -206,6 +212,7 @@ class liveEditor extends editorButtons
             
             if (event.key === "Tab" && !event.shiftKey) {
                 event.preventDefault();
+
                 document.execCommand("indent", false, null);
                 this.countChars(event);
             }
@@ -252,14 +259,19 @@ class liveEditor extends editorButtons
 
         this.buttonInsertRow("etext-insert-row");
         this.buttonChangeStyle("etext-change-style");
+        this.buttonInsertIcon("etext-icon-button");
         
     }
 
     initDialogButton()
     {
-        
-        
+
     }
+
+    /*initPopUpButton()
+    {
+        this.popupHref("#etext-popup-href-button");
+    }*/
 
     buttonOpenDialog(button, template, header_text = "")
     {
@@ -267,7 +279,7 @@ class liveEditor extends editorButtons
             fetch('/plugins/lora/etext/src/template/dialog/'+template+'.html')
             .then(response => response.text()) // getting content from template
             .then(data => {
-                this.openDialog(data, header_text);
+                this.openDialog(button, data, header_text);
             })
             .catch(error => {
                 console.error('Error loading template:', error);
@@ -276,16 +288,42 @@ class liveEditor extends editorButtons
         
     }
 
-    openDialog(dialog_content, header_text = "")
+    openDialog(button, dialog_content, header_text = "")
     {
         //Compile content;
         var modified_content = replaceVariables(dialog_content, {header: header_text});
 
+
+        //get position of button:
+        var button_position_top = button.position().top;
+        console.log(button_position_top);
         $("#dialog-"+this.editor_id).show(200);
         $("#dialog-"+this.editor_id+">.dialog-header").html(header_text);
         $("#dialog-"+this.editor_id+">.dialog-body").html(modified_content);
 
         this.initDialogButton();
+    }
+
+    openPopUpWindow(button, popup_file)
+    {
+        button.click(() => {
+            fetch('/plugins/lora/etext/src/template/popup/'+popup_file+'.html')
+            .then(response => response.text()) // getting content from template
+            .then(data => 
+                {
+                    var modified_content = data;
+
+                    $("#popup-"+this.editor_id).show(200);
+                    $("#popup-"+this.editor_id).html(modified_content);
+
+                    //$("input[popup-event=focus]").focus();
+                    this.initPopUpButton();
+                    //create the popup window and set content
+            })
+            .catch(error => {
+                console.error('Error loading template:', error);
+            });
+        });
     }
 
     convertTagsToBlocks(input) 
@@ -330,17 +368,17 @@ class liveEditor extends editorButtons
     {
         if(is_string === false)
         {
-            var content = element.text();//atob(element.text());
+            var content = decodeURIComponent(escape(window.atob(element.text())));
             var pre_compile = this.convertTagsToBlocks(content);
             var new_content = this.convertBlocktoTags(pre_compile);
-            return element.html(new_content);
+            return element.html(content);
         }
         else
         {
-            var content = element;//atob(element);
+            var content = decodeURIComponent(escape(window.atob(element)));
             var pre_compile = this.convertTagsToBlocks(content);
             var new_content = this.convertBlocktoTags(pre_compile);
-            return new_content;
+            return content;
         }
         
     }
@@ -385,7 +423,7 @@ class liveEditor extends editorButtons
         var block_fieldContent = this.convertTagsToBlocks(editorContent);
 
         //console.log("SANITIZED: ", sanitizedContent);
-        var encode_text = block_fieldContent;//btoa(block_fieldContent);
+        var encode_text = btoa(unescape(encodeURIComponent(editorContent)));
         hiddenFieldContent.text(encode_text);
 
 

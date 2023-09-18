@@ -40,7 +40,7 @@
         
         <div class="form-line">
             <label for="content" class="form-label mgx-1">{{ lang("blog_content") }}</label><br>
-            {{ $form }}
+            <!-- {{ $form }} --> <div id="content" etext-event="load" etext-options="{'debug':'false'}">{{ $documentation["content"] }}</div>
         </div>
         
         <div class="form-line">

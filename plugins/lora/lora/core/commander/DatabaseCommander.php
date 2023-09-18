@@ -66,6 +66,7 @@ trait DatabaseCommander
 
                         if(in_array("--caller", $options))
                         {
+                            LoraUI::generateMigrationTable($argument, $page);
                             LoraDatabase::createCaller($argument, $page);
                         }
                     }

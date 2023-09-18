@@ -25,7 +25,7 @@ trait LoraDatabase
 
         if($database_caller->database_caller_active == true)
         {
-            LoraOutput::output("\n#### BEGIN MIGRATION CALLER process ... ####\n", "info");
+            LoraOutput::output("\n#### BEGIN Table CALLER process ... ####\n", "info");
             $database_tables = $database_caller->call();
             foreach($database_tables as $migrate_file)
             {
@@ -49,7 +49,7 @@ trait LoraDatabase
         }
         else
         {
-            LoraOutput::output("\n#### BEGIN MIGRATION process ... ####\n", "info");
+            LoraOutput::output("\n#### BEGIN Table creation process ... ####\n", "info");
             //open each file and implement as class
             foreach(glob("App/Database/Tables/*.php") as $migrate_file)
             {
@@ -86,7 +86,7 @@ trait LoraDatabase
             LoraOutput::output("\n\t#### END POST Migration process ####\n", "info");
         }
 
-        LoraOutput::output("\n#### END Migration process ####\n", "info");
+        LoraOutput::output("\n#### END Table creation process ####\n", "info");
     }
 
     public static function migrateOwnCaller(DatabaseFactory $factory, string $caller_name)
@@ -170,7 +170,7 @@ trait LoraDatabase
         }
         else
         {
-            LoraOutput::output("Migration caller $caller_name not exists!", "error");
+            LoraOutput::output("Table caller $caller_name not exists!", "error");
             LoraOutput::output(">> Send command for create new one: php lora migrate:create $caller_name [--data, --caller]", "info");
         }
     }
@@ -201,7 +201,7 @@ trait LoraDatabase
             $file = fopen($caller_file, "w");
             fwrite($file, $compiled_content);
             fclose($file);
-            LoraOutput::output("Migration caller $caller_name created!", "success");
+            LoraOutput::output("Table caller $caller_name created!", "success");
         }
         else
         {

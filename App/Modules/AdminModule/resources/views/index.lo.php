@@ -10,8 +10,8 @@
         </div>
     </div>
     
-    <div class="column display-flex column-justify-end ali-center">
-        <span class="t-bolder">@username</span><p class="mgx-1"></p><img class="height-40p bd-round-circle" src="{{ asset('img/avatar/32/@useruid.png') }}" alt="admin-header-user-@useruid">
+    <div class="column-8 content-right">
+        <img class="height-40p bd-round-circle" src="{{ asset('img/avatar/32/@useruid.png') }}" alt="admin-header-user-@useruid"><span class="t-bolder">@username</span>
     </div>
 </div>
 
@@ -21,7 +21,7 @@
         @foreach $hrefs as $href @
             <div redirect="admin/app/{{ $href['href'] }}" class="row pd-2 cursor-point t-info-hover bd-left-dark-2 mgy-2 bd-left-info-hover anim-all-fast bgr-dark-2-hover">
                 <div class="column-2 column-10-xsm content-center-xsm"><i class="{{ $href['icon'] }}"></i></div>
-                <div class="column column-10-xsm display-0-xsm">{{ $href['name'] }}</div>
+                <div class="column-6 column-10-xsm display-0-xsm">{{ $href['name'] }}</div>
                 <div class="column-2 column-10-xsm content-right content-center-xsm"> 
                 @if $href['notification'] > 0 @
                     <sup class="t-info">{{ $href['notification'] }}</sup>
