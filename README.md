@@ -31,3 +31,6 @@ LORA prozatím **není** OPEN-SOURCE a není ve free verzi. Do Lory je ještě p
 
 <h3>TRELLO Roadmap Lora Framework</h3>
 <a href="https://trello.com/b/KyPUM9C4/lora-sandbox">https://trello.com/b/KyPUM9C4/lora-sandbox</a>
+
+<h3>Poznámka po čarou:</h3>
+Mějte prosím na paměti, že framework dělá jenom jediný člověk (Já :)) a to jako koníček, není to prozatím nic komerčního ani produkčního. Lora má usnadnit práci začínajícím projektářům, který nemají s velkými frameworky zkušenosti (opět jako já :)). Děkuji Vám za vyzkoušení a budu moc rád za případnou zpětnou vazbu zde: <a href="https://miroji.eu/portfolio/item/co-je-framework-lora" target="_blank">miroji.eu</a>
