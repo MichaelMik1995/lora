@@ -5,7 +5,6 @@ App/Modules/*
 !AdminModule/
 !AdmindevModule/
 !BlogModule/
-!DocumentationModule/
 !HomepageModule/
 !UserModule/
 
