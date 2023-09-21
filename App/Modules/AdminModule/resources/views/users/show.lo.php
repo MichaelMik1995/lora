@@ -72,7 +72,7 @@
         <div class="column-shrink">
             <div class="element-group element-group-medium">
                 <button redirect="admin/app/user-password-reset/{{ $user['uid'] }}" title="Zaslat žádost o nové heslo uživateli" class="button button-info" aria-label="Resetovat heslo"><i class="fa fa-key"></i> Žádost</button>
-                <button onClick="$('#user-password-form').slideToggle(200)" title="Resetovat heslo" aria-label="Resetovat heslo ihned" class="button button-bd-info"><i class="fa fa-pen"></i> Nastavit heslo</button>
+                <button onClick="$('#user-password-form').slideToggle(200)" title="Resetovat heslo ihned" aria-label="Resetovat heslo ihned" class="button button-bd-info"><i class="fa fa-pen"></i> Nastavit heslo</button>
             </div>
             <div>
                 <form method="post" action="/admin/app/user-password-force-reset">

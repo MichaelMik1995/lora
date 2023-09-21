@@ -108,7 +108,7 @@ class DocumentationController extends Controller
                 ->input("add-version", "maxchars128", "Nová verze")
                 ->input("category", "maxchars128", "Vybraná kategorie")
                 ->input("add-category", "maxchars128", "Kategorie")
-                ->input("content", "required,maxchars9999")->returnFields();
+                ->input("content", "required")->returnFields();
 
         $url = $string_utils->toSlug($post["title"]);
 
@@ -161,7 +161,7 @@ class DocumentationController extends Controller
                 ->input("category", "maxchars128", "Vybraná kategorie")
                 ->input("add-category", "maxchars128", "Kategorie")
                 ->input("url", "required,maxchars128,url", "URL")
-                ->input("content", "required,maxchars9999")->returnFields();
+                ->input("content", "required")->returnFields();
 
         try {
             $this->validate();

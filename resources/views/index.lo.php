@@ -51,12 +51,14 @@
         <script src="{{asset('js/jquery/jquery_3_7_0.js')}}"></script>
         <script src="{{asset('js/jquery/jquery-ui/jquery-ui.js')}}"></script>
 
+        @pluginload lora/etext @
+        
         @foreach glob("./public/js/lib/autoload/*.js") as $autoload_js @
         <script src="{{$autoload_js}}" type="text/javascript"></script>
         @endforeach
 
         @pluginload lora/easytext @ <!-- Load HTML for plugin in ./plugins/lora/easytext/html_loader/index.phtml -->
-        @pluginload lora/etext @
+        
         @pluginload lora/gengine @
 
         <!-- <script src="https://kit.fontawesome.com/0b54168b2a.js" crossorigin="anonymous"></script>-->

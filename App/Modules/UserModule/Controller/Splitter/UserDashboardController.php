@@ -63,7 +63,7 @@ class UserDashboardController extends UserController
      * Can use for viewing all tables (rows) in template
      * @return string
      */
-    public function dashboard(UserData $user, UserAnnouncement $announcement) 
+    public function dashboard(UserData $user, UserAnnouncement $announcement, Auth $auth) 
     {
         
         $last_annoucenment = $announcement->getLastAnnouncement();
@@ -71,7 +71,8 @@ class UserDashboardController extends UserController
         
         $this->data = [
             "announcement" => $last_annoucenment,
-            "newest_announcements" => $newest_announcements
+            "newest_announcements" => $newest_announcements,
+            "userdata" => $user->getUserData($auth->user_uid),
         ]; 
 
         return $this->view = $this->template_folder."index";

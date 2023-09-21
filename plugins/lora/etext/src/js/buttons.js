@@ -100,7 +100,7 @@ class editorButtons
             //this.openPopUpWindow(button, "href");   
             var linkElement = $('<a/>', {
                 'text': document.getSelection(),
-            }).addClass("t-italic t-basic t-underline").attr('href', document.getSelection()).attr('target', '_blank').prop('outerHTML');
+            }).addClass("etext-href").attr('href', document.getSelection()).attr('target', '_blank').prop('outerHTML');
 
             // TODO:
             document.execCommand("insertHTML", false, linkElement);
@@ -201,7 +201,9 @@ class editorButtons
             this.focusOnEditor();
             //var img = "<img class='width-"+ $("#etext-image-data-scale").val() +"' src='" + $("#image-url-input").val() + "'>";
             var imageElement = $('<img>', {
-                'src': button.siblings("#image-url-input").val()
+                'src': button.siblings("#image-url-input").val(),
+                'rel': 'easySlider',
+                'alt': 'etext-image-content-'+button.siblings("#image-url-input").val()
             }).addClass("width-"+button.siblings("#etext-image-data-scale").val()).prop('outerHTML');
             document.execCommand('insertHTML', false, imageElement);
             
@@ -437,14 +439,13 @@ class editorButtons
     
         function highlightCode(element) {
             // Regulární výrazy pro zvýraznění syntaxe
-            var keywordsRegex = /\b(var|function|if|else|for|while|return|const|let)\b/g;
-            //var commentsRegex = /\/\/(.*)|\/\*([\s\S]*?)\*\//g;
-            var commentsRegex = /\/\*[\s\S]*?\*\/|\/\/.*/g;
-            var functionsRegex = /\bfunction\b\s+([A-Za-z_][A-Za-z0-9_]*)/g;
-            var classesRegex = /\bclass\b\s+([A-Za-z_][A-Za-z0-9_]*)/g;
-            var selectorsRegex = /[#.][A-Za-z_][A-Za-z0-9_\-]*/g;
-            var stringRegex = /"([^"\\]*(\\.[^"\\]*)*)"|'([^'\\]*(\\.[^'\\]*)*)'/g; // Zvýraznění řetězců
-            var numberRegex = /\b(\d+\.\d+|\d+)\b/g; // Zvýraznění čísel
+            var keywordsRegex = /\b(var|function|if|else|for|while|return|const|let|php|lora|help|dbtable|dbtable:create|plugin:create)\b/g;    // index &K
+            var commentsRegex = /\/\*[\s\S]*?\*\/|\/\/.*/g;                         // index &c
+            var functionsRegex = /\bfunction\b\s+([A-Za-z_][A-Za-z0-9_]*)/g;        //index &F
+            var classesRegex = /\bclass\b\s+([A-Za-z_][A-Za-z0-9_]*)/g;             // index &C
+            var selectorsRegex = /[#.][A-Za-z_][A-Za-z0-9_\-]*/g;                   // index &s
+            var stringRegex = /"([^"\\]*(\\.[^"\\]*)*)"|'([^'\\]*(\\.[^'\\]*)*)'/g; // index &S
+            var numberRegex = /\b(\d+\.\d+|\d+)\b/g; // Zvýraznění čísel            // index &I
             
             // Nahradit klíčová slova začínající a končící <span> tagy pro zvýraznění
             element.html(function (index, oldHtml) {
@@ -472,11 +473,14 @@ class editorButtons
             this.focusOnEditor();
 
             var icon_input = button.siblings("#etext-icon-input").val();
-            
-            var new_element = $('<i/>', {
-            }).addClass(icon_input).prop('outerHTML');
 
-            document.execCommand('insertHTML', false, "<span>"+new_element+"</span>");
+            
+            var iconElement = $('<i/>', {
+                class: icon_input, // Třída ikony (např. "fas fa-star")
+              }).prop('outerHTML');
+              
+              
+              document.execCommand('insertHTML', false, iconElement);
         });
     }
 
@@ -489,7 +493,7 @@ class editorButtons
             {
                 var linkElement = $('<a/>', {
                     'text': document.getSelection(),
-                }).addClass("t-italic t-basic t-underline").attr('href', document.getSelection()).attr('target', '_blank').prop('outerHTML');
+                }).addClass("etext-href").attr('href', document.getSelection()).attr('target', '_blank').prop('outerHTML');
 
                 // TODO:
                 document.execCommand("insertHTML", false, linkElement);

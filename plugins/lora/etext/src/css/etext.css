@@ -7,3 +7,18 @@
     bottom: 0;
     background: rgba(0,0,0,0.9);
 }
+
+
+.etext-href
+{
+    font-style: italic underline;
+    background: none;
+    color: #2FAA2D;
+    text-decoration: underline;
+    transition: color .5s;
+}
+
+.etext-href:hover
+{
+    color: #6bace1;
+}

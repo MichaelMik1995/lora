@@ -1418,7 +1418,6 @@ column,
 .col-reverse,
 .row-right,
 .row-center {
-  display: flex;
   width: 100%;
   max-width: 100% !important;
   flex-grow: 1;

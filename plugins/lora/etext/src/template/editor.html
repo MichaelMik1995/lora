@@ -1,5 +1,5 @@
 <div id="{uid}" class="etext-editor bd-round-3 width-{editor_width} {editor_additional_classes}" 
-    style="background: {editor_background}; border: {editor_border_color}; color: {editor_text_color};">
+    style="border: {editor_border_color}; color: {editor_text_color};">
 
         <!-- ETEXT Dialog Hidden-->
         <div id="dialog-{uid}" class="etext-dialog display-0">
@@ -21,38 +21,38 @@
                 <!-- Block TEXT BASE -->
                 <div class="column-shrink pd-1">
                     <div class="bd-left-light bd-2 pdx-2">
-                        <div class="subheader-3 t-light pdy-1"><i class="fa fa-text"></i> Základní úprava</div>
-                        <button type="button" id="bold" editor-target="editor-{uid}" class="button button-dark-3 bd-dark-3 bd-2 bd-round-3"><i class="fa fa-bold"></i></button>
-                        <button type="button" id="italic" editor-target="editor-{uid}" copy-attr="bold:class" class="button button-dark-3 bd-dark-3 bd-2 bd-round-3"><i class="fa fa-italic"></i></button>
-                        <button type="button" id="strike" editor-target="editor-{uid}" class="button button-dark-3 bd-dark-3 bd-2 bd-round-3"><i class="fa fa-strikethrough"></i></button>
-                        <button type="button" id="underline" editor-target="editor-{uid}" class="button button-dark-3 bd-dark-3 bd-2 bd-round-3"><i class="fa fa-underline"></i></button>
-                        <button type="button" id="link" editor-target="editor-{uid}" class="button button-dark-3 bd-dark-3 bd-2 bd-round-3"><i class="fa fa-link"></i></button>
+                        <div class="subheader-3 pdy-1" style="color: {editor_text_color}"><i class="fa fa-text"></i> Základní úprava</div>
+                        <button type="button" id="bold" editor-target="editor-{uid}" class="button button-{editor_sec_color} bd-{editor_sec_color} bd-2 bd-round-3"><i class="fa fa-bold"></i></button>
+                        <button type="button" id="italic" editor-target="editor-{uid}" copy-attr="bold:class" class="button button-{editor_sec_color} bd-{editor_sec_color} bd-2 bd-round-3"><i class="fa fa-italic"></i></button>
+                        <button type="button" id="strike" editor-target="editor-{uid}" class="button button-{editor_sec_color} bd-{editor_sec_color} bd-2 bd-round-3"><i class="fa fa-strikethrough"></i></button>
+                        <button type="button" id="underline" editor-target="editor-{uid}" class="button button-{editor_sec_color} bd-{editor_sec_color} bd-2 bd-round-3"><i class="fa fa-underline"></i></button>
+                        <button type="button" id="link" editor-target="editor-{uid}" class="button button-{editor_sec_color} bd-{editor_sec_color} bd-2 bd-round-3"><i class="fa fa-link"></i></button>
                     </div>
                 </div>
 
                 <!-- Block TEXT COLOR -->
                 <div class="display-{display_text_color} column-shrink pd-1">
                     <div class="bd-left-light bd-2 pdx-2">
-                        <div class="subheader-3 t-light pdy-1"><i class="fa fa-palette"></i> Text</div>
-                        <input type="color" id="dialog-text-color-input" editor-target="editor-{uid}" class="bd-round-3 bd-dark-3 bd-5 pd-0 cursor-point">
-                        <button type="button" id="dialog-text-color" editor-target="editor-{uid}" class="button button-dark-3 bd-dark-3 bd-2 bd-round-3"><i class="fa fa-chevron-right"></i></button>
+                        <div class="subheader-3 t-light pdy-1" style="color: {editor_text_color}"><i class="fa fa-palette"></i> Text</div>
+                        <input type="color" id="dialog-text-color-input" editor-target="editor-{uid}" class="bd-round-3 bd-{editor_sec_color} bd-5 pd-0 cursor-point">
+                        <button type="button" id="dialog-text-color" editor-target="editor-{uid}" class="button button-{editor_sec_color} bd-{editor_sec_color} bd-2 bd-round-3"><i class="fa fa-chevron-right"></i></button>
                     </div>
                 </div>
 
                 <!-- Block BACKGROUND TEXT COLOR -->
                 <div class="display-{display_background_color} column-shrink pd-1">
                     <div class="bd-left-light bd-2 pdx-2">
-                        <div class="subheader-3 t-light pdy-1"><i class="fa fa-fill-drip"></i> Pozadí</div>
-                        <input type="color" id="dialog-text-bcolor-input" editor-target="editor-{uid}" class="bd-round-3 bd-dark-3 bd-5 pd-0 cursor-point">
-                        <button type="button" id="dialog-text-bcolor" editor-target="editor-{uid}" class="button button-dark-3 bd-dark-3 bd-2 bd-round-3"><i class="fa fa-chevron-right"></i></button>
+                        <div class="subheader-3 t-light pdy-1" style="color: {editor_text_color}"><i class="fa fa-fill-drip"></i> Pozadí</div>
+                        <input type="color" id="dialog-text-bcolor-input" editor-target="editor-{uid}" class="bd-round-3 bd-{editor_sec_color} bd-5 pd-0 cursor-point">
+                        <button type="button" id="dialog-text-bcolor" editor-target="editor-{uid}" class="button button-{editor_sec_color} bd-{editor_sec_color} bd-2 bd-round-3"><i class="fa fa-chevron-right"></i></button>
                     </div>
                 </div>
 
                 <!-- Block TEXT SIZES + HEADERS -->
                 <div class="display-{display_text_size} column-shrink pd-1">
                     <div class="bd-left-light bd-2 pdx-2">
-                        <div class="subheader-3 t-light pdy-1"><i class="fa fa-text-height"></i> Velikost textu</div>
-                        <select id="etext-resize-text-input" class="bd-none pd-1 pdx-4 bgr-dark-3">
+                        <div class="subheader-3 t-light pdy-1" style="color: {editor_text_color}"><i class="fa fa-text-height"></i> Velikost textu</div>
+                        <select id="etext-resize-text-input" class="bd-none pd-1 pdx-4 bgr-{editor_sec_color}">
                         <optgroup label="Velikosti">
                             <option value="size-10px">10px</option>
                             <option value="size-12px">12px</option>
@@ -75,15 +75,15 @@
                             <option value="header-6">Nadpis 6</option>
                         </optgroup>
                         </select>
-                        <button type="button" id="resize-text" editor-target="editor-{uid}" class="button button-dark-3 bd-dark-3 bd-2 bd-round-3"><i class="fa fa-chevron-right"></i></button>
+                        <button type="button" id="resize-text" editor-target="editor-{uid}" class="button button-{editor_sec_color} bd-{editor_sec_color} bd-2 bd-round-3"><i class="fa fa-chevron-right"></i></button>
                     </div>
                 </div>
 
                 <!-- Block LISTS -->
                 <div class="display-{display_list} column-shrink pd-1">
                     <div class="bd-left-light bd-2 pdx-2">
-                        <div class="subheader-3 t-light pdy-1"><i class="fa fa-list"></i> Odrážky</div>
-                        <select id="etext-list-selector" class="bd-none pd-1 pdx-4 bgr-dark-3 cursor-point">
+                        <div class="subheader-3 t-light pdy-1" style="color: {editor_text_color}"><i class="fa fa-list"></i> Odrážky</div>
+                        <select id="etext-list-selector" class="bd-none pd-1 pdx-4 bgr-{editor_sec_color} cursor-point">
                             <optgroup label="Odrážky">
                                 <option value="ul:circle">Kruh</option>
                                 <option value="ul:disc" selected>Disk</option>
@@ -104,16 +104,16 @@
 
                             </optgroup>
                         </select>
-                        <button type="button" id="etext-insert-list" editor-target="editor-{uid}" class="button button-dark-3 bd-dark-3 bd-2 bd-round-3"><i class="fa fa-chevron-right"></i></button>
+                        <button type="button" id="etext-insert-list" editor-target="editor-{uid}" class="button button-{editor_sec_color} bd-{editor_sec_color} bd-2 bd-round-3"><i class="fa fa-chevron-right"></i></button>
                     </div>
                 </div>
 
                 <!-- Block IMAGE -->
                 <div class="display-{display_image} column-shrink pd-1">
                     <div class="bd-left-light bd-2 pdx-2">
-                        <div class="subheader-3 t-light pdy-1"><i class="fa fa-image"></i> Obrázek</div>
-                        <input type="text" id="image-url-input" editor-target="editor-{uid}" class="bgr-dark-3 cursor-point" placeholder="URL Obrázku ..">
-                        <select id="etext-image-data-scale" class="bgr-dark-3 bd-none cursor-point pd-1">
+                        <div class="subheader-3 t-light pdy-1" style="color: {editor_text_color}"><i class="fa fa-image"></i> Obrázek</div>
+                        <input type="text" id="image-url-input" editor-target="editor-{uid}" class="bgr-{editor_sec_color} cursor-point" placeholder="URL Obrázku ..">
+                        <select id="etext-image-data-scale" class="bgr-{editor_sec_color} bd-none cursor-point pd-1">
                             <optgroup label="Šířka obrázku">
                                 <option value="10">10%</option>
                                 <option value="15">15%</option>
@@ -125,7 +125,7 @@
                                 <option value="100" selected>100%</option>
                             </optgroup>
                         </select>
-                        <button type="button" id="etext-insert-image" editor-target="editor-{uid}" class="button button-dark-3 bd-dark-3 bd-2 bd-round-3"><i class="fa fa-images"></i></button> 
+                        <button type="button" id="etext-insert-image" editor-target="editor-{uid}" class="button button-{editor_sec_color} bd-{editor_sec_color} bd-2 bd-round-3"><i class="fa fa-chevron-right"></i></button> 
                     </div>                   
                 </div>
 
@@ -134,23 +134,23 @@
                 <!-- Block ALIGNMENT -->
                 <div class="display-{display_alignment} column-shrink pd-1">
                     <div class="bd-left-light bd-2 pdx-2">
-                        <div class="subheader-3 t-light pdy-1"><i class="fa fa-align-center"></i> Zarovnání</div>
+                        <div class="subheader-3 t-light pdy-1" style="color: {editor_text_color}"><i class="fa fa-align-center"></i> Zarovnání</div>
 
-                        <button type="button" id="align-left" class="button button-dark-3 bd-2 bd-round-3"><i class="fa fa-align-left"></i></button>
-                        <button type="button" id="align-center" class="button button-dark-3 bd-2 bd-round-3"><i class="fa fa-align-center"></i></button>
-                        <button type="button" id="align-right" class="button button-dark-3 bd-2 bd-round-3"><i class="fa fa-align-right"></i></button>
-                        <button type="button" id="align-justify" class="button button-dark-3 bd-2 bd-round-3"><i class="fa fa-align-justify"></i></button>
+                        <button type="button" id="align-left" class="button button-{editor_sec_color} bd-2 bd-round-3"><i class="fa fa-align-left"></i></button>
+                        <button type="button" id="align-center" class="button button-{editor_sec_color} bd-2 bd-round-3"><i class="fa fa-align-center"></i></button>
+                        <button type="button" id="align-right" class="button button-{editor_sec_color} bd-2 bd-round-3"><i class="fa fa-align-right"></i></button>
+                        <button type="button" id="align-justify" class="button button-{editor_sec_color} bd-2 bd-round-3"><i class="fa fa-align-justify"></i></button>
                     </div>
                 </div>
 
                 <!-- Block ROWS + COLUMNS -->
                 <div class="display-{display_table} column-shrink pd-1">
                     <div class="bd-left-light bd-2 pdx-2">
-                        <div class="subheader-3 t-light pdy-1"><i class="fa fa-border-all"></i> Tabulka</div>
-                        <input type="number" id="etext-rows-input" class="width-72p bgr-dark-3" min="0" placeholder="Řádky">
-                        <input type="number" id="etext-cols-input"class="width-72p bgr-dark-3" min="0" placeholder="Buňky">
+                        <div class="subheader-3 t-light pdy-1" style="color: {editor_text_color}"><i class="fa fa-border-all"></i> Tabulka</div>
+                        <input type="number" id="etext-rows-input" class="width-72p bgr-{editor_sec_color}" min="0" placeholder="Řádky">
+                        <input type="number" id="etext-cols-input"class="width-72p bgr-{editor_sec_color}" min="0" placeholder="Buňky">
                         
-                        <select id="etext-table-width" class="bd-none pd-1 pdx-4 bgr-dark-3">
+                        <select id="etext-table-width" class="bd-none pd-1 pdx-4 bgr-{editor_sec_color}">
                             <optgroup label="Šířka">
                                 <option value="10">10%</option>
                                 <option value="20">20%</option>
@@ -165,7 +165,7 @@
                                 <option value="100" selected>100%</option>
                             </optgroup>
                         </select>
-                        <select id="etext-table-style" class="bd-none pd-1 pdx-4 bgr-dark-3">
+                        <select id="etext-table-style" class="bd-none pd-1 pdx-4 bgr-{editor_sec_color}">
                             <optgroup label="Styl">
                                 <option class="bgr-default" value="default" selected>Výchozí</option>
                                 <option class="bgr-dark" value="dark">Tmavý</option>
@@ -182,15 +182,15 @@
                                 <option class="bgr-error" value="error row-filled">Červený-vyplněný</option>
                             </optgroup>
                         </select>
-                        <button title="Vložit tabulku (Pokud jsou hodnoty prázdné - rozměr: 2x2)" type="button" id="etext-insert-row" editor-target="editor-{uid}" class="button button-dark-3 bd-dark-3 bd-2 bd-round-3"><i class="fa fa-chevron-right"></i></button>
+                        <button title="Vložit tabulku (Pokud jsou hodnoty prázdné - rozměr: 2x2)" type="button" id="etext-insert-row" editor-target="editor-{uid}" class="button button-{editor_sec_color} bd-{editor_sec_color} bd-2 bd-round-3"><i class="fa fa-chevron-right"></i></button>
                     </div>
                 </div>
 
                 <!-- Block BLOCK + SPANS STYLES -->
                 <div class="display-{display_style} column-shrink pd-1">
                     <div class="bd-left-light bd-2 pdx-2">
-                        <div class="subheader-3 t-light pdy-1"><i class="fa fa-border-style"></i> Styly</div>
-                        <select id="etext-styles-input" editor-target="editor-{uid}" class="bd-none pd-1 pdx-4 bgr-dark-3">
+                        <div class="subheader-3 t-light pdy-1" style="color: {editor_text_color}"><i class="fa fa-border-style"></i> Styly</div>
+                        <select id="etext-styles-input" editor-target="editor-{uid}" class="bd-none pd-1 pdx-4 bgr-{editor_sec_color}">
                         <optgroup id="etext-style-divs" editor-target="editor-{uid}" label="DIV">
                             <option value="block:default" selected>Výchozí</option>
                         </optgroup>
@@ -198,26 +198,25 @@
                             <option value="span:default">Výchozí</option>
                         </optgroup>
                         </select>
-                        <button type="button" id="etext-change-style" editor-target="editor-{uid}" class="button button-dark-3 bd-dark-3 bd-2 bd-round-3"><i class="fas fa-chevron-right"></i></button>
+                        <button type="button" id="etext-change-style" editor-target="editor-{uid}" class="button button-{editor_sec_color} bd-{editor_sec_color} bd-2 bd-round-3"><i class="fas fa-chevron-right"></i></button>
                     </div>
                 </div>
 
                 <!-- FONT ICONS -->
                 <div class="display-{display_icons} column-shrink pd-1">
                     <div class="bd-left-light bd-2 pdx-2">
-                        <div title="Lze použít pouze FREE ikony verze 5.15.4" class="subheader-3 t-light pdy-1 cursor-help"><i class="fa fa-icons"></i> Ikony</div>
-                        <input type="text" id="etext-icon-input" editor-target="editor-{uid}" class="bd-dark-3 bgr-dark-3 bd-5 pd-0" placeholder="fa fa-icon" value="fa fa-">
-                        <button type="button" id="etext-icon-button" editor-target="editor-{uid}" class="button button-dark-3 bd-dark-3 bd-2 bd-round-3"><i class="fa fa-chevron-right"></i></button>
+                        <div title="Lze použít pouze FREE ikony verze 5.15.4" class="subheader-3 t-light pdy-1 cursor-help" style="color: {editor_text_color}"><i class="fa fa-icons"></i> Ikony</div>
+                        <input type="text" id="etext-icon-input" editor-target="editor-{uid}" class="bd-{editor_sec_color} bgr-{editor_sec_color} bd-5 pd-0" placeholder="fa fa-icon" value="fa fa-">                        <button type="button" id="etext-icon-button" editor-target="editor-{uid}" class="button button-{editor_sec_color} bd-{editor_sec_color} bd-2 bd-round-3"><i class="fa fa-chevron-right"></i></button>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- EXTEX editable content -->
-        <div id="editor-{field_name}" validation="required" class="e-editor pd-2 bgr-light height-{editor_height} v-resy overflow-auto" contenteditable="true" target="editor-{uid}" style="user-select: all;">{content}</div>
+        <div id="editor-{field_name}" validation="required" class="e-editor pd-2 height-{editor_height} v-resy overflow-auto" contenteditable="true" target="editor-{uid}" style="background: {editor_content_background}; color: {editor_content_text}; border: 3px solid {editor_background}">{content}</div>
         <textarea type="text" id="{field_name}" class="display-{debug} editor-content width-100 height-128p" name="{field_name}" target="editor-{uid}">{blocked_content}</textarea>
         <!-- ETEXT Footer -->
-        <div class="etext-footer pd-2">
+        <div class="etext-footer pd-2" style="background: {editor_background};">
 
             <!-- Block COUNTER CHARS -->
             <div class="">
@@ -227,7 +226,7 @@
                     </div>
 
                     <div class="column content-right">
-                        <i id="toggleEditorBgr" target="editor-{uid}" title="Aktuální počet napsaných znaků" class="fa fa-adjust mgx-2 cursor-point t-info"></i>
+                        <!-- <i id="toggleEditorBgr" target="editor-{uid}" title="Aktuální počet napsaných znaků" class="fa fa-adjust mgx-2 cursor-point t-info"></i> -->
                         <i class="fa fa-pen mgx-2"></i><span title="Aktuální počet napsaných znaků" id="count-chars-editor" target="editor-{uid}" class="cursor-help">0</span>
                         <i class="fa fa-upload mgx-2"></i><span title="Aktuální počet znaků pro upload" id="count-chars" target="editor-{uid}" class="cursor-help">0</span>
                     </div>
@@ -266,7 +265,7 @@
         
     });
 
-    $("#toggleEditorBgr[target=editor-{uid}]").on("click", () => {
+    /*$("#toggleEditorBgr[target=editor-{uid}]").on("click", () => {
         var editor_area = $("#editor-{field_name}[target=editor-{uid}]");
 
         $("#toggleEditorBgr[target=editor-{uid}]").toggleClass("t-info","t-warning");
@@ -278,7 +277,7 @@
         {
             editor_area.removeClass("bgr-light").addClass("bgr-{editor_sec_color}");
         }
-    });
+    });*/
 
     $(document).ready(() => {
         $.ajax({

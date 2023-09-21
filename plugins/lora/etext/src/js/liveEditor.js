@@ -65,8 +65,10 @@ class liveEditor extends editorButtons
         var option_editor_background = "#212529";
         var option_editor_panel_background = "#212529";
         var option_editor_border_color = "#1f2f46";
-        var option_editor_text_color = "grey";
+        var option_editor_text_color = "#bfbfbf";
         var option_editor_sec_color = "dark-3";
+        var option_editor_content_background = "none";
+        var option_editor_content_text = "#bfbfbf";
 
         // If option not NULL
         if(options !== null)
@@ -121,6 +123,18 @@ class liveEditor extends editorButtons
                         option_additional_editor_classes = `${value}`;
                     break;
 
+                    case "editor-buttons":
+                        option_editor_sec_color = `${value}`;
+                    break;
+
+                    case "editor-content-background":
+                        option_editor_content_background = `${value}`;
+                    break;
+
+                    case "editor-content-text":
+                        option_editor_content_text = `${value}`;
+                    break;
+
                     case "button-groups":
                         option_display_text_color = "0";
                         option_display_background_color = "0";
@@ -159,7 +173,6 @@ class liveEditor extends editorButtons
             content: decodeURIComponent(escape(window.atob(content))),//this.convertBlocktoTags(content),
             blocked_content: content_to_block,
             send_button_text: "Odeslat",
-            button_class: "button button-dark-3",
             field_name: option_etext_name,
             debug: option_debug,
 
@@ -184,6 +197,8 @@ class liveEditor extends editorButtons
             editor_border_color: option_editor_border_color,
             editor_text_color: option_editor_text_color,
             editor_sec_color: option_editor_sec_color,
+            editor_content_background: option_editor_content_background,
+            editor_content_text: option_editor_content_text
 
 
         };

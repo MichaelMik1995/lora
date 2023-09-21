@@ -85,7 +85,6 @@
                             <i title="Uživatel je běžným členem" class="fa fa-unlock pd-1"></i>
                         @endif
                         <i redirect="admin/app/user-show/{{ $user['uid'] }}" class="fa fa-info-circle t-info-hover cursor-point bgr-dark-3-hover bd-round-3 pd-1"></i>     
-                        <i title="Log uživatele" aria-label="Log uživatele" redirect="admin/app/user-log/{{ $user['uid'] }}" class="fa fa-file t-info-hover cursor-point bgr-dark-3-hover bd-round-3 pd-1"></i>
                         
                     </div>
                     <div class="column content-right">
