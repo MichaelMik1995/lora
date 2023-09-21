@@ -31,7 +31,7 @@ temp/cache/*
 private/logs/users/*
 !do-not-erase
 
-public/img/avatar/*
+//public/img/avatar/*
 
 public/upload/images/*
 
