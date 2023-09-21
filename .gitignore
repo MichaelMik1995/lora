@@ -4,7 +4,6 @@ node_modules
 App/Modules/*
 !AdminModule/
 !AdmindevModule/
-!BlogModule/
 !HomepageModule/
 !UserModule/
 
@@ -31,7 +30,7 @@ temp/cache/*
 private/logs/users/*
 !do-not-erase
 
-//public/img/avatar/*
+public/img/avatar/*
 
 public/upload/images/*
 
