@@ -27,7 +27,7 @@ Součástí LORY jsou pluginy (**ve vývoji**) usnadňující tvorbu převážn�
 **EasyText** - Jednoduchý textový editor, ve kterém lze text editovat v blocích, tyto jsou podobné HTML tagům a jsou pro web validní.
 
 <h3>Dostupnost LORY</h3>
-LORA prozatím **není** OPEN-SOURCE a není ve free verzi. Do Lory je ještě potřeba dopsat dokumentaci a nápovědu.
+LORA prozatím **je** částečně dostupná jako OPEN-SOURCE a je ve free verzi. Do Lory je ještě potřeba dopsat dokumentaci a nápovědu.
 
 <h3>TRELLO Roadmap Lora Framework</h3>
 <a href="https://trello.com/b/KyPUM9C4/lora-sandbox">https://trello.com/b/KyPUM9C4/lora-sandbox</a>
