@@ -1,0 +1,66 @@
+{
+    "Help":
+    {
+        "cmds": "help"
+    },
+
+    "Database":
+    {
+        "cmds": "dbtable, dbtable:create, dbtable:write"
+    },
+
+    "Cache":
+    {
+        "cmds": "cache:clear"
+    },
+
+    "CLI":
+    {
+        "cmds": ""
+    },
+
+    "Compile":
+    {
+        "cmds": ""
+    },
+
+    "Controller":
+    {
+        "cmds": "controller:create"
+    },
+
+    "GUI":
+    {
+        "cmds": ""
+    },
+
+    "Model":
+    {
+        "cmds": "model:create"
+    },
+
+    "Module":
+    {
+        "cmds": "module:create, module:update"
+    },
+
+    "Plugin":
+    {
+        "cmds": "plugin:create, plugin:list"
+    },
+
+    "Route":
+    {
+        "cmds": "route:list"
+    },
+
+    "Server":
+    {
+        "cmds": ""
+    },
+
+    "Utils":
+    {
+        "cmds": "util:create"
+    }
+}

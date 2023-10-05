@@ -896,10 +896,10 @@ function cookieBar()
                 "<div class='row'>"+
                     "<div class='column-5'>"+
                         "<div class='header-6 pdy-1 t-bolder'>"+
-                            "VĂˇĹľĂ­me si VaĹˇeho soukromĂ­ (liĹˇta ve vĂ˝voji)"+
+                            "Vážíme si Vašeho soukromĂí (lišta ve vývoji)"+
                         "</div>"+
                         "<div class=''>"+
-                            "PouĹľĂ­vĂˇme cookies, abychom VĂˇm umoĹľnili pohodlnĂ© prohlĂ­ĹľenĂ­ webu a dĂ­ky analĂ˝ze provozu webu neustĂˇle zlepĹˇovali jeho funkce, vĂ˝kon a pouĹľitelnost."+
+                            "Používáme cookies, abychom Vám umožnili pohodlně prohlĂ­ĹľenĂ­ webu a dĂ­ky analĂ˝ze provozu webu neustĂˇle zlepĹˇovali jeho funkce, vĂ˝kon a pouĹľitelnost."+
                             "<br><br>VĂ­ce informacĂ­ o registraci a sbÄ›ru dat <a class='a-link ws-href t-basic' href='/auth/rules' target='_blank'>zde</a>."+
                         "</div>"+
                     "</div>"+
@@ -1008,7 +1008,7 @@ class counter
 
             if(!($("#counter-error-text").length))
             {
-                $(error_element).html("<span id='counter-error-text' class='t-error'>Text nesmĂ­ pĹ™esĂˇhnout limit!</span>");
+                $(error_element).html("<span id='counter-error-text' class='t-error'>Text nesmí přesáhnout limit!</span>");
             }
         }
         else
@@ -1054,7 +1054,7 @@ class GUIDIALOG
     dialogConfirm(string, callback = null, variables = null)
     {
         var confirm_button_text = "OK";
-        var no_confirm_button_text = "ZavĹ™Ă­t";
+        var no_confirm_button_text = "Zavřít";
 
         if(variables !== null)
         {
@@ -1077,7 +1077,7 @@ class GUIDIALOG
         var dialog_content = "<div class='pdx-1 pdy-2 header-6'>"+string+"</div><button id='dialog_confirm_close' class='button button-warning mgx-1 bd-round-1'>"+no_confirm_button_text+"</button>"+
                         "<button type='submit' id='dialog_confirm_true' class='button button-basic bd-round-1'>"+confirm_button_text+"</button>";
 
-        this.generateDialog(dialog_content, "VyĹľĂˇdĂˇno potvrzenĂ­", variables, callback);
+        this.generateDialog(dialog_content, "Vyžádáno potvrzení", variables, callback);
 
         $("#dialog_confirm_close").click(function()
         {

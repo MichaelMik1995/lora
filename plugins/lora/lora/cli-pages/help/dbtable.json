@@ -1,6 +1,6 @@
 {
-    "title": "Migration help page",
-    "page": "migrate",
+    "title": "Database tables help page",
+    "page": "DBTable",
     "usage": "php lora dbtable(:action) (argument) (options)",
     "description": "Create database tables, test data and more",
 
@@ -12,12 +12,12 @@
             "option: --data": "Creates table structure and data filler for [table-name] stored in /App/Database/Tables/[Table_name]",
             "option: --onlydata": "Creates ONLY data filler for [table-name] stored in /App/Database/Tables/[Table_name]/Data",
             "option: --caller": "Creates table caller for [table-name] stored in /App/Database/Tables/[Table_name]",
-            "example": "\t php lora dbtable:create my-table --data \t php lora migrate:create auth --caller \n \t\t\t php lora migrate:create news_users --data folder=news"
+            "example": "\t php lora dbtable:create my-table --data \t php lora dbtable:create auth --caller \n \t\t\t php lora dbtable:create news_users --data folder=news"
         },
         "line2": {
             "cmd": "php lora dbtable:write (argument = --clear, {caller-name})",
-            "description": "Migrate defined tables (createOrUpdate)",
-            "argument: --clear": "If argument is --clear -> migrate with truncating tables first",
+            "description": "Creates defined tables (createOrUpdate)",
+            "argument: --clear": "If argument is --clear -> create with truncating tables first",
             "argument: {caller-name}": "Call own database caller {caller-name}"
         }
     }

@@ -53,7 +53,7 @@
     <row cols="3" cols-xsm="1" child-class="pd-2">
         <column>
             <!-- USER CARD -->
-            <div class="bgr-dark-2 pdy-2" style="box-shadow: 4px 4px 5px black;">
+            <div class="bgr-dark-2 pdy-2 shadow-black-small">
                 <div class="content-center">
                     <img src="{{ asset('img/avatar/128/@useruid.png') }}" class="bd-round-cirle">
                 </div>

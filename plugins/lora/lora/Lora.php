@@ -1,72 +1,70 @@
 <?php
+declare(strict_types=1);
+
 namespace Lora\Lora;
 
-use Lora\Lora\Core\Commander\CacheCommander;
-use Lora\Lora\Core\Commander\CLICommander;
-use Lora\Lora\Core\Commander\ModuleCommander;
-use Lora\Lora\Core\Commander\PluginCommander;
-use Lora\Lora\Core\loranCore;
-use Lora\Lora\Core\loranModule;
-use Lora\Lora\Core\Commander\DatabaseCommander;
 use Lora\Lora\Core\LoraOutput;
-use Lora\Lora\Core\Commander\HelpCommander;
-use Lora\Lora\Core\Commander\GUICommander;
-use Lora\Lora\Core\Commander\ModelCommander;
-use Lora\Lora\Core\Commander\RouteCommander;
-use Lora\Lora\Core\Commander\ServerCommander;
-use Lora\Lora\Core\Commander\UtilsCommander;
 
+/**
+ * MAIN CLI Class Lora for executing native commands
+ */
 class Lora
 {
-    use LoraOutput;
-    use DatabaseCommander;
-    use HelpCommander;
-    use GUICommander;
-    use CLICommander;
-    use CacheCommander;
-    use ModelCommander;
-    use RouteCommander;
-    use PluginCommander;
-    use ModuleCommander;
-    use UtilsCommander;
+    private string $json_cmds_register = __DIR__."/core/cmd_register.json";
 
-    public function __construct() 
-    {
-        //$this->loran_core = new loranCore();
-        //$this->loran_module = new loranModule();
-    }
+    public function __construct() {}
     
     public function prepareCommand(string $command_line)
     {
         $explode_command = explode(" ", $command_line);
-        $command = $explode_command[1];
+        $command = @$explode_command[1];
         $argument = @$explode_command[2];
 
         $options = array_splice($explode_command, 3);   
         
-        $this->switchCommander($command, $argument, $options);
-    }
-
-    public function SendCommand($command, $argument="", $option1, $option2 ): Void//$option1, $option2) //Deprecated
-    {       
-        
+        $this->callCommander($command, $argument, $options);
     }
 
     private function switchCommander(string|null $command, string|null $argument, array $options = [])
     {
+
         if($command != null)
         {
-            DatabaseCommander::SendCommand($command, $argument, $options);
-            HelpCommander::SendCommand($command, $argument, $options);
-            GUICommander::SendCommand($command, $argument, $options);
-            CLICommander::SendCommand($command, $argument, $options);
-            CacheCommander::SendCommand($command, $argument, $options);
-            ModelCommander::SendCommand($command, $argument, $options);
-            RouteCommander::SendCommand($command, $argument, $options);
-            ServerCommander::SendCommand($command, $argument, $options);
-            PluginCommander::SendCommand($command, $argument, $options);
-            ModuleCommander::SendCommand($command, $argument, $options);
-            UtilsCommander::SendCommand($command, $argument, $options);
+        }
+        else
+        {
+            LoraOutput::output('Usage: php lora [$command] [$argumemts = [] ]', "error");
+            LoraOutput::output('Usage: php lora [help, -h]', "warning");
+            exit();
+        }
+        
+    }
+
+    /**
+     * Calling commander via command
+     * 
+     * @param string $command
+     * @param string $argument
+     * @param array $options
+     */
+    private function callCommander(string $command, string $argumemt, array $options)
+    {
+        //echo "DEBUG: COMMAND: $command | ARG: $argumemt | OPTIONS: ".var_dump($options)."\n\n";
+        if($command != null)
+        {
+            $json_content = file_get_contents($this->json_cmds_register);
+            $commander_array = json_decode($json_content, flags:JSON_OBJECT_AS_ARRAY);
+
+            foreach($commander_array as $commander => $cmds)
+            {
+                $cmd = implode(",", str_replace(" ", "", $cmds));
+                if(str_contains($cmd, $command))
+                {
+                    //If command is in cmds for $commander -> call this commander for execute
+                    $static_class = "Lora\Lora\Core\Commander\\".$commander."Commander";
+                    $static_class::instance()->SendCommand($command, $argumemt, $options);
+                }
+            }
         }
         else
         {

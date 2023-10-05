@@ -6,6 +6,7 @@ use App\Modules\UserModule\Controller\Splitter\UserDashboardController;
 use App\Modules\UserModule\Controller\Splitter\UserGalleryController;
 use App\Modules\UserModule\Controller\Splitter\UserProfileController;
 use App\Modules\UserModule\Controller\Splitter\UserPasswordController;
+use App\Modules\UserModule\Controller\Splitter\UserSettingsController;
 
 
 //Core
@@ -90,6 +91,10 @@ class UserController extends Controller implements ModuleInterface
                 "change-password" => "changePassword",
             ];
 
+            $settings_pages = [
+                "settings" => "index",
+            ];
+
             $user_data = $this->container->get(UserData::class);
             $user_data->getUserData($this->container->get(Auth::class)->user_uid);
 
@@ -97,6 +102,7 @@ class UserController extends Controller implements ModuleInterface
             $this->splitter(UserGalleryController::class, $gallery_pages, "Galerie");
             $this->splitter(UserProfileController::class, $profile_pages, "Profil");
             $this->splitter(UserPasswordController::class, $password_pages, "Správa hesla");
+            $this->splitter(UserSettingsController::class, $settings_pages, "Nastavení");
             
             $this->data = [
                 "user" => $user_data,
