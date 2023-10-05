@@ -14,6 +14,12 @@ class Lora
 
     public function __construct() {}
     
+    /**
+     * Input Flow from Lora CLI
+     * 
+     * @param string $command_line      Imploded command line ARGV
+     * @return void
+     */
     public function prepareCommand(string $command_line)
     {
         $explode_command = explode(" ", $command_line);
@@ -22,30 +28,22 @@ class Lora
 
         $options = array_splice($explode_command, 3);   
         
-        $this->callCommander($command, $argument, $options);
-    }
-
-    private function switchCommander(string|null $command, string|null $argument, array $options = [])
-    {
-
-        if($command != null)
+        if(in_array("--debug", $options) || $argument == "--debug" || $command == "--debug")
         {
+           $this->callDebug($command, $argument, $options);
         }
         else
         {
-            LoraOutput::output('Usage: php lora [$command] [$argumemts = [] ]', "error");
-            LoraOutput::output('Usage: php lora [help, -h]', "warning");
-            exit();
+            $this->callCommander($command, $argument, $options);
         }
-        
     }
 
     /**
      * Calling commander via command
      * 
-     * @param string $command
-     * @param string $argument
-     * @param array $options
+     * @param string $command       Command ARGV[1];            example: dbtable:create
+     * @param string $argument      Argument ARGV[2];           example: my-table
+     * @param array $options        Options [ ARGV[3...] ];     example: --caller --data
      */
     private function callCommander(string $command, string $argumemt, array $options)
     {
@@ -73,7 +71,15 @@ class Lora
             LoraOutput::output('Usage: php lora [help, -h]', "warning");
             exit();
         }
-        
+    }
+
+    /**
+     * 
+     */
+    private function callDebug(string $command, string $argumemt, array $options)
+    {
+        $implode_options = implode(", ", $options);
+        LoraOutput::output("CMD DEBUG: COMMAND: $command | ARGument: $argumemt | OPTIONS: $implode_options");
     }
 }
 ?>
