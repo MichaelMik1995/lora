@@ -18,22 +18,17 @@
         },
         
         "line3": {
-            "cmd": "php lora splitter:create [Controller-name] [--module, --templates]",
-            "option --module": "Define module destination ex.: --module=Admin",
-            "option --templates": "Define templates folder ex.: --templates=security creates security folder in Module/resources/views/{}",
-            "example": "php lora splitter:create Security --module=Admin --template=security",
-            "description": "Creates new splitter AdminSecurityController for module Admin in /App/Modules/AdminModule/Splitter/AuthAdminController.php"
-        },
-        
-        "line4": {
-            "cmd": "php lora module:update [Module-name] [--addmodel, --crud]",
+            "cmd": "php lora module:update [Module-name] [--addmodel, --addsplitter, --crud]",
             "option --addmodel": "Adds new model to module",
-            "option --crud": "Creates new CRUD main model in module (must be with --addmodel option)",
-            "example": "php lora module:update Admin --addmodel=Security --crud",
-            "description": "Creates new model named AdminSecurity for module Admin in /App/Modules/AdminModule/Module/Authmanager.php"
+            "option --crud": "Adds new CRUD main model in module (must be with --addmodel option)",
+            "option --addsplitter": "Adds new Splitter to existing module (cannot use with --crud option)",
+            "example-addmodel": "php lora module:update Admin --addmodel=Security --crud",
+            "description-addmodel": "Creates new model named AdminSecurity for module Admin in /App/Modules/AdminModule/Module/Model/AdminSecurity.php",
+            "example-addsplitter": "php lora module:update Admin --addsplitter=Security",
+            "description-addsplitter": "Creates new Splitter named AdminSecurityController for module Admin in /App/Modules/AdminModule/Controller/Splitter/AdminSecurityController.php"
         },
 
-        "line5": {
+        "line4": {
             "cmd": "php lora module:delete [Module-name]",
             "example": "php lora module:delete Admin",
             "description": "Deletes module Admin"

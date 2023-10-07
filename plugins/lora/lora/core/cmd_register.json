@@ -41,7 +41,7 @@
 
     "Module":
     {
-        "cmds": "module:create, module:update"
+        "cmds": "module:create, module:update, module:delete, module:list"
     },
 
     "Plugin":

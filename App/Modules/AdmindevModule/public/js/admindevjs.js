@@ -16,7 +16,7 @@ $(document).ready(() => {
         }
     });
 
-    //Check if creates Migration data
+    //Check if creates Table data
     $('#check-database-data').click(() => {
         if($('#check-database-data').hasClass("button-info"))
         {

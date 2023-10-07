@@ -129,9 +129,9 @@ trait LoraUI
     
     /**
      * @var string $help_page
-     * @return void
+     * @return string
      */
-    public static function generateHelp(string $help_page)
+    public static function generateHelp(string $help_page): String
     {
         $load_json = file_get_contents(__DIR__."/../cli-pages/help/$help_page.json");
         $template = file_get_contents(__DIR__."/../templates/help.template");
@@ -142,25 +142,25 @@ trait LoraUI
         
         foreach($json_data["lines"] as $key => $value)
         {
-            $lines .= "\n\n-------------------";
+            $lines .= "\n\n----------------------------";
             foreach($value as $k => $v)
             {
                 
                 if($k == "cmd")
                 {
-                    $lines.="\nCOMMAND: {c:green}".$v."\t{c:none}";
+                    $lines.="\n{c:green}COMMAND: ".$v."\t{c:none}";
                 }
-                elseif($k == "example")
+                elseif(str_contains($k, "example"))
                 {
-                    $lines .= "\nEXAMPLE: ".$v."\t";
+                    $lines .= "\n".strtoupper($k).": {c:violet}".$v."\t{c:none}";
                 }
-                elseif($k == "description")
+                elseif(str_contains($k, "description"))
                 {
-                    $lines .= "\nDESCRIPTION: {c:blue}".$v."\t{c:none}";
+                    $lines .= "\n".strtoupper($k).": {c:blue}".$v."\t{c:none}";
                 }
                 else
                 {
-                    $lines .= "\n{c:yellow}".strtoupper($k).": ".$v."{c:none}\t";
+                    $lines .= "\n".strtoupper($k).": {c:yellow}".$v."{c:none}\t";
                 }
                 
             }
@@ -169,7 +169,6 @@ trait LoraUI
         }
         
         //Lines compile
-        
         $compiled_content = Templator::compile($template, [
             "{Page}" => ucfirst($help_page),
             "{title}" => $json_data["title"],
@@ -179,12 +178,12 @@ trait LoraUI
             "{usage}" => $json_data["usage"],
             "{c:green}" => "\e[1;32;40m",
             "{c:yellow}" => "\033[33m",
+            "{c:violet}" => "\033[95m",
             "{c:blue}" => "\033[34m",
             "{c:none}" => "\e[0m",
         ]);
         
-        
-        echo $compiled_content;
+        return $compiled_content;
     }
     
     /**
@@ -204,7 +203,7 @@ trait LoraUI
     }
     
     
-    public static function generateMigrationTable(string $table, string $folder = ""): Void
+    public static function generateDatabaseTable(string $table, string $folder = ""): Void
     {
         $table = str_replace(["-"," ",".",","], "_", $table);
         
@@ -217,7 +216,7 @@ trait LoraUI
             $data_dir = "App/Database/Tables/".ucfirst($table)."/Data";
             
 
-            //Create TableName/Table, Data in Migration directory -> if not exists!
+            //Create TableName/Table, Data in Table directory -> if not exists!
             if(!is_dir($database_dir))
             {
                 mkdir($database_dir);
@@ -246,16 +245,16 @@ trait LoraUI
             file_put_contents($create_file, $compile_code, LOCK_EX);
             fclose($new_file);
             
-            LoraOutput::output("Migration schema: CreateTable".ucfirst($table)." generated successfully!", "success");
+            LoraOutput::output("Table schema: CreateTable".ucfirst($table)." generated successfully!", "success");
         }
         else
         {
-            LoraOutput::output("Migration schema: CreateTable".ucfirst($table)." already exists! Skipping ...", "warning");
+            LoraOutput::output("Table schema: CreateTable".ucfirst($table)." already exists! Skipping ...", "warning");
         }
         
     }
     
-    public static function generateMigrationSeed(string $table, string $folder = "")
+    public static function generateDatabaseSeed(string $table, string $folder = "")
     {
         $table = str_replace(["-"," ",".",","], "_", $table);
         
@@ -280,11 +279,11 @@ trait LoraUI
             file_put_contents($create_file, $compile_code, LOCK_EX);
             fclose($new_file);
         
-            LoraOutput::output("Migration seed: CreateTable".ucfirst($table)."Seed generated successfully!", "success");
+            LoraOutput::output("Table seed: CreateTable".ucfirst($table)."Seed generated successfully!", "success");
         }
         else
         {
-            LoraOutput::output("Migration seed: CreateTable".ucfirst($table)."Seed already exists! Skipping ...", "warning");
+            LoraOutput::output("Table seed: CreateTable".ucfirst($table)."Seed already exists! Skipping ...", "warning");
         }
     }
     

@@ -45,7 +45,7 @@ class Lora
      * @param string $argument      Argument ARGV[2];           example: my-table
      * @param array $options        Options [ ARGV[3...] ];     example: --caller --data
      */
-    private function callCommander(string $command, string $argumemt, array $options)
+    private function callCommander(string|null $command, string|null $argumemt, array|null $options)
     {
         //echo "DEBUG: COMMAND: $command | ARG: $argumemt | OPTIONS: ".var_dump($options)."\n\n";
         if($command != null)
@@ -76,7 +76,7 @@ class Lora
     /**
      * 
      */
-    private function callDebug(string $command, string $argumemt, array $options)
+    private function callDebug(string|null $command, string|null $argumemt, array|null $options)
     {
         $implode_options = implode(", ", $options);
         LoraOutput::output("CMD DEBUG: COMMAND: $command | ARGument: $argumemt | OPTIONS: $implode_options");

@@ -4,7 +4,7 @@ use App\Database\DatabaseFactory;
 
 use App\Database\Tables\DatabaseCaller\DatabaseCaller;
 use App\Database\Seed\SeedCaller\SeedCaller;
-use App\Database\Tables\PostMigration\PostMigration;
+use App\Database\Tables\PostTable\PostTable;
 use Lora\Compiler\Templator;
 use Lora\Lora\Core\LoraOutput;
 /**
@@ -76,14 +76,14 @@ trait LoraDatabase
             }
         }
 
-        //POST MIGRATION
-        $post_database = new PostMigration();
+        //POST Table
+        $post_database = new PostTable();
         
         if($post_database->hidden == false)
         {
-            LoraOutput::output("\n\t#### BEGIN POST Migration process ####\n", "info");
+            LoraOutput::output("\n\t#### BEGIN POST Table process ####\n", "info");
             $post_database->call($factory);
-            LoraOutput::output("\n\t#### END POST Migration process ####\n", "info");
+            LoraOutput::output("\n\t#### END POST Table process ####\n", "info");
         }
 
         LoraOutput::output("\n#### END Table creation process ####\n", "info");

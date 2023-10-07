@@ -76,30 +76,30 @@ class DatabaseCommander implements InstanceInterface
 
                         if(in_array("--onlytable", $options))
                         {
-                            LoraUI::generateMigrationTable($argument, $page);
+                            LoraUI::generateDatabaseTable($argument, $page);
                         }
 
                         if(in_array("--data", $options))
                         {
-                            LoraUI::generateMigrationTable($argument, $page);
-                            LoraUI::generateMigrationSeed($argument, $page);
+                            LoraUI::generateDatabaseTable($argument, $page);
+                            LoraUI::generateDatabaseSeed($argument, $page);
                         }
 
                         if(in_array("--onlydata", $options))
                         {
-                            LoraUI::generateMigrationSeed($argument, $page);
+                            LoraUI::generateDatabaseSeed($argument, $page);
                         }
 
 
                         if(in_array("--caller", $options))
                         {
-                            LoraUI::generateMigrationTable($argument, $page);
+                            LoraUI::generateDatabaseTable($argument, $page);
                             LoraDatabase::createCaller($argument, $page);
                         }
                     }
                     else
                     {
-                        LoraUI::generateMigrationTable($argument);
+                        LoraUI::generateDatabaseTable($argument);
                     }
                     
                 }

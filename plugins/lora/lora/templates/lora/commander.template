@@ -12,12 +12,6 @@ class {Commander}Commander implements InstanceInterface
 
     private static $_instance;
     private static $_instance_id;
-    /*
-    public function __construct()
-    {
-        
-    }
-    */
 
     public static function instance()
     {
@@ -35,13 +29,16 @@ class {Commander}Commander implements InstanceInterface
         return self::$_instance_id;
     }
     
-    public static function SendCommand(string $command, string|null $argument = "", array $options = []): void
+    public function SendCommand(string $command, string|null $argument = "", array $options = []): void
     {
-        switch($command)
+        match($command)
         {
-            case "something":
-                
-                break;
+            "something" => $this->commandFuction()
         }
+    }
+
+    private function commandFuction()
+    {
+        
     }
 }

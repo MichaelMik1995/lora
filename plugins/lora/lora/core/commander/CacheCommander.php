@@ -35,20 +35,26 @@ class CacheCommander implements InstanceInterface
         return self::$_instance_id;
     }
     
-    public static function SendCommand(string $command, string|null $argument = "", array $options = []): void
+    public function SendCommand(string $command, string|null $argument = "", array $options = []): void
     {
-        switch($command)
+        match($command)
         {
-            case "cache:clear":
-                $i = 0;
-                foreach(glob("temp/cache/*") as $view_file)
-                {
-                    $i++;
-                    echo "$i ".$view_file." Deleted! \n";
-                    unlink($view_file); 
-                }
-                LoraOutput::output("\nAll view files in temp/cache deleted!", "success");
-                break;
+            "cache:clear" => $this->clearCache()
+        };
+    }
+
+    private function clearCache()
+    {
+        $i = 0;
+        foreach(glob("temp/cache/*.php") as $view_file)
+        {
+            if($view_file != "temp/cache/do-not-erase") //using IF -> Prevent from deleting BUG from GLOB function
+            {
+                $i++;
+                echo "$i ".$view_file." Deleted! \n";
+                unlink($view_file); 
+            } 
         }
+        LoraOutput::output("\nAll $i view files in temp/cache deleted!", "success");
     }
 }

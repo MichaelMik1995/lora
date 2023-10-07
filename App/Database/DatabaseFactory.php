@@ -309,7 +309,7 @@ class DatabaseFactory
         
 
 
-        $message = "Migration of table |".$this->table."| complete! (CreateOrUpdate) \n";
+        $message = "Table of table |".$this->table."| complete! (CreateOrUpdate) \n";
        
         //$this->table = "";
         $this->query = "";
