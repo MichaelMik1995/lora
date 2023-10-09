@@ -31,7 +31,7 @@ class AuthController extends Controller
      */
     public function login(Auth $auth, Redirect $redirect)
     {
-        if($auth->isLogged() == true)
+        if($auth->isLogged() === true)
         {
             $redirect->to("homepage");
         }

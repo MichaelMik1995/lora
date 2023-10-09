@@ -86,7 +86,7 @@ class AuthManager
         return true;
     }
 
-    public function login(string $name, string $password)
+    public function login(string $name, string $password, $autologin = false)
     {
         session_regenerate_id(true);
         $db_query = $this->database->selectRow($this->table, "(name=? OR email=?) AND email_verified_at!=?", [$name, $name, 0]);
@@ -98,44 +98,73 @@ class AuthManager
             $email = $db_query["email"];
             $email_verified = $db_query["email_verified_at"];
             $db_password = $db_query["password"];
-            
-            if(password_verify($password, $db_password))
-            {         
-                $_SESSION[$this->container->get(Auth::class)->session_instance]["user"] = $user_name;
-                $_SESSION[$this->container->get(Auth::class)->session_instance]["uid"] = $uid;
-                $_SESSION[$this->container->get(Auth::class)->session_instance]["user_email"] = $email;
-                $_SESSION[$this->container->get(Auth::class)->session_instance]["raw_id"] = $raw_id;
-                $_SESSION[$this->container->get(Auth::class)->session_instance]["status"] = 1;
-                $_SESSION[$this->container->get(Auth::class)->session_instance]["hashed_uid"] = $this->s_utils->generateHashFromString($uid, md5($uid.$uid), 26);
-                
-                $this->session->generateSID(1);
-                $this->session->generateSJID(1);
-                
-                $this->database->update($this->table, ["last_login"=>time(), "status"=>1], "uid=?", [$uid]);
-                if(isset($_COOKIE["cookies_accepted"]) && $_COOKIE["cookies_accepted"] == true)
-                {
-                    if(!isset($_COOKIE["session_key"]))
+
+
+                if((password_verify($password, $db_password) && $autologin == false) || $autologin == true)
+                {         
+                    
+                    $_SESSION[$this->container->get(Auth::class)->session_instance]["user"] = $user_name;
+                    $_SESSION[$this->container->get(Auth::class)->session_instance]["uid"] = $uid;
+                    $_SESSION[$this->container->get(Auth::class)->session_instance]["user_email"] = $email;
+                    $_SESSION[$this->container->get(Auth::class)->session_instance]["raw_id"] = $raw_id;
+                    $_SESSION[$this->container->get(Auth::class)->session_instance]["status"] = 1;
+                    $_SESSION[$this->container->get(Auth::class)->session_instance]["hashed_uid"] = $this->s_utils->generateHashFromString($uid, md5($uid.$uid), 26);
+                    
+                    $this->session->generateSID(1);
+                    $this->session->generateSJID(1);
+                    
+                    $this->database->update($this->table, ["last_login"=>time(), "status"=>1], "uid=?", [$uid]);
+                    if(isset($_COOKIE["cookies_accepted"]) && $_COOKIE["cookies_accepted"] == "true")
                     {
-                        //30 DAYS = 60*60*24*30 = 2592000
-                        $session_key = MD5(time().time()/2);
-                        setcookie("session_key", $session_key, time() + 3600*24*10, "/");
-                        echo "<script>localStorage.setItem('user_name','".$user_name."');</script>";
-                        $this->database->update($this->table, ["session_key"=>$session_key], "uid=?", [$uid]);
-                        //LOG event
-                        $this->logger->log("User ".$user_name." [uid].".$uid."[/uid]logged in with session key ".$session_key, log_file: "./private/logs/users/".$uid, can_create_new_log: true);
-                        //unset attempt test session
+                        if(!isset($_COOKIE["session_key"]))
+                        {
+                            //30 DAYS = 60*60*24*30 = 2592000
+                            $session_key = MD5(time().time()/2);
+                            setcookie("session_key", $session_key, time() + 3600*24*10, "/");
+                            echo "<script>localStorage.setItem('user_name','".$user_name."');</script>";
+                            $this->database->update($this->table, ["session_key"=>$session_key], "uid=?", [$uid]);
+                            //LOG event
+                            $this->logger->log("User ".$user_name." [uid].".$uid."[/uid]logged in with session key ".$session_key, log_file: "./private/logs/users/".$uid, can_create_new_log: true);
+                            //unset attempt test session
+                        }
                     }
+                    return true;
                 }
-                return true;
-            }
-            else
-            {
-                throw new LoraException("Zadané heslo není platné!");
-            }
+                else
+                {
+                    throw new LoraException("Zadané heslo není platné!");
+                }
         }
         else 
         {
             throw new LoraException("Tento uživatel zde není zaregistrován nebo nemá ověřený účet!");
+        }
+    }
+
+    /**
+     * If autologin successfull -> return true
+     */
+    public function autoLogin(Auth $auth)
+    {
+        //Check if cookie already exists
+        if(isset($_COOKIE["cookies_accepted"]) && $_COOKIE["cookies_accepted"] == "true" && isset($_COOKIE["session_key"]))
+        {
+            if($auth->isLogged() == false)
+            {
+                $user_by_session_key = $this->database->selectRow("users", "session_key=?", [$_COOKIE["session_key"]]);
+                if(!empty($user_by_session_key))
+                {
+                    return $this->login($user_by_session_key["name"], $user_by_session_key["password"], true);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
         }
     }
     

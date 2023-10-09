@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Core\Application;
 use App\Core\Lib\Utils\UrlUtils;
 use App\Exception\LoraException;
+use App\Middleware\LayerTwo\AuthenticationPolicy;
 use App\Middleware\Middleware;
 use App\Middleware\Auth;
 use App\Core\Application\Route;
@@ -14,7 +15,9 @@ use App\Core\Lib\Language;
 use App\Core\DI\DIContainer;
 
 use App\Core\Model;
+use App\Model\AuthManager;
 use App\Modules\AdminModule\Model\AdminScheduler;
+use App\Modules\AuthenticationModule\Controller\AuthenticationController;
 
 /**
  * Description of Application
@@ -46,14 +49,26 @@ class Application
 
         $_SESSION["session_storage_key"] = env("session_store_container",false);
 
+            //Try autologin user if cookie is set
+            $auth_manager = $this->container->get(AuthManager::class);
+            $autologin = $auth_manager->autoLogin($this->container->get(Auth::class));
+
+            if($autologin === true)
+            {
+                //echo "<script>window.location='/auth/login'</script>";
+                $this->container->get(Redirect::class)->refresh();
+                exit();
+            }
+        
         //If request is empty -> redirect to WEB_HOMEPAGE defined in config/web.ini
         if(empty($this->url_request["controller"]))
         {
-            
             $default_redirect = env("web_default_url", false);
             $this->container->get(Redirect::class)->to($default_redirect);
             exit();
         }
+
+
 
         //Get ONE WAY SEC request method and check Middleware, if FALSE -> exit application
         $this->layerOne();
@@ -85,6 +100,8 @@ class Application
 
         //Get SECOND SEC WAY MIDDLEWARE Valid request via Middleware Groups
         $this->layerTwo();
+
+        
 
         //If Middleware all sets -> execute request
         $this->execute_request();
@@ -207,7 +224,6 @@ class Application
         if(!empty($_POST))
         {
             $to_lower_case = $_POST["method"];
-
 
             if($this->register_url_request != $to_lower_case && $this->register_url_request != "mixed")
             {

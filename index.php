@@ -21,10 +21,12 @@ final class web
     
     public function init()
     {
+        ini_set("session.gc_maxlifetime", 21600); //6 hours
         session_start();
         
         ini_set('display_errors', 1);
         ini_set('display_startup_errors', 1); 
+        
         error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
         
         header("Content-Type: text/html; charset=utf-8");

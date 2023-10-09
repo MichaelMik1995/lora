@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Core\DI\DIContainer;
 use App\Controller\Controller;
 use App\Core\Lib\Utils\UrlUtils;
+use App\Model\AuthManager;
+use App\Core\Application\Redirect;
 
 /**
  * Description of IndexController
@@ -23,6 +25,7 @@ class IndexController extends Controller
     
     public function index()
     {
+ 
         //Test if module has config ini with key CSS:
         $url = UrlUtils::urlParse($_SERVER["REQUEST_URI"]);
         $parse_to_module = $url["controller"];

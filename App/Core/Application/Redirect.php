@@ -35,7 +35,15 @@ class Redirect
      */
     public function to(string $redirect_url = ""): Void
     {
+        header("HTTP/1.1 303 See Other");
         header("location: /".$redirect_url);
+        exit();
+    }
+
+    public function refresh(): void
+    {
+        header("HTTP/1.1 303 See Other");
+        header("refresh: 0");
         exit();
     }
 
