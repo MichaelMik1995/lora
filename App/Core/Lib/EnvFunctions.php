@@ -29,6 +29,18 @@ function route(string $route, array $data = [])
     echo "/route/".$route_replace."/".$encode_data;
 }
 
+/**
+ * Method similar to var_dump(), better formattings and reading
+ * @param mixed $input           Object to dump and format
+ * @return void                  echo()
+ */
+function var_dumper(mixed $input)
+{
+    echo "<pre>";
+    print_r($input);
+    echo "</pre>";
+}
+
 /*function drawpage(string $page)
 {
     return call_user_func_array('\App\Core\Pagembler\Assembler::preparePage', [$page]); 

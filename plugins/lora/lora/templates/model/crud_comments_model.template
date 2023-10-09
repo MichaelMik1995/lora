@@ -30,15 +30,13 @@ class {Model_name} extends Model
         $db_query = $this->database->tableAllData($order_by);
         if(!empty($db_query))
         {
-            $returnArray = [];
+            /* $returnArray = [];
             $i = 0;
             foreach($db_query as $row)
             {
                 $id = $i++;
                 $content = $row["content"];
-                
-                $db_query[$id]["_content"] = $this->easy_text->translateText($content);
-            }
+            }*/
             
             return $db_query;
         }

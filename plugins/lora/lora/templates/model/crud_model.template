@@ -29,20 +29,15 @@ class {Model_name} extends Model
         $db_query = $this->database->tableAllData($order_by);
         if(!empty($db_query))
         {
-            $return_array = [];
-            $i = 0;
             foreach($db_query as $row)
             {
                 $id = $i++;
-                
+                $url = $row["url"];
                 //Filter indexes from $row
-                $return_array[$id] = array_filter($row, "is_string", ARRAY_FILTER_USE_KEY);
-                
-                $content = $row["content"];
-                
-                $return_array[$id]["_content"] = $this->easy_text->translateText($content);
+                $return_array[$id] = $this->get($url);
             }
-            
+
+            array_filter($return_array, "is_string", ARRAY_FILTER_USE_KEY);
             return $return_array;
         }
         else
@@ -59,18 +54,19 @@ class {Model_name} extends Model
     public function get(): Array
     {
         $db_query = $this->database->tableRowByRoute();
+
+        /* Uncomment the following lines if you want to change $db_query structure
         if(!empty($db_query))
         {
             $content = $db_query["content"];
-            
-            $db_query["_content"] = $this->easy_text->translateText($content);
-            
+                        
             return $db_query;
         }
         else
         {
             return [];
         }
+        */
     }
     
     public function insert(array $insert_values)

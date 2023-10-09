@@ -36,15 +36,12 @@ class {Model_name} extends Model
             foreach($db_query as $row)
             {
                 $id = $i++;
+                $url = $row['url'];
+
+                $return_array[$id] = $this->get($url);
                 
-                //Filter indexes from $row
-                $return_array[$id] = array_filter($row, "is_string", ARRAY_FILTER_USE_KEY);
-                
-                //$content = $row["content"];
-                
-                //$return_array[$id]["_content"] = $this->easy_text->translateText($content);
             }
-            
+            array_filter($return_array, "is_string", ARRAY_FILTER_USE_KEY);
             return $return_array;
         }
         else
@@ -68,24 +65,23 @@ class {Model_name} extends Model
         
         if(!empty($db_query))
         {
+            $return_array = [];
             $i = 0;
+
             foreach($db_query as $row)
             {
                 $id = $i++;
-                $content = $row["content"];
-                $tags = $row["tags"];
-                
-                $db_query[$id]["_content"] = $this->easy_text->translateText($content);
-                $db_query[$id]["_tags"] = $this->container->get(ArrayUtils::class)::charStringToArray($tags);
+                $url = $row["url"];
+                $return_array[$id] = $this->get($url);
             }
-            
-            return $db_query;
+
+            array_filter($return_array, "is_string", ARRAY_FILTER_USE_KEY);
+            return $return_array;
         }
         else
         {
             return [];
         }
-
     }
     
     
@@ -98,11 +94,7 @@ class {Model_name} extends Model
     {
         $db_query = $this->database->tableRowByRoute();
         if(!empty($db_query))
-        {
-            $content = $db_query["content"];
-            
-            $db_query["_content"] = $this->easy_text->translateText($content);
-            
+        {         
             return $db_query;
         }
         else

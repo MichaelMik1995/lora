@@ -34,8 +34,15 @@ class VariableUtils
         return self::$_instance_id;
     }
    
-   public function extractor()
-   {
+    public function extractor()
+    {
        
-   }
+    }
+
+    public function varDumper(mixed $input)
+    {
+        echo "<pre>";
+        print_r($input);
+        echo "</pre>";
+    }
 }

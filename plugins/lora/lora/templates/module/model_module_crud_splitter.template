@@ -51,15 +51,12 @@ class {Model_name} extends {Module_name} implements ModelDBInterface
             foreach($db_query as $row)
             {
                 $id = $i++;
-                
-                //Filter indexes from $row
-                $return_array[$id] = array_filter($row, "is_string", ARRAY_FILTER_USE_KEY);
-                
-                $content = $row["content"];
-                
-                $return_array[$id]["_content"] = $this->easy_text->translateText($content);
+                $url = $row["url"];
+
+                $return_array[$id] = $this->get{Model_name}($url);
             }
-            
+
+            array_filter($return_array, "is_string", ARRAY_FILTER_USE_KEY);
             return $return_array;
         }
         else
@@ -83,15 +80,18 @@ class {Model_name} extends {Module_name} implements ModelDBInterface
         
         if(!empty($db_query))
         {
+            $return_array = [];
             $i = 0;
+
             foreach($db_query as $row)
             {
                 $id = $i++;
                 $url = $row['url'];
                 
-                $db_query[$id] = $this->get{Model_name}($url);
+                $return_array[$id] = $this->get{Model_name}($url);
             }
-            
+
+            array_filter($return_array, "is_string", ARRAY_FILTER_USE_KEY);
             return $db_query;
         }
         else
@@ -118,11 +118,7 @@ class {Model_name} extends {Module_name} implements ModelDBInterface
     {
         $db_query = $this->database->selectRow($this->model_table, "url=?", [$url]);
         if(!empty($db_query))
-        {
-            $content = $db_query["content"];
-            
-            $db_query["_content"] = $this->easy_text->translateText($content);
-            
+        {            
             return $db_query;
         }
         else
