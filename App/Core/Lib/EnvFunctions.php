@@ -1,6 +1,8 @@
 <?php 
 declare(strict_types=1);
 
+use App\Core\Lib\Utils\VariableUtils;
+
 function asset(string $path)
 {
     echo call_user_func_array('\App\Core\Lib\Asset::asset', [$path]);
@@ -29,16 +31,12 @@ function route(string $route, array $data = [])
     echo "/route/".$route_replace."/".$encode_data;
 }
 
-/**
- * Method similar to var_dump(), better formattings and reading
- * @param mixed $input           Object to dump and format
- * @return void                  echo()
- */
-function var_dumper(mixed $input)
+
+function var_dumper(mixed $input, string $dumpname="", bool $extended = true, int $width = 3)
 {
-    echo "<pre>";
-    print_r($input);
-    echo "</pre>";
+    $var_instance = VariableUtils::instance();
+
+    echo call_user_func_array([$var_instance, 'varDumper'], [$input, $dumpname, $extended, $width, 0]);
 }
 
 /*function drawpage(string $page)
