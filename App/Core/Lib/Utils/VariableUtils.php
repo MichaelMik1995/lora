@@ -74,7 +74,7 @@ class VariableUtils
 
         if (is_array($input)) //Is ARRAY
         {
-            echo "<div class='column-{$column}'>{$indent}(type: <span style='color: #FFCA23;'>array(".count($input).")</span>)</div>";
+            echo "<div class='column-10'>{$indent}<span style='color: #FF7300;'>Array[".count($input)."]</span></div>";
             foreach ($input as $key => $value) 
             {
                 echo "<br><div style='padding-top: 5px;' class='column-{$keys_width} pdx-{$mgx}'>{$indent}<span style='color: #A0B4FF;'>\"{$key}\"</span>:</div>"; //Key
@@ -82,7 +82,7 @@ class VariableUtils
             }
         } elseif (is_object($input)) 
         {
-            echo "<div class='column-{$column}'>(type: <span style='color: #00AAF5;'>object</span> of class: <span style='color: #00AAF5;'>" . get_class($input) . "</span>)</div>";
+            echo "<div class='column-10'>{$indent}<span style='color: #00AAF5;'>Object</span> of class: <span style='color: #00AAF5;'>" . get_class($input) . "</span></div>";
             
             foreach (get_object_vars($input) as $key => $value) {
                 echo "<div style='padding-top: 5px;' class='column-{$keys_width} pdx-{$mgx}'>{$indent}<span style='color: #A0B4FF;'>\"{$key}\"</span>:</div>";
