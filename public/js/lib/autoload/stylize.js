@@ -1165,7 +1165,7 @@ class GUIDIALOG
         //$("#dialog").fadeOut("slow", function() { $(this).remove()});
 
         //Defautl variables
-        var dialog_width = "width-30"; //in percent
+        var dialog_width = "width-30 width-40-lrg width-40-xlrg"; //in percent
         var theme = "dark";
 
         if(variables !== null)
@@ -1198,11 +1198,11 @@ class GUIDIALOG
 
         var dialog_classes = dialog_width+" stylize-dialog-panel width-100-xsm mgy-1 bd-round-3 background-"+theme+"-2 bd-2 bd-solid bd-"+theme+"-1";
         var dialog_element = "\
-            <div id='dialog' class='display-0 stylize-dialog-info pdy-10'>"+
-                "<div class='"+dialog_classes+"'>"+
+            <div id='dialog' class='display-0 stylize-dialog-info'>"+
+                "<div class='"+dialog_classes+"' style='margin: auto; margin-top: 10%;'>"+
                     "<div id='info_handler' class='row cursor-move pd-1 pdy-2 header-6 content-left t-bolder'>"+
                         "<div class='column-6'>"+dialog_header+"</div>"+
-                        "<div class='column content-right'><button id='dialog_close' class='button-small button-basic mgx-1 bd-round-1'><i class='fa fa-xmark'></i></button></div>"+
+                        "<div class='column-4 content-right'><button id='dialog_close' class='button-small button-basic mgx-1 bd-round-1'><i class='fa fa-xmark'></i></button></div>"+
                     "</div><hr>"+
                     "<div class='pdy-4 pdx-1 header-6 background-"+theme+"-3'>"+content+"</div>"+
                     "<div class='content-right content-center-sm pd-1 pdy-2'>"+
