@@ -222,20 +222,24 @@ class liveEditor extends editorButtons
         editableContent.addEventListener("paste", (event) => {
             this.handleKeyDown(event);
             this.countChars(event);
+            this.updateResult(uid);
           });
         editableContent.addEventListener("keydown", (event) => {
             
             if (event.key === "Tab" && !event.shiftKey) {
                 event.preventDefault();
 
-                document.execCommand("indent", false, null);
+                //document.execCommand("indent", false, null);
+                document.execCommand("insertHTML", false, "&emsp;");
                 this.countChars(event);
+                this.updateResult(uid);
             }
 
             if (event.key === "Tab" && event.shiftKey) {
                 event.preventDefault();
                 document.execCommand("outdent", false, null);
                 this.countChars(event);
+                this.updateResult(uid);
             }
         });
 

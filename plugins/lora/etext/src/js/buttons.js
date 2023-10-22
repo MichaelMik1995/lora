@@ -431,37 +431,84 @@ class editorButtons
                 }).addClass(etext_class).prop('outerHTML');
             }
     
-            document.execCommand('insertHTML', false, "<br>"+new_element.prop('outerHTML')+"<br>");
+            if(split_value[0] === "block")
+            {
+                document.execCommand('insertHTML', false, new_element.prop('outerHTML')+"<br>");
+            }
+            else
+            {
+                document.execCommand('insertHTML', false, new_element.prop('outerHTML'));
+            }
+            
 
     
             // this.focusOnEditor();  // Zda-li je tato řádka potřebná, záleží na celkovém chování aplikace
         });
     
         function highlightCode(element) {
-            // Regulární výrazy pro zvýraznění syntaxe
-            var keywordsRegex = /\b(var|function|if|else|for|while|return|const|let|php|lora|help|dbtable|dbtable:create|plugin:create)\b/g;    // index &K
-            var commentsRegex = /\/\*[\s\S]*?\*\/|\/\/.*/g;                         // index &c
-            var functionsRegex = /\bfunction\b\s+([A-Za-z_][A-Za-z0-9_]*)/g;        //index &F
-            var classesRegex = /\bclass\b\s+([A-Za-z_][A-Za-z0-9_]*)/g;             // index &C
-            var selectorsRegex = /[#.][A-Za-z_][A-Za-z0-9_\-]*/g;                   // index &s
-            var stringRegex = /"([^"\\]*(\\.[^"\\]*)*)"|'([^'\\]*(\\.[^'\\]*)*)'/g; // index &S
-            var numberRegex = /\b(\d+\.\d+|\d+)\b/g; // Zvýraznění čísel            // index &I
-            
-            // Nahradit klíčová slova začínající a končící <span> tagy pro zvýraznění
-            element.html(function (index, oldHtml) {
-                // Klíčová slova
-                oldHtml = oldHtml.replace(keywordsRegex, '<span class="t-info">$&</span>');
-                // Komentáře
-                //oldHtml = oldHtml.replace(commentsRegex, '<span class="t-success">$&</span>');
-                // Funkce
-                oldHtml = oldHtml.replace(functionsRegex, '<span class="t-basic">$&</span>');
-                // Třídy
-                oldHtml = oldHtml.replace(classesRegex, '<span class="t-yellow">$&</span>');
-                // Selektory
-                oldHtml = oldHtml.replace(selectorsRegex, '<span class="t-red">$&</span>');
 
-                return oldHtml;
+            
+            var functionRegex = /\b\w+\([^)]*\)/g;
+            
+            var regexList = [
+                {
+                    regex: /\b(var|if|else|for|while|foreach|event|return|const|as|let|this|php|lora|help|dbtable|dbtable:create|plugin:create)\b/g,
+                    cssClass: 'etext-keyword'
+                },
+                {
+                    regex: /\b(true|false)\b/g,
+                    cssClass: 'etext-boolean-keyword'
+                },
+                {
+                    regex: /(\$\w*)/g,
+                    cssClass: 'etext-variable-keyword'
+                },
+                {
+                    regex: /\/\*[\s\S]*?\*\/|\/\/.*/g,
+                    cssClass: 'etext-comment'
+                },
+                {
+                    regex: /\b(?<!\$)(string|bool|array|float|double|mixed|null)\b/g,
+                    cssClass: 'etext-data-types-keyword'
+                },
+                {
+                    regex: /\b(\d+\.\d+|\d+)\b/g,
+                    cssClass: 'etext-number-keyword'
+                },
+                {
+                    regex: /\b(@param|@return|@see)\b/g,
+                    cssClass: 'etext-codedoc-keyword'
+                },
+                {
+                    regex: /(\b(class|static|public|function|private|protected|default|export)(?!\=)\b)/g,
+                    cssClass: 'etext-object-keyword'
+                },
+                {
+                    regex: /\s(\{|\})/g,
+                    cssClass: 'etext-object-keyword'
+                },
+                {
+                    regex: /(\"\w+\")/g,
+                    cssClass: 'etext-string-keyword'
+                }
+
+            ];
+
+
+            var oldHtml = element.html(); // Získání původního obsahu elementu
+
+            regexList.forEach(function (item) {
+                oldHtml = oldHtml.replace(item.regex, '<span class="' + item.cssClass + '">$&</span>');
             });
+
+            oldHtml = oldHtml.replace(functionRegex, function(match) {
+                var functionName = match.match(/\b\w+\(/)[0];
+                var closingBracket = match.match(/\)$/)[0];
+                return '<span class="etext-function-keyword">' + functionName + '</span>' + match.substring(functionName.length, match.length - closingBracket.length) + '<span class="etext-function-keyword">' + closingBracket + '</span>';
+            });
+
+            element.html(oldHtml); 
+            
         }
     }
 

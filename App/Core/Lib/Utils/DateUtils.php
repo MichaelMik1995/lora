@@ -2,13 +2,14 @@
 declare(strict_types=1);
 
 namespace App\Core\Lib\Utils;
+use App\Core\Interface\InstanceInterface;
 
 /**
  * Description of DateUtils
  *
  * @author michaelmik
  */
-class DateUtils 
+class DateUtils implements InstanceInterface
 {
     private static $main_config;
     private static $date_config;
@@ -38,16 +39,16 @@ class DateUtils
     /**
      * Returns an instance id
      */
-    public static function getInstanceId(): Int
+    public function getInstanceId()
     {
         return self::$_instance_id;
     }
         
     /**
-     * 
-     * @return type
+     * Returns translated months to preferred language
+     * @return array
      */
-    public static function getMonths()
+    public function getMonths()
     {
         $translated = [
             "Jan" => self::$date_config["Jan"],
@@ -69,10 +70,10 @@ class DateUtils
     
     /**
      * 
-     * @param type $month
-     * @return type
+     * @param string $month
+     * @return string|null
      */
-    public function getMonth($month = "Jan")
+    public function getMonth($month = "Jan"): String|Null
     {
         return self::$date_config[$month];
     }
@@ -89,9 +90,9 @@ class DateUtils
     
     /**
      * 
-     * @return type
+     * @return array
      */
-    public function getDays()
+    public function getDays(): Array
     {
         $translated = [
             "Mon" => self::$date_config["Mon"],
@@ -108,10 +109,10 @@ class DateUtils
     
     /**
      * 
-     * @param type $day
-     * @return type
+     * @param string $day
+     * @return string|null
      */
-    public function getDay($day = "Mon")
+    public function getDay(string $day = "Mon"): String|Null
     {
         return self::$date_config[$day];
     }

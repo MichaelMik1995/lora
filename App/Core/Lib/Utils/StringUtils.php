@@ -65,10 +65,10 @@ class StringUtils
     
     /**
      * Returns hashed string with defined char size
-     * @param int $lenght <p>Output size of chars (default: 8)</p>
+     * @param int $length <p>Output size of chars (default: 8)</p>
      * @return string <p>Returns final hashed string</p>
      */
-    public function genarateHashedString(int $lenght = 8, bool $complex = false, string $salt = "")
+    public function genarateHashedString(int $length = 8, bool $complex = false, string $salt = "")
     {
         if($salt == "")
         {
@@ -79,7 +79,7 @@ class StringUtils
             $hash = md5(hash("SHA256", "MD5".time().$salt));
         }
        
-        $substring = substr($hash, 0, $lenght+$lenght);
+        $substring = substr($hash, 0, $length+$length);
         
         if($complex === false)
         {
@@ -91,7 +91,7 @@ class StringUtils
         }
         
         
-        return substr($_crypt, 0, $lenght);   
+        return substr($_crypt, 0, $length);   
     }
 
     /**
@@ -163,5 +163,63 @@ class StringUtils
         $ini += strlen($start);
         $len = strpos($string, $end, $ini) - $ini;
         return substr($string, $ini, $len);
+    }
+
+    
+    /**
+     * Replaces all replacements in string -> multireplacement technology
+     *
+     * @param string $content                               Content to replace
+     * @param array|null $replacements                      Array of replacements 
+     * @param string $replacement_start_pattern             Replacement pattern -> start (default: "{")
+     * @param string $replacement_end_pattern               Replacement pattern -> end (default: "}")
+     * @return string
+     */
+    public function contentReplacer(string $content, array $replacements = [], string $replacement_start_pattern = "{", string $replacement_end_pattern = "}")
+    {
+        if(!empty($replacements))
+        {
+            $array_code = [];
+            $array_vars = [];
+
+            foreach($replacements as $key => $value)
+            {
+                $array_code[] = $replacement_start_pattern.$key.$replacement_end_pattern;
+                $array_vars[] = $value;
+            }
+
+            return str_replace($array_code, $array_vars, $content);
+        }
+        else
+        {
+            return $content;
+        }
+    }
+
+     /**
+     * 
+     * @param string $content
+     * @param array $compile_text
+     * @return boolean|string
+     */
+    public function compile(string $content, array $compile_text = []): String
+    {
+        if(!empty($compile_text))
+        {
+            $array_code = [];
+            $array_vars = [];
+
+            foreach($compile_text as $key => $value)
+            {
+                $array_code[] = $key;
+                $array_vars[] = $value;
+            }
+
+            return str_replace($array_code, $array_vars, $content);
+        }
+        else
+        {
+            return $content;
+        }
     }
 }

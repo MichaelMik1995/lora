@@ -1,13 +1,11 @@
 <?php
+declare(strict_types=1);
 /**
  * @package miroka/lora
  */
 
 use App\Core\Application\Application;
 use App\Core\DI\DIContainer;
-use App\Core\DI\Container;
-use App\Core\Application\DotEnv;
-
 
 final class web
 {

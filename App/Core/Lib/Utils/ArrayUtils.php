@@ -30,30 +30,6 @@ class ArrayUtils
         return self::$_instance_id;
     }
 
-    public function setLowerCaseVars(&$global_var) 
-    {
-        foreach ($global_var as $key => &$value) 
-        {
-            if (!isset($global_var[strtolower($key)])) 
-            {
-                $global_var[strtolower($key)] = $value;
-            }
-        }
-        return $global_var;
-    }
-    
-
-    /**
-     * Summary of inArrayMultiple
-     * @param array $needles
-     * @param array $haystack
-     * @return bool
-     */
-    public static function inArrayMultiple(array $needles, array $haystack) 
-    {
-        return empty(array_diff($needles, $haystack));
-    }
-
 
     /**
      * Find a substring in single array (Ex.: needle = "--code=", array["--user", "--code=test"] => return string "--code=test", if multiple results -> returns array)

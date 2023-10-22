@@ -52,6 +52,9 @@ export default class EventController {
                 const animation = new Animation();
                 animation[handled_function](target_object, ...params);
             }
+
+            this._debug.log("[GE_Debug]: Mouse enter on: " + target_object + " with function: " + handled_function + " with params: " + params);
+
         });
     }
     MouseEnterEvent(object, handled_function, params) {

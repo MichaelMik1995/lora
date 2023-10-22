@@ -1,10 +1,5 @@
 {
     "blocks": [
-        "red",
-        "blue",
-        "orange",
-        "green",
-        "dotted",
         "tableblue",
         "tablepink",
         "designgreen",
@@ -23,13 +18,7 @@
     ],
 
     "spans": [
-        "red",
-        "blue",
-        "orange"
-    ],
-
-    "texts": [
-        "headertext1"
+        
     ]
 }
 
