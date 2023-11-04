@@ -1,0 +1,59 @@
+/* var|if|else|for|while|foreach|event|return|const|as|;|let|==|=>|<=|>|<|this|php|lora|help */
+.etext-keyword
+{
+    color: #f72e2e;
+    
+}
+
+/* Comment in code */
+.etext-comment
+{
+    color: #1f740a;
+}
+
+/* class|static|public|function|private|protected|default|export */
+.etext-object-keyword
+{
+    color: #f72e2e;
+    font-weight: bolder;
+}
+
+/* $variable1, $testvar $tst_var */
+.etext-variable-keyword
+{
+    color: #00A9F4;
+    font-style: italic;
+}
+
+/* myNewFunction() */
+.etext-function-keyword
+{
+    color: #32ac05;
+}
+
+/* string, bool, float, array */
+.etext-data-types-keyword
+{
+    color: #ec8282;
+}
+
+/* string in " " */
+.etext-string-keyword
+{
+    color: #F8C523;
+}
+
+.etext-number-keyword
+{
+    color: #1FE3AF;
+}
+
+.etext-codedoc-keyword
+{
+    font-style: italic;
+}
+
+.etext-boolean-keyword
+{
+    color: #d31ca5;
+}

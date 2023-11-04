@@ -193,7 +193,7 @@ class AuthManager
         return true;
     }
     
-    public function register(string $name, string $email, string $gender, string $password, string $password_verify, string|int $antispam)
+    public function register(string $name, string $email, string $gender, string $password, string $password_verify, string|int $antispam, string $real_name = "", string $surname = "")
     {
         //Form validated!
         
@@ -213,6 +213,8 @@ class AuthManager
             $db_insert = $this->database->insert($this->table, [
                 "uid" => $uid,
                 "name" => $name,
+                "real_name" => $real_name,
+                "surname" => $surname,
                 "email" => $email,
                 "email_verified_at" => "0",
                 "password" => $password_hash,

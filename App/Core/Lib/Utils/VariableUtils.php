@@ -62,7 +62,7 @@ class VariableUtils
 
         if($depth == 0)
         {
-            echo "<div class='row bd-dark'><div class='column-10 bgr-dark pd-1'>VAR_DUMPER({$dumpname}) Output: </div>";//echo "<pre class='pd-1'>";
+            echo "<div class='row bd-dark'><div class='column-10 bgr-dark pd-1'>VAR_DUMPER(<span class='t-info t-bold'>{$dumpname}</span>) Output: </div>";//echo "<pre class='pd-1'>";
             $column = "10 mgx-1";
         }
         else

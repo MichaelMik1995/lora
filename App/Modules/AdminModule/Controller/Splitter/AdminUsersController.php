@@ -84,7 +84,7 @@ class AdminUsersController extends AdminController
             ->returnFields();
         
         try {
-            $manager->register($post["user-name"], $post["user-email"], "man", $post["user-password"], $post["user-password"], DATE("Y")+1);
+            $manager->register($post["user-name"], $post["user-email"], "man", $post["user-password"], $post["user-password"], DATE("Y")+1, $post["user-real-name"], $post["user-surname"]);
             $exception->successMessage("User created successfully");
             $redirect->to("admin/app/users");
         } catch (LoraException $ex) {

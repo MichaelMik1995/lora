@@ -186,6 +186,20 @@ class Auth
             return "Unknown";
         }
     }
+
+    public function getAuthorFullName($uid = -1)
+    {
+        $db_query = $this->database->selectRow($this->user_table, "uid=?", [$uid]);
+        
+        if(!empty($db_query))
+        {
+            return $db_query["real_name"]." ".$db_query["surname"];
+        }
+        else
+        {
+            return "Unknown";
+        }
+    }
     
     
     /**

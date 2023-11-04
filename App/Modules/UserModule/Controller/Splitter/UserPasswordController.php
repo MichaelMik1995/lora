@@ -17,6 +17,7 @@ use App\Core\Lib\FormValidator;
 //Utils
 use App\Core\Lib\Utils\StringUtils;
 use Lora\Easytext\Easytext;
+use App\Model\AuthManager;
 
 
 use App\Modules\UserModule\Model\UserPassword;
@@ -57,20 +58,35 @@ class UserPasswordController extends UserController
         $this->module = "User";
     }
     
+    public function passwordDashboard()
+    {
+        return $this->view = $this->template_folder."index";
+    }
     
     /**
      * Can use for viewing all tables (rows) in template
-     * @return string
+     * @return void
      */
-    public function changePassword(UserPassword $password) 
+    public function changePassword(UserPassword $password, LoraException $lora_exception, Redirect $redirect, Auth $auth, AuthManager $auth_manager)
     {
-        /* $get_all = $model->getAll();
-        
-        $this->data = [
-            "all" => $get_all,
-        ]; */
+        $post = $this->input("current-password", "required,maxchars128", "Současné heslo")
+        ->input("new-password", "required,maxchars128", "Nové heslo")
+        ->input("again-password", "required,maxchars128", "Nové heslo znovu")
+        ->returnFields();
 
-        return $this->view = $this->template_folder."index";
+        try {
+            $this->validate();
+            $password->updateUserPassword($post, $auth->user_uid, $auth_manager);
+
+            $lora_exception->successMessage("Heslo bylo změněno! Nyní Vás odhlásíme");
+            $redirect->to("auth/logout");
+        }catch(LoraException $ex)
+        {
+            $lora_exception->errorMessage($ex->getMessage());
+            $redirect->previous();
+        }
+
+        
     }
 
     /**

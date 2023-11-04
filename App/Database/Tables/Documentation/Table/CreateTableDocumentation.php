@@ -30,6 +30,7 @@ class CreateTableDocumentation
         //insert your own columns
         $title = $factory->createTableColumn("title", "varchar", 128);
         $url = $factory->createTableColumn("url", "varchar", 128, special: "UNIQUE");
+        $author = $factory->createTableColumn("author", "int");
         $version = $factory->createTableColumn("version", "varchar", 65);
         $category = $factory->createTableColumn("category", "varchar", 128);
         $content = $factory->createTableColumn("content", "varchar", 9999);
@@ -45,6 +46,7 @@ class CreateTableDocumentation
             //Own columns
             $title,
             $url,
+            $author,
             $version,
             $category,
             $content,

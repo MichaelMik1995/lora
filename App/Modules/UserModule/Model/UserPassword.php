@@ -15,6 +15,8 @@ namespace App\Modules\UserModule\Model;
 */
 use App\Modules\UserModule\Model\User;
 use App\Core\Database\Database;
+use App\Model\AuthManager;
+use App\Exception\LoraException;
 
 //Interface
 use App\Core\Interface\ModelDBInterface;
@@ -35,121 +37,38 @@ class UserPassword extends User implements ModelDBInterface
         //$this->database->table = $this->model_table;      //Uncheck this, if table is different from controller name
     }
 
-    /**
-     * 
-     * @param string $order_by <p>Order tables in rows (ex.: id ASC)</p>
-     * @return object <p>Returns all rows from table {model_name}</p>
-     */
-    public function getAllUserPassword(string $order_by = "id ASC"): Array
+    
+    public function updateUserPassword(array $post, int $uid, AuthManager $auth_manager)
     {
-        $db_query = $this->database->select($this->model_table, "id!=? ORDER BY $order_by", [0]);
-        if(!empty($db_query))
+        //hash current password 
+        //$hashed_current = $auth_manager->password_hash($post["current_password"]);
+        //check, if current password is correct
+        $user_db = $this->database->selectRow("users", "uid=?", [$uid]);
+        //compare new password with again password
+        if(password_verify($post["current-password"], $user_db["password"]))
         {
-            $return_array = [];
-            $i = 0;
-            
-            foreach($db_query as $row)
+            if($post["new-password"] == $post["again-password"])
             {
-                $id = $i++;
-                
-                //Filter indexes from $row
-                $return_array[$id] = array_filter($row, "is_string", ARRAY_FILTER_USE_KEY);
-                
-                $content = $row["content"];
-                
-                $return_array[$id]["_content"] = $this->easy_text->translateText($content);
+                $hashed_new_password = $auth_manager->password_hash($post["new-password"]);
+                $db_query = $this->database->update("users", ["password" => $hashed_new_password], "uid=?", [$uid]);
+                return true;
             }
-            
-            return $return_array;
-        }
-        else
-        {
-            return [];
-        }
-    }
-
-    /**
-     * Returns rows computed by $limit_per_page variable
-     * 
-     * @param string $order_by <p>Order tables in rows (ex.: id ASC)</p>
-     * @return object <p>Returns all rows from table test</p>
-     */
-    public function getAllByPage(int|string $page = 1, int $limit_per_page = 25, string $order_by = "id ASC"): Array
-    {
-
-        $computed_limit = (($page - 1)*$limit_per_page. ", " .$limit_per_page);
-
-        $db_query = $this->database->tableAllData("id", $computed_limit);
-        
-        if(!empty($db_query))
-        {
-            foreach($db_query as $row)
+            else
             {
-                $id = $i++;
-                $content = $row["content"];
-                $tags = $row["tags"];
-                
-                $db_query[$id]["_content"] = $this->easy_text->translateText($content);
-                //$db_query[$id]["_tags"] = ArrayUtils::charStringToArray($tags);
+                throw new LoraException("Nové heslo musí být stejné jako ");
             }
-            
-            return $db_query;
         }
         else
         {
-            return [];
+            throw new LoraException("Aktuální heslo není správné!");
         }
+        //hash new password and update database table
 
-    }
 
-    public function getavaliablePages(int $limit_per_page = 25)
-    {
-        //Count CEIL of avaliable pages
-        $count_rows = $this->database->countRows($this->table, "id!=?", [0]);   //100
-        $avaliable_pages = ceil($count_rows / $limit_per_page); //100 / 20 = 5
-        return $avaliable_pages;
-    }
-    
-    /**
-     * 
-     * @return object <p>Returns one row from table depends on URL key</p>
-     * @see Database()->tableRowByRoute()
-     */
-    public function getUserPassword(string $url): Array
-    {
-        $db_query = $this->database->selectRow($this->model_table, "url=?", [$url]);
-        if(!empty($db_query))
-        {
-            $content = $db_query["content"];
-            
-            $db_query["_content"] = $this->easy_text->translateText($content);
-            
-            return $db_query;
-        }
-        else
-        {
-            return [];
-        }
-    }
-    
-    public function insertUserPassword(array $insert_values)
-    {
-        // Insert new row
-        return $this->database->insert($this->model_table, $insert_values);
-    }
-    
-    public function updateUserPassword(array $set, string $url)
-    {
         // update row
-        return $this->database->update($this->model_table, $set, "url=?", [$url]);
+        //return $this->database->update($this->model_table, $set, "url=?", [$url]);
     }
     
-    public function deleteUserPassword(string $url)
-    {
-        // delete row
-        return $this->database->delete($this->model_table, "url=?", [$url]);
-    }
-
     /** MAGICAL METHODS **/
     public function __set($name, $value) {
         $this->model_data[$name] = $value;

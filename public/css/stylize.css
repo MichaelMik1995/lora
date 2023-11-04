@@ -10694,11 +10694,11 @@ column-center, .column-center {
 .z-5 {
   z-index: 5; }
 
-.element-group {
-  margin-right: .5em;
-  display: inline-flex;
-  max-width: 100% !important; }
-
+/* .element-group {
+    margin-right: .5em;
+    display: flex;
+    max-width: 100% !important;
+}*/
 .element-group > * {
   flex: 0 0 auto;
   gap: 0;
@@ -10723,7 +10723,9 @@ column-center, .column-center {
   padding-top: .3em;
   padding-bottom: .3em;
   font-size: 1rem;
-  border-width: 2px; }
+  border-width: 2px;
+  margin-right: -2px;
+  margin-left: -2px; }
 
 @media screen and (min-width: 0px) and (max-width: 767px) {
   .element-group-medium-xsm > * {

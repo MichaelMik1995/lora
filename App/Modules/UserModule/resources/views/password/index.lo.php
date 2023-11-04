@@ -8,7 +8,7 @@
         <div class="bgr-dark-2 pd-2 shadow-black-small">
             <div class="header-5 content-center t-bolder pdy-2">Změnit si heslo</div>
             <div class="">
-                <form id="form-password-change" method="post" action="" class="">
+                <form id="form-password-change" method="post" action="user/app/change-password">
                     @csrfgen
                     @request(update)
 

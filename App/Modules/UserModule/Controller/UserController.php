@@ -88,6 +88,7 @@ class UserController extends Controller implements ModuleInterface
             ];
 
             $password_pages = [
+                "password-dashboard" => "passwordDashboard",
                 "change-password" => "changePassword",
             ];
 
