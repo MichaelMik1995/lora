@@ -4,11 +4,11 @@ if ( window.self !== window.top ) {
 
 /**
  * On required event redirects to setted page (ex.: "auth/login" -> redirects to http(s)://www.exampleweb.com/auth/login)
- * @param string url <p>Url to redirect</p>
+ * @param {String} url <p>Url to redirect</p>
+ * @param {Int} request <p>Put required request</p>
  * @returns bool true
  */
 function redirect(url, request = 0) {
-    console.log("RED: " + url);
     parse_url = url.replace(/\//g, "_");
     console.log("Redirecting... " + parse_url);
     document.location.href = url;

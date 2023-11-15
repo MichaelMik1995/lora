@@ -134,11 +134,11 @@ class Logger implements InstanceInterface
      */
     private function messageConstruct(string $message, string $message_type): String
     {
-        $date = time();
+        $date = DATE("d.m.Y H:i:s", time());
         $exception = strtoupper($message_type);
         
         //Construct sentence
-        $write_raw = "!?:$date!?:$exception!?:$message\n";
+        $write_raw = "[$date] - $exception - $message \n";
         
         return $write_raw;
     }

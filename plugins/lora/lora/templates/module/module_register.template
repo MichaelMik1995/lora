@@ -50,7 +50,7 @@ class {Name}Register
                 "access" => "any"
             ],
             [
-                "url" => $url_name."./create",
+                "url" => $url_name."/create",
                 "controller" => $class,
                 "template" => "create",
                 "route" => $route_name.".create@default",

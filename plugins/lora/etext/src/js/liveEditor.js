@@ -6,6 +6,11 @@ class liveEditor extends editorButtons
         this.editor_id;
     }
 
+    returnEditorId()
+    {
+        return this.editor_id;
+    }
+
     /**
      * Enter the creation process
      * 
@@ -25,7 +30,7 @@ class liveEditor extends editorButtons
         fetch('/plugins/lora/etext/src/template/editor.html')
         .then(response => response.text()) // getting content from template
         .then(data => {
-            return this.processTemplate(data, element_to_replace, content, options, callback);
+            this.processTemplate(data, element_to_replace, content, options, callback);
         })
         .catch(error => {
             console.error('Error loading template:', error);
@@ -166,7 +171,6 @@ class liveEditor extends editorButtons
             }
         }
 
-
         var data = 
         {
             uid: uid,
@@ -248,13 +252,13 @@ class liveEditor extends editorButtons
             callback();
         }
 
-        return this.editor_id;
+        return true;
         
     }
 
     returnGeneratedEditor(compiled_template, element_to_replace)
     {
-        return $(element_to_replace).html(compiled_template);
+        $(element_to_replace).html(compiled_template);
     }
 
     initButtons() {

@@ -64,7 +64,7 @@ class AdminController extends Controller implements ModuleInterface
     /**
      * 
      */
-    public function initialize(AdminHrefs $admin_hrefs, Auth $auth) 
+    public function initialize(AdminHrefs $admin_hrefs, Auth $auth, Redirect $redirect) 
     {
         if(isset($this->u["page"]))
         {
@@ -139,13 +139,18 @@ class AdminController extends Controller implements ModuleInterface
             $this->splitter(AdminSchedulerController::class, $scheduler_pages, "Plánovač");
             $this->splitter(AdminBanController::class, $banned_pages, "Ban blacklist");
             $this->splitter(AdminAnnouncementsController::class, $announcements_pages, "Announcements");
+        
+            $admin_hrefs_data = $admin_hrefs->getHrefs();
+            $this->data = [
+                "hrefs" => $admin_hrefs_data,
+            ];
+        }
+        else
+        {
+            $redirect->to("admin/app/dashboard");
         }
 
-
-        $admin_hrefs_data = $admin_hrefs->getHrefs();
-        $this->data = [
-            "hrefs" => $admin_hrefs_data,
-        ];
+        
     }
 }
 

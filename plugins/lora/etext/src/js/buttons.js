@@ -204,7 +204,7 @@ class editorButtons
                 'src': button.siblings("#image-url-input").val(),
                 'rel': 'easySlider',
                 'alt': 'etext-image-content-'+button.siblings("#image-url-input").val()
-            }).addClass("width-"+button.siblings("#etext-image-data-scale").val()).prop('outerHTML');
+            }).addClass("etext-editor-image width-"+button.siblings("#etext-image-data-scale").val()).prop('outerHTML');
             document.execCommand('insertHTML', false, imageElement);
             
             $("#dialog-"+this.editor_id).hide();

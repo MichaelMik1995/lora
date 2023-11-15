@@ -10,7 +10,9 @@
  * @class PluginEText
  */
 class PluginEText {
-    constructor() {
+
+    constructor() 
+    {
         // General configuration
         const PLUGIN_VERSION = 1.0;
 
@@ -39,7 +41,13 @@ class PluginEText {
 
         // Instantiate live editor and construct the editor
         var LiveEditor = new liveEditor();
-        return LiveEditor.constructEditor(element_to_replace, element_to_replace.html(), options, callback);
+    
+        LiveEditor.constructEditor(element_to_replace, element_to_replace.html(), options, callback);
+
+        console.log(LiveEditor.returnEditorId());
+        var inEditor = new EtextInEditor(LiveEditor.editor_id);
+        inEditor.UIElements();
+        return true;
     }
 
     /**
