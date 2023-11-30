@@ -100,6 +100,11 @@ function icon(string $icon_name, $color="dark", string|int $icon_width = "32")
     echo "<img src=\"public/img/icon/base/$color/$icon_name.svg\" alt=\"$icon_name\" width=\"$icon_width\">";
 }
 
+function image(string $path, string $module)
+{
+    echo call_user_func_array('\App\Core\Lib\Asset::image', [$path, $module]);
+}
+
 /**
  * @param string|int $author_id
  * @param bool $echo

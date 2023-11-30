@@ -1,0 +1,19 @@
+{
+    "button": [
+        {"label": "Otevřít odkaz v novém panelu", "action": "functionOpenHref"},
+        {"label": "Odkaz 2", "action": "functionAlertMessage"},
+        {"label": "Odkaz 3", "action": "functionCustomAction"}
+    ],
+    "div": [
+        {"label": "Zkopírovat", "action": "functionOpenHref"},
+        {"label": "Vložit", "action": "functionAlertMessage"}
+    ],
+    "img": [
+        {"label": "Podrobnosti", "action": "functionOpenHref"}
+    ],
+    "_default": [
+        {"label": "Kopírovat", "action": "copyContent"},
+        {"label": "Default Action 2", "action": "functionAlertMessage"},
+        {"label": "Default Action 3", "action": "functionCustomAction"}
+    ]
+}
