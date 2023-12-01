@@ -96,7 +96,7 @@
                     <!-- Brand | TEMPLATE -> first column -->
                     <div id="layout-first-column" class="column-7 column-4-xsm">
                         <img src="{{asset('img/logo/main_logo.jpeg')}}" class="height-40p" alt="main lora logo">
-                        <span redirect="/" class="t-warning header-3 header-4-xsm cursor-point">LORA</span> <span class="display-0-xsm">| Rychlý a bezpečný web</span>
+                        <span redirect="/" class="t-warning header-3 header-4-xsm cursor-point">{{ $WEB_NAME }}</span> <span class="display-0-xsm">| {{ $WEB_DESCRIPTION }}</span>
                     </div>
 
                     <!-- Brand | TEMPLATE -> second column -->
