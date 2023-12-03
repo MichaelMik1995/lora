@@ -1,4 +1,4 @@
-$(document).ready(function() {
+/* $(document).ready(function() {
     var new_content_menu = "\
     <div id=\"custom-menu\">\
         <ul id='menu-list'></ul>\
@@ -113,4 +113,4 @@ $(document).ready(function() {
     $.getJSON('./resources/js/contextmenu/defined.json', function (data) {
         definedMenu = data;
     });
-});
+}); */

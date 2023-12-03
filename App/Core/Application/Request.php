@@ -212,6 +212,7 @@ class Request extends Controller
 
         $index_data =
         [
+            "WEB_NAME" => env("web_name", false),
             "WEB_TITLE" => $this->controll->title,
             "WEB_ADDRESS" => env("base_href", false),
             "WEB_DESCRIPTION" => env("web_description", false),

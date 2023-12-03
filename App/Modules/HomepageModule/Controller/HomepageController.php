@@ -61,7 +61,7 @@ class HomepageController extends Controller implements ModuleInterface
      */
     public function initiliaze() 
     {
-        $this->title = "Homepage";
+        $this->title = "Vítejte";
     }
 
 /* ---------------------------------------------------------------- CRUD METHODS -------------------------------- */

@@ -1,5 +1,27 @@
+:root
+{
+    --primary-color: #2F879E;
+}
+
 body
 {
-    background-color: #18191D;
+    background-color: var(--primary-color);
     color: #bfbfbf;
+}
+
+
+
+.t-primary
+{
+    color: var(--primary-color);
+}
+
+.t-primary-hover:hover
+{
+    color: var(--primary-color);
+}
+
+.bgr-primary
+{
+    background-color: var(--primary-color);
 }

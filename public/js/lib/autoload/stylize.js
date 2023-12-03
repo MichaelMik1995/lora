@@ -678,7 +678,6 @@ class StylizeFunction
                {
                    if($(split[3]).hasClass(split[1]))
                    {
-                       console.log("TRUE");
                        $(split[3]).removeClass(split[1]).addClass(split[2]);
                    }
                    else
