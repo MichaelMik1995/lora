@@ -106,26 +106,23 @@
                         @if $WEB_STATUS == "DEVELOP" || $WEB_STATUS == "DEBUG" @
                             <button redirect="admindev" class="button-circle width-32p height-32p button-dark">
                                 <i class="fa fa-terminal"></i>
+                            </button>
                         @endif
                     @endif
 
                     <!-- Brand | TEMPLATE -> second column -->
-                    <div id="layout-second-column" class="column-3 column-6-xsm pdx-2 pdy-2-xsm">
-                        <div class="content-right">
-                        @iflogged 
-                                <button redirect="admin" class="button-circle width-32p height-32p button-dark">
-                                    <i class="fa fa-cog"></i>
-                                </button>  
-                            <button redirect="auth/logout" class="button-circle width-32p height-32p button-dark">
-                                <i class="fa fa-close"></i>
+                    @iflogged 
+                            <button redirect="admin" class="button-circle width-32p height-32p button-dark">
+                                <i class="fa fa-cog"></i>
                             </button>  
-                        @else
-                            <button redirect="auth/login" class="button-circle width-32p height-32p button-dark">
-                                <i class="fa fa-user"></i>
-                            </button>  
-                        @endif
-                        </div>
-                    </div>
+                        <button redirect="auth/logout" class="button-circle width-32p height-32p button-dark">
+                            <i class="fa fa-close"></i>
+                        </button>  
+                    @else
+                        <button redirect="auth/login" class="button-circle width-32p height-32p button-dark">
+                            <i class="fa fa-user"></i>
+                        </button>  
+                    @endif
                 </div>
             </div>
         </div>
