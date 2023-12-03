@@ -98,54 +98,34 @@
                     <button redirect="/" class="button-circle width-32p height-32p button-dark">
                         <i class="fa fa-home"></i>
                     </button>  
+
                     @iflogged
                         <button redirect="user" class="button-circle width-32p height-32p button-dark">
                             <i class="fa fa-user"></i>
                         </button>  
-                        @auth admin @
-                            @if $WEB_STATUS == "DEVELOP" || $WEB_STATUS == "DEBUG" @
-                                <button redirect="admindev" class="button-circle width-32p height-32p button-dark">
-                                    <i class="fa fa-terminal"></i>
-                            @endif
+                        @if $WEB_STATUS == "DEVELOP" || $WEB_STATUS == "DEBUG" @
+                            <button redirect="admindev" class="button-circle width-32p height-32p button-dark">
+                                <i class="fa fa-terminal"></i>
+                        @endif
                     @endif
-
-                    <!-- Brand | TEMPLATE -> first column -->
-                    <div id="layout-first-column" class="column-7 column-4-xsm">
-                        <img src="{{asset('img/logo/main_logo.jpeg')}}" class="height-40p" alt="main lora logo">
-                        <span redirect="/" class="t-warning header-3 header-4-xsm cursor-point">{{ $WEB_NAME }}</span> <span class="display-0-xsm">| {{ $WEB_DESCRIPTION }}</span>
-                    </div>
 
                     <!-- Brand | TEMPLATE -> second column -->
                     <div id="layout-second-column" class="column-3 column-6-xsm pdx-2 pdy-2-xsm">
                         <div class="content-right">
-                            <span class="display-xsm display-sm display-md display-lrg display-xlrg"></span>
-                    @iflogged
-                            <button redirect="user" class="button-circle width-32p height-32p button-warning">
+                        @iflogged 
+                                <button redirect="admin" class="button-circle width-32p height-32p button-dark">
+                                    <i class="fa fa-cog"></i>
+                                </button>  
+                            <button redirect="auth/logout" class="button-circle width-32p height-32p button-dark">
+                                <i class="fa fa-close"></i>
+                            </button>  
+                        @else
+                            <button redirect="auth/login" class="button-circle width-32p height-32p button-dark">
                                 <i class="fa fa-user"></i>
                             </button>  
-                            @auth admin @
-                                @if $WEB_STATUS == "DEVELOP" || $WEB_STATUS == "DEBUG" @
-                                    <button redirect="admindev" class="button-circle width-32p height-32p button-warning">
-                                        <i class="fa fa-terminal"></i>
-                                    </button>  
-                                @endif
-                                <button redirect="admin" class="button-circle width-32p height-32p button-warning">
-                                    <i class="fa fa-cog"></i>
-
-                                </button>  
-                            @endauth
-                            <button redirect="admin" class="button-circle width-32p height-32p button-dark">
-                                <i class="fa fa-cog"></i>
-                            </button>  
-                        @endauth
-                        <button redirect="auth/logout" class="button-circle width-32p height-32p button-dark">
-                            <i class="fa fa-close"></i>
-                        </button>  
-                    @else
-                        <button redirect="auth/login" class="button-circle width-32p height-32p button-dark">
-                            <i class="fa fa-user"></i>
-                        </button>  
-                    @endif
+                        @endif
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
