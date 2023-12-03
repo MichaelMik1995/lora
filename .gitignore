@@ -37,7 +37,8 @@ public/upload/images/*
 content/uploads/*
 
 resources/sql/*.db
-resources/views/index.lo.php
 
 public/font_awesome/pro/*
 !do-not-erase
+
+resources/views/index.lo.php
