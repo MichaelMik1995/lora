@@ -91,7 +91,7 @@
                 <div class="column-2">
 
                     <!-- Main Logo Image -->
-                    <img rel="easySlider" src="{{asset('img/logo/logo.jpg')}}" class="width-32p height-32px bd-round-circle" alt="main web logo">
+                    <img rel="easySlider" src="{{asset('img/logo/main_logo.jpeg')}}" class="width-32p height-32px bd-round-circle" alt="main web logo">
                 </div>
                 <div class="column-8 content-right">
                     <span class="display-xsm display-sm display-md display-lrg display-xlrg"></span>
