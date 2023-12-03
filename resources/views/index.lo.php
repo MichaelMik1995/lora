@@ -171,10 +171,7 @@
                     <!-- Navigation links -->
                     <div id="mobile-navigation-toggle" class="display-1-md display-1-lrg display-1-xlrg display-0-xsm display-0-sm">
                         <div  class="row cols-auto cols-1-xsm cols-2-sm">
-                            <div copy-element="navigation-link" data="link:bezbl/app/news,icon:fa fa-newspaper,name:Novinky"></div>
-                            <div copy-element="navigation-link" data="link:#,icon:fa fa-paw,name:Naši svěřenci"></div>
-                            <div copy-element="navigation-link" data="link:#,icon:fa fa-images,name:Galerie"></div>
-                            <div copy-element="navigation-link" data="link:#,icon:fa fa-envelope,name:Kontakt"></div>
+                            <div copy-element="navigation-link" data="link:app/news,icon:fa fa-newspaper,name:News"></div>
                         </div>
                     </div>   
                 </div>
@@ -187,7 +184,7 @@
         </main>
         
         <footer class="display-1 bottom-fixed background-dark-2 bd-2 bd-top-dark width-100 pd-2">
-         <span class="t-primary">Bezblešek, z.s</span> - Tento web byl vytvořen pomocí frameworku <span title="LORA je nyní ve verzi V32B2 - pokud najdete chybu, napište mi prosím na email: miroji@email.cz" class="t-primary">LORA</span> 2022 - 2023 by <a href="https://miroji.eu" target="_blank" class="t-primary t-warning-hover">@MiroJi</a>
+         <span class="t-primary">LORA</span> - Tento web byl vytvořen pomocí frameworku <span title="LORA je nyní ve verzi V32B2 - pokud najdete chybu, napište mi prosím na email: miroji@email.cz" class="t-primary">LORA</span> 2022 - 2023 by <a href="https://miroji.eu" target="_blank" class="t-primary t-warning-hover">@MiroJi</a>
         </footer>
         
     </body>
